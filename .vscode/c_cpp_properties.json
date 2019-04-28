@@ -1,0 +1,65 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/local/include/antlr4-runtime"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/clang",
+            "knownCompilers": [
+                {
+                    "path": "/usr/bin/clang",
+                    "isC": true
+                },
+                {
+                    "path": "/usr/bin/clang++",
+                    "isC": false
+                },
+                {
+                    "path": "/usr/bin/clang-3.8",
+                    "isC": true
+                },
+                {
+                    "path": "/usr/bin/clang++-3.8",
+                    "isC": false
+                },
+                {
+                    "path": "/usr/bin/gcc",
+                    "isC": true
+                },
+                {
+                    "path": "/usr/bin/g++",
+                    "isC": false
+                },
+                {
+                    "path": "/usr/bin/cpp",
+                    "isC": false
+                },
+                {
+                    "path": "/usr/bin/gcc-5",
+                    "isC": true
+                },
+                {
+                    "path": "/usr/bin/g++-5",
+                    "isC": false
+                },
+                {
+                    "path": "/usr/bin/clang",
+                    "isC": false
+                }
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/**"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
+        }
+    ],
+    "version": 4
+}

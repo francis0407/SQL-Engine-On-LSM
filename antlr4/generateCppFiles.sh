@@ -1,0 +1,1 @@
+java -jar ../deps/antlr-4.7.2-complete.jar -Dlanguage=Cpp -o ../src/parser -visitor -no-listener SimpleSql.g4
