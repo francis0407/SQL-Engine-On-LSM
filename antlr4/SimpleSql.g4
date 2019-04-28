@@ -36,7 +36,7 @@ selectClause
     ;    
 
 fromCluse
-    : FROM identifier (',' identifier)*
+    : FROM tableIdentifier (',' tableIdentifier)*
     ;
 
 whereCluse
@@ -83,7 +83,8 @@ columnIdentifier
     ;
 
 tableIdentifier
-    : identifier
+    : identifier                     #tableIdentifierDefault
+    | identifier AS identifier       #tableAlias
     ;
 
 identifier
@@ -121,6 +122,7 @@ CREATE: 'CREATE';
 TABLE : 'TABLE';
 INDEX : 'INDEX';
 ON    : 'ON';
+AS    : 'AS';
 
 OR  : 'OR';
 AND : 'AND';

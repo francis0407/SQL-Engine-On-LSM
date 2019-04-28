@@ -8,6 +8,7 @@
 #include "SimpleSqlParser.h"
 
 
+namespace simplesql::parser::antlr {
 
 /**
  * This class defines an abstract visitor for a parse tree
@@ -77,7 +78,9 @@ public:
 
     virtual antlrcpp::Any visitColumnWithoutTable(SimpleSqlParser::ColumnWithoutTableContext *context) = 0;
 
-    virtual antlrcpp::Any visitTableIdentifier(SimpleSqlParser::TableIdentifierContext *context) = 0;
+    virtual antlrcpp::Any visitTableIdentifierDefault(SimpleSqlParser::TableIdentifierDefaultContext *context) = 0;
+
+    virtual antlrcpp::Any visitTableAlias(SimpleSqlParser::TableAliasContext *context) = 0;
 
     virtual antlrcpp::Any visitIdentifier(SimpleSqlParser::IdentifierContext *context) = 0;
 
@@ -98,3 +101,4 @@ public:
 
 };
 
+}  // namespace simplesql::parser::antlr

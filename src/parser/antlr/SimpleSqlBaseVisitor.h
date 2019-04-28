@@ -8,6 +8,8 @@
 #include "SimpleSqlVisitor.h"
 
 
+namespace simplesql::parser::antlr {
+
 /**
  * This class provides an empty implementation of SimpleSqlVisitor, which can be
  * extended to create a visitor which only needs to handle a subset of the available methods.
@@ -131,7 +133,11 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTableIdentifier(SimpleSqlParser::TableIdentifierContext *ctx) override {
+  virtual antlrcpp::Any visitTableIdentifierDefault(SimpleSqlParser::TableIdentifierDefaultContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitTableAlias(SimpleSqlParser::TableAliasContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -170,3 +176,4 @@ public:
 
 };
 
+}  // namespace simplesql::parser::antlr

@@ -5,3 +5,5 @@
 #include "SimpleSqlBaseVisitor.h"
 
 
+using namespace simplesql::parser::antlr;
+
