@@ -5,10 +5,10 @@
 
 namespace simplesql::expressions {
 
-class ComparisonExpression: public ExpressionBase {
+
+class EqualTo: public BinaryExpression {
 public:
-    ExpressionBase* left = nullptr;
-    ExpressionBase* right = nullptr;
+    virtual AnyValue* eval(Row* r, MemoryPool* mp);
 };
 
 } // simplesql::expressions
