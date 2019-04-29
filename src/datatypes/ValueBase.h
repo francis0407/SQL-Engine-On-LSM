@@ -7,7 +7,7 @@ class ValueBase {
 
 };
 
-class IntergerValue: public ValueBase {
+class IntegerValue: public ValueBase {
 
 };
 

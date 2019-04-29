@@ -11,11 +11,11 @@ using namespace simplesql::expressions;
 // Use the traditional Volcano Model
 class OperatorBase {
 public:
-    virtual void open() = 0;
-    virtual void next() = 0;
-    virtual void close() = 0;
+    virtual bool open() = 0;
+    virtual bool next() = 0;
+    virtual bool close() = 0;
     
-    OperatorBase* children[2];
+    OperatorBase* children[2]; // We only have LeafNode, UnaryNode and BinaryNode
     ExpressionBase* expression;
     
     bool resolved = false;
