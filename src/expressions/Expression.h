@@ -17,7 +17,8 @@ public:
 
     ExpressionBase* children[2]; // Currently, we only support LeafNode, UnaryNode and BinaryNode. 
 
-    bool resolved = false;
+    bool resolved = false; // true if the attributes are resolved
+    bool isReference = false; // true if the expression is only an attribute
 };
 
 class LeafExpression: public ExpressionBase {

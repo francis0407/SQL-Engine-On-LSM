@@ -13,7 +13,6 @@ enum JoinSide {
 class InnerJoin: public OperatorBase {
 public:
     InnerJoin(OperatorBase* _left, OperatorBase* _right, JoinSide _side); // TODO: Join
-
 };
 
 } // namespace simplesql::operators
