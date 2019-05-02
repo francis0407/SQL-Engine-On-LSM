@@ -7,13 +7,12 @@ using namespace simplesql::datatypes;
 class Row {
 public:
     static Row* create(AnyValue* _columns[], int _columnNum, MemoryPool* _mp);
-    int columnNum;
-    AnyValue* columns[0];
-};
 
-class AttributeSet {
-public:
-    
+    AnyValue* getAny(size_t offset);
+    // BooleanValue* getBoolean()
+
+    byte* values = nullptr;
+    size_t len = 0;
 };
 
 } // namespace simplesql

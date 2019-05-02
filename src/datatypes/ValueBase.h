@@ -19,8 +19,8 @@ class AnyValue {
 public:   
     unsigned int valueLen;
 
-    static AnyValue* create(DataType _valueType, unsigned int _valueLen, byte* _valuePtr);
-    static AnyValue* create(DataType _valueType, unsigned int _valueLen, byte* _valuePtr, byte* pos);
+    static AnyValue* create(DataType _valueType, byte* _valuePtr);
+    static AnyValue* create(DataType _valueType, byte* _valuePtr, MemoryPool* _mp);
     AnyValue* makeCopy();
 
     virtual bool equalTo(AnyValue* that) = 0;
@@ -97,8 +97,10 @@ private:
 class StringValue: public AnyValue {
 public:
     char* value = nullptr;
-    static StringValue* create(char* _value, size_t _len);
+    static StringValue* create(char* _value, size_t _len); // a simple string type
+    static StringValue* create(char* _value); // a string with 4 bytes in the head
     static StringValue* create(char* _value, size_t _len, MemoryPool* _mp);
+    static StringValue* create(char* _value, MemoryPool* _mp);
 private:
     StringValue();
 };

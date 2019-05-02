@@ -1,5 +1,5 @@
  
- #include "Comparison.h"
+ #include "expressions/Comparison.h"
 
  
 namespace simplesql::expressions {

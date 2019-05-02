@@ -9,6 +9,16 @@ namespace simplesql::expressions {
     
 using namespace simplesql::datatypes;
 
+enum ExpressionType {
+    AttributeReference,
+    // Comparison expressions
+    EqualTo,
+    LessThan,
+    LessThanOrEqual,
+    GreaterThan,
+    GreaterThanOrEqual
+};
+
 class ExpressionBase {
 public:
     
@@ -18,7 +28,8 @@ public:
     ExpressionBase* children[2]; // Currently, we only support LeafNode, UnaryNode and BinaryNode. 
 
     bool resolved = false; // true if the attributes are resolved
-    bool isReference = false; // true if the expression is only an attribute
+
+    bool isAttributeReference() const;
 };
 
 class LeafExpression: public ExpressionBase {

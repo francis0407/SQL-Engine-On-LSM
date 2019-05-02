@@ -16,6 +16,8 @@ public:
     ExpressionBase** projectList = nullptr;
     int listLen = 0;
 
+    bool hasNoneReference = true; // should analyze the project list to change this
+
     OperatorBase* child = nullptr;
 };
 
