@@ -16,7 +16,17 @@ enum ExpressionType {
     LessThan,
     LessThanOrEqual,
     GreaterThan,
-    GreaterThanOrEqual
+    GreaterThanOrEqual,
+    // Predicates
+    And,
+    Or,
+    Not,
+    // Arithmetical expressions
+    Add,
+    Minus,
+    Multiply,
+    Divide,
+    Mod
 };
 
 class ExpressionBase {
@@ -33,7 +43,7 @@ public:
 };
 
 class LeafExpression: public ExpressionBase {
-
+    // Literals or AttributeReferences
 };
 
 class UnaryExpression: public ExpressionBase {

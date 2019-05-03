@@ -63,8 +63,9 @@ valueExpression
     ;
 
 primaryExpression
-    : columnIdentifier  #columnReference
-    | constant          #constantValue
+    : columnIdentifier      #columnReference
+    | constant              #constantValue
+    | '(' expression ')'    #parenthesizedExpression
     ;
 
 constant

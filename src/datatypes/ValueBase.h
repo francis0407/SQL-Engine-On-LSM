@@ -1,12 +1,15 @@
 
 #pragma once
 
+#include <string>
+
 #include "Common.h"
 #include "MemoryPool.h"
 
 namespace simplesql::datatypes {
 
 enum DataType : unsigned char { // ensure the enum variable only use ONE BYTE
+    Boolean,
     Integer,
     SmallInt,
     BigInt,
@@ -17,19 +20,33 @@ enum DataType : unsigned char { // ensure the enum variable only use ONE BYTE
 
 class AnyValue {
 public:   
-    unsigned int valueLen;
-
     static AnyValue* create(DataType _valueType, byte* _valuePtr);
     static AnyValue* create(DataType _valueType, byte* _valuePtr, MemoryPool* _mp);
-    AnyValue* makeCopy();
+    virtual AnyValue* makeCopy();
 
+    // Comparison
     virtual bool equalTo(AnyValue* that) = 0;
     virtual bool greaterThan(AnyValue* that) = 0;
     virtual bool greaterThanOrEqual(AnyValue * that) = 0;
+    
+    // Conversion
     virtual bool asBoolean() = 0;
+    virtual int asInteger() = 0;
+    virtual short asSmallInt() = 0;
+    virtual long long int asLongLongInt() = 0;
+    virtual float asFloat() = 0;
+    virtual double asDouble() = 0;
+    virtual std::string asString() = 0;
 
-protected:
+    // Arithmetical
+    virtual AnyValue* add(AnyValue* that, MemoryPool* mp) = 0;
+    virtual AnyValue* minus(AnyValue* that, MemoryPool* mp) = 0;
+    virtual AnyValue* multiply(AnyValue* that, MemoryPool* mp) = 0;
+    virtual AnyValue* divide(AnyValue* that, MemoryPool* mp) = 0;
+    virtual AnyValue* mod(AnyValue* that, MemoryPool* mp) = 0;
+
     const DataType valueType;  // 4 + 1, avoid memory alignment
+protected:
     AnyValue(); // do not allow use "new AnyValue()" to allocate an AnyValue instance.
 
 };
@@ -40,6 +57,10 @@ public:
     int value = 0;
     static IntegerValue* create(int _value);
     static IntegerValue* create(int _value, MemoryPool* _mp);
+
+    virtual bool equalTo(AnyValue* that) override;
+    virtual bool greaterThan(AnyValue* that) override;
+    virtual bool greaterThanOrEqual(AnyValue * that) override;
 private:
     IntegerValue();
 };
