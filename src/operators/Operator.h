@@ -4,7 +4,8 @@
 #include "expressions/Expression.h"
 #include "Attribute.h"
 
-namespace simplesql::operators {
+namespace simplesql {
+namespace operators {
 
 using namespace expressions;
 
@@ -40,4 +41,4 @@ public:
     AttributeSeq outputs;
 };
 
-} // namespace simplesql::operators
+}} // namespace simplesql::operators

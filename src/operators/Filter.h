@@ -3,7 +3,8 @@
 
 #include "Operator.h"
 
-namespace simplesql::operators {
+namespace simplesql{
+namespace operators {
 
 class Filter: public OperatorBase {
 public:
@@ -18,4 +19,4 @@ public:
 };
 
 
-} // namespace simplesql::operators
+}} // namespace simplesql::operators

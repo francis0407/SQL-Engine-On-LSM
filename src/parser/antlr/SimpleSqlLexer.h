@@ -7,7 +7,7 @@
 #include "antlr4-runtime.h"
 
 
-namespace simplesql::parser::antlr {
+namespace simplesql { namespace parser { namespace antlr {
 
 
 class  SimpleSqlLexer : public antlr4::Lexer {
@@ -16,11 +16,10 @@ public:
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, SELECT = 6, FROM = 7, 
     WHERE = 8, INSERT = 9, INTO = 10, VALUES = 11, DELETE = 12, CREATE = 13, 
     TABLE = 14, INDEX = 15, ON = 16, AS = 17, OR = 18, AND = 19, NOT = 20, 
-    TRUE_ = 21, FALSE_ = 22, EQ = 23, NSEQ = 24, NEQ = 25, NEQJ = 26, LT = 27, 
-    LTE = 28, GT = 29, GTE = 30, PLUS = 31, MINUS = 32, ASTERISK = 33, SLASH = 34, 
-    PERCENT = 35, DIV = 36, TILDE = 37, AMPERSAND = 38, PIPE = 39, HAT = 40, 
-    STRING = 41, DOUBLE_LITERAL = 42, BIGINT_LITERAL = 43, INTEGER_LITERAL = 44, 
-    SMALLINT_LITERAL = 45, IDENTIFIER = 46, WS = 47
+    TRUE_ = 21, FALSE_ = 22, EQ = 23, NEQ = 24, NEQJ = 25, LT = 26, LTE = 27, 
+    GT = 28, GTE = 29, PLUS = 30, MINUS = 31, ASTERISK = 32, SLASH = 33, 
+    PERCENT = 34, STRING = 35, FLOAT_LITERAL = 36, INTEGER_LITERAL = 37, 
+    IDENTIFIER = 38, WS = 39
   };
 
   SimpleSqlLexer(antlr4::CharStream *input);
@@ -62,4 +61,4 @@ private:
   static Initializer _init;
 };
 
-}  // namespace simplesql::parser::antlr
+}}}  // namespace simplesql::parser::antlr

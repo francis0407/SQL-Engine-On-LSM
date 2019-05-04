@@ -54,12 +54,10 @@ booleanExpression
     ;
 
 valueExpression
-    : primaryExpression                                                               #valueExpressionDefault 
-    | left=valueExpression opt=(PLUS | MINUS | ASTERISK |SLASH) right=valueExpression #arithmeticBinary
-    | left=valueExpression opt=(PERCENT | DIV) right=valueExpression                  #arithmeticBinary
-    | left=valueExpression opt=(AMPERSAND | PIPE) right=valueExpression               #arithmeticBinary
-    | opt=(MINUS | TILDE | HAT) valueExpression                                       #arithmeticUnary 
-    | left=valueExpression comparisonOperator right=valueExpression                   #comparison
+    : primaryExpression                                                                          #valueExpressionDefault 
+    | left=valueExpression opt=(PLUS | MINUS | ASTERISK | SLASH | PERCENT) right=valueExpression #arithmeticBinary
+    | MINUS valueExpression                                                                      #arithmeticUnary 
+    | left=valueExpression comparisonOperator right=valueExpression                              #comparison
     ;
 
 primaryExpression
@@ -69,7 +67,7 @@ primaryExpression
     ;
 
 constant
-    : STRING+           #stringLiteral
+    : STRING            #stringLiteral
     | number            #numberLiteral
     | booleanValue      #booleanLiteral
     ;
@@ -84,8 +82,8 @@ columnIdentifier
     ;
 
 tableIdentifier
-    : identifier                     #tableIdentifierDefault
-    | identifier AS identifier       #tableAlias
+    : tableName=identifier                        #tableIdentifierDefault
+    | tableName=identifier AS alias=identifier    #tableAlias
     ;
 
 identifier
@@ -93,7 +91,7 @@ identifier
     ;
 
 comparisonOperator
-    : EQ | NEQ | NEQJ | LT | LTE | GT | GTE | NSEQ
+    : EQ | NEQ | NEQJ | LT | LTE | GT | GTE 
     ;
 
 predicateOperator
@@ -106,9 +104,7 @@ booleanValue
 
 number
     : MINUS? INTEGER_LITERAL          #integerLiteral
-    | MINUS? BIGINT_LITERAL           #bigIntLiteral
-    | MINUS? SMALLINT_LITERAL         #smallIntLiteral
-    | MINUS? DOUBLE_LITERAL           #doubleLiteral
+    | MINUS? FLOAT_LITERAL            #floatLiteral
     ;
 
 // key words
@@ -134,7 +130,6 @@ TRUE_  : 'TRUE';
 FALSE_ : 'FALSE';
 
 EQ  : '=' | '==';
-NSEQ: '<=>';
 NEQ : '<>';
 NEQJ: '!=';
 LT  : '<';
@@ -148,31 +143,19 @@ MINUS: '-';
 ASTERISK: '*';
 SLASH: '/';
 PERCENT: '%';
-DIV: 'DIV';
-TILDE: '~';
-AMPERSAND: '&';
-PIPE: '|';
-HAT: '^';
 
 STRING
     : '\'' ( ~('\''|'\\') | ('\\' .) )* '\''
     | '"' ( ~('"'|'\\') | ('\\' .) )* '"'
     ;
 
-DOUBLE_LITERAL
+FLOAT_LITERAL
     : DIGIT+ '.' DIGIT+
     ; 
 
-BIGINT_LITERAL
-    : DIGIT+ 'L'
-    ;
 
 INTEGER_LITERAL
     : DIGIT+
-    ;
-
-SMALLINT_LITERAL
-    : DIGIT+ 'S'
     ;
 
 IDENTIFIER

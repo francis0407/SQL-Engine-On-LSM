@@ -2,7 +2,8 @@
 #include "Expression.h"
 
 
-namespace simplesql::expressions {
+namespace simplesql {
+namespace expressions {
 
 AnyValue* ExpressionBase::eval(Row* r) {
     MemoryPool mp; // use a new MemoryPool
@@ -10,4 +11,4 @@ AnyValue* ExpressionBase::eval(Row* r) {
     return result->makeCopy();
 }
 
-} // namespace simplesql::expressions
+}} // namespace simplesql::expressions

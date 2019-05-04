@@ -1,8 +1,10 @@
 #pragma once
 
+#include "datatypes/ValueBase.h"
+
 namespace simplesql {
 
-using namespace simplesql::datatypes;
+using namespace datatypes;
 
 class Row {
 public:

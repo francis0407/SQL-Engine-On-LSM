@@ -3,7 +3,8 @@
 
 #include "Operator.h"
 
-namespace simplesql::operators {
+namespace simplesql{
+namespace operators {
 
 enum JoinSide {
     BuildLeft,
@@ -15,4 +16,4 @@ public:
     InnerJoin(OperatorBase* _left, OperatorBase* _right, JoinSide _side); // TODO: Join
 };
 
-} // namespace simplesql::operators
+}} // namespace simplesql::operators

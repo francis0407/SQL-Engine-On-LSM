@@ -1,4 +1,4 @@
-// Generated from /home/francis/File/Code/SQL-Engine-On-LSM/antlr4/SimpleSql.g4 by ANTLR 4.7.1
+// Generated from /home/francis/Git/francis/SQL-Engine-On-LSM/antlr4/SimpleSql.g4 by ANTLR 4.7.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -16,13 +16,12 @@ public class SimpleSqlParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, SELECT=6, FROM=7, WHERE=8, INSERT=9, 
-		INTO=10, VALUES=11, DELETE=12, CREATE=13, TABLE=14, INDEX=15, ON=16, AS=17, 
-		OR=18, AND=19, NOT=20, TRUE_=21, FALSE_=22, EQ=23, NSEQ=24, NEQ=25, NEQJ=26, 
-		LT=27, LTE=28, GT=29, GTE=30, PLUS=31, MINUS=32, ASTERISK=33, SLASH=34, 
-		PERCENT=35, DIV=36, TILDE=37, AMPERSAND=38, PIPE=39, HAT=40, STRING=41, 
-		DOUBLE_LITERAL=42, BIGINT_LITERAL=43, INTEGER_LITERAL=44, SMALLINT_LITERAL=45, 
-		IDENTIFIER=46, WS=47;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, SELECT=7, FROM=8, WHERE=9, 
+		INSERT=10, INTO=11, VALUES=12, DELETE=13, CREATE=14, TABLE=15, INDEX=16, 
+		ON=17, AS=18, OR=19, AND=20, NOT=21, TRUE_=22, FALSE_=23, EQ=24, NEQ=25, 
+		NEQJ=26, LT=27, LTE=28, GT=29, GTE=30, PLUS=31, MINUS=32, ASTERISK=33, 
+		SLASH=34, PERCENT=35, STRING=36, FLOAT_LITERAL=37, INTEGER_LITERAL=38, 
+		IDENTIFIER=39, WS=40;
 	public static final int
 		RULE_singleStatement = 0, RULE_statement = 1, RULE_createStatement = 2, 
 		RULE_indexClause = 3, RULE_deleteStatement = 4, RULE_insertStatement = 5, 
@@ -40,19 +39,18 @@ public class SimpleSqlParser extends Parser {
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'('", "','", "')'", "',('", "'.'", "'SELECT'", "'FROM'", "'WHERE'", 
-		"'INSERT'", "'INTO'", "'VALUES'", "'DELETE'", "'CREATE'", "'TABLE'", "'INDEX'", 
-		"'ON'", "'AS'", "'OR'", "'AND'", "'NOT'", "'TRUE'", "'FALSE'", null, "'<=>'", 
-		"'<>'", "'!='", "'<'", null, "'>'", null, "'+'", "'-'", "'*'", "'/'", 
-		"'%'", "'DIV'", "'~'", "'&'", "'|'", "'^'"
+		null, "'('", "','", "')'", "',('", "'\"'", "'.'", "'SELECT'", "'FROM'", 
+		"'WHERE'", "'INSERT'", "'INTO'", "'VALUES'", "'DELETE'", "'CREATE'", "'TABLE'", 
+		"'INDEX'", "'ON'", "'AS'", "'OR'", "'AND'", "'NOT'", "'TRUE'", "'FALSE'", 
+		null, "'<>'", "'!='", "'<'", null, "'>'", null, "'+'", "'-'", "'*'", "'/'", 
+		"'%'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
-		null, null, null, null, null, null, "SELECT", "FROM", "WHERE", "INSERT", 
+		null, null, null, null, null, null, null, "SELECT", "FROM", "WHERE", "INSERT", 
 		"INTO", "VALUES", "DELETE", "CREATE", "TABLE", "INDEX", "ON", "AS", "OR", 
-		"AND", "NOT", "TRUE_", "FALSE_", "EQ", "NSEQ", "NEQ", "NEQJ", "LT", "LTE", 
-		"GT", "GTE", "PLUS", "MINUS", "ASTERISK", "SLASH", "PERCENT", "DIV", "TILDE", 
-		"AMPERSAND", "PIPE", "HAT", "STRING", "DOUBLE_LITERAL", "BIGINT_LITERAL", 
-		"INTEGER_LITERAL", "SMALLINT_LITERAL", "IDENTIFIER", "WS"
+		"AND", "NOT", "TRUE_", "FALSE_", "EQ", "NEQ", "NEQJ", "LT", "LTE", "GT", 
+		"GTE", "PLUS", "MINUS", "ASTERISK", "SLASH", "PERCENT", "STRING", "FLOAT_LITERAL", 
+		"INTEGER_LITERAL", "IDENTIFIER", "WS"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -637,11 +635,11 @@ public class SimpleSqlParser extends Parser {
 
 	public static class FromCluseContext extends ParserRuleContext {
 		public TerminalNode FROM() { return getToken(SimpleSqlParser.FROM, 0); }
-		public List<IdentifierContext> identifier() {
-			return getRuleContexts(IdentifierContext.class);
+		public List<TableIdentifierContext> tableIdentifier() {
+			return getRuleContexts(TableIdentifierContext.class);
 		}
-		public IdentifierContext identifier(int i) {
-			return getRuleContext(IdentifierContext.class,i);
+		public TableIdentifierContext tableIdentifier(int i) {
+			return getRuleContext(TableIdentifierContext.class,i);
 		}
 		public FromCluseContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -659,7 +657,7 @@ public class SimpleSqlParser extends Parser {
 			setState(135);
 			match(FROM);
 			setState(136);
-			identifier();
+			tableIdentifier();
 			setState(141);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -669,7 +667,7 @@ public class SimpleSqlParser extends Parser {
 				setState(137);
 				match(T__1);
 				setState(138);
-				identifier();
+				tableIdentifier();
 				}
 				}
 				setState(143);
@@ -812,16 +810,13 @@ public class SimpleSqlParser extends Parser {
 			setState(153);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
+			case T__0:
+			case T__4:
 			case TRUE_:
 			case FALSE_:
 			case MINUS:
-			case TILDE:
-			case HAT:
-			case STRING:
-			case DOUBLE_LITERAL:
-			case BIGINT_LITERAL:
+			case FLOAT_LITERAL:
 			case INTEGER_LITERAL:
-			case SMALLINT_LITERAL:
 			case IDENTIFIER:
 				{
 				_localctx = new BooleanExpressionDefauleContext(_localctx);
@@ -940,19 +935,13 @@ public class SimpleSqlParser extends Parser {
 		public TerminalNode ASTERISK() { return getToken(SimpleSqlParser.ASTERISK, 0); }
 		public TerminalNode SLASH() { return getToken(SimpleSqlParser.SLASH, 0); }
 		public TerminalNode PERCENT() { return getToken(SimpleSqlParser.PERCENT, 0); }
-		public TerminalNode DIV() { return getToken(SimpleSqlParser.DIV, 0); }
-		public TerminalNode AMPERSAND() { return getToken(SimpleSqlParser.AMPERSAND, 0); }
-		public TerminalNode PIPE() { return getToken(SimpleSqlParser.PIPE, 0); }
 		public ArithmeticBinaryContext(ValueExpressionContext ctx) { copyFrom(ctx); }
 	}
 	public static class ArithmeticUnaryContext extends ValueExpressionContext {
-		public Token opt;
+		public TerminalNode MINUS() { return getToken(SimpleSqlParser.MINUS, 0); }
 		public ValueExpressionContext valueExpression() {
 			return getRuleContext(ValueExpressionContext.class,0);
 		}
-		public TerminalNode MINUS() { return getToken(SimpleSqlParser.MINUS, 0); }
-		public TerminalNode TILDE() { return getToken(SimpleSqlParser.TILDE, 0); }
-		public TerminalNode HAT() { return getToken(SimpleSqlParser.HAT, 0); }
 		public ArithmeticUnaryContext(ValueExpressionContext ctx) { copyFrom(ctx); }
 	}
 
@@ -991,23 +980,14 @@ public class SimpleSqlParser extends Parser {
 				_ctx = _localctx;
 				_prevctx = _localctx;
 				setState(165);
-				((ArithmeticUnaryContext)_localctx).opt = _input.LT(1);
-				_la = _input.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MINUS) | (1L << TILDE) | (1L << HAT))) != 0)) ) {
-					((ArithmeticUnaryContext)_localctx).opt = (Token)_errHandler.recoverInline(this);
-				}
-				else {
-					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-					_errHandler.reportMatch(this);
-					consume();
-				}
+				match(MINUS);
 				setState(166);
 				valueExpression(2);
 				}
 				break;
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(184);
+			setState(178);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -1015,7 +995,7 @@ public class SimpleSqlParser extends Parser {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(182);
+					setState(176);
 					_errHandler.sync(this);
 					switch ( getInterpreter().adaptivePredict(_input,13,_ctx) ) {
 					case 1:
@@ -1024,11 +1004,11 @@ public class SimpleSqlParser extends Parser {
 						((ArithmeticBinaryContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_valueExpression);
 						setState(169);
-						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
+						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
 						setState(170);
 						((ArithmeticBinaryContext)_localctx).opt = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PLUS) | (1L << MINUS) | (1L << ASTERISK) | (1L << SLASH))) != 0)) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PLUS) | (1L << MINUS) | (1L << ASTERISK) | (1L << SLASH) | (1L << PERCENT))) != 0)) ) {
 							((ArithmeticBinaryContext)_localctx).opt = (Token)_errHandler.recoverInline(this);
 						}
 						else {
@@ -1037,70 +1017,26 @@ public class SimpleSqlParser extends Parser {
 							consume();
 						}
 						setState(171);
-						((ArithmeticBinaryContext)_localctx).right = valueExpression(6);
+						((ArithmeticBinaryContext)_localctx).right = valueExpression(4);
 						}
 						break;
 					case 2:
 						{
-						_localctx = new ArithmeticBinaryContext(new ValueExpressionContext(_parentctx, _parentState));
-						((ArithmeticBinaryContext)_localctx).left = _prevctx;
-						pushNewRecursionContext(_localctx, _startState, RULE_valueExpression);
-						setState(172);
-						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(173);
-						((ArithmeticBinaryContext)_localctx).opt = _input.LT(1);
-						_la = _input.LA(1);
-						if ( !(_la==PERCENT || _la==DIV) ) {
-							((ArithmeticBinaryContext)_localctx).opt = (Token)_errHandler.recoverInline(this);
-						}
-						else {
-							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-							_errHandler.reportMatch(this);
-							consume();
-						}
-						setState(174);
-						((ArithmeticBinaryContext)_localctx).right = valueExpression(5);
-						}
-						break;
-					case 3:
-						{
-						_localctx = new ArithmeticBinaryContext(new ValueExpressionContext(_parentctx, _parentState));
-						((ArithmeticBinaryContext)_localctx).left = _prevctx;
-						pushNewRecursionContext(_localctx, _startState, RULE_valueExpression);
-						setState(175);
-						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(176);
-						((ArithmeticBinaryContext)_localctx).opt = _input.LT(1);
-						_la = _input.LA(1);
-						if ( !(_la==AMPERSAND || _la==PIPE) ) {
-							((ArithmeticBinaryContext)_localctx).opt = (Token)_errHandler.recoverInline(this);
-						}
-						else {
-							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-							_errHandler.reportMatch(this);
-							consume();
-						}
-						setState(177);
-						((ArithmeticBinaryContext)_localctx).right = valueExpression(4);
-						}
-						break;
-					case 4:
-						{
 						_localctx = new ComparisonContext(new ValueExpressionContext(_parentctx, _parentState));
 						((ComparisonContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_valueExpression);
-						setState(178);
+						setState(172);
 						if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-						setState(179);
+						setState(173);
 						comparisonOperator();
-						setState(180);
+						setState(174);
 						((ComparisonContext)_localctx).right = valueExpression(2);
 						}
 						break;
 					}
 					} 
 				}
-				setState(186);
+				setState(180);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
 			}
@@ -1134,6 +1070,12 @@ public class SimpleSqlParser extends Parser {
 		}
 		public ColumnReferenceContext(PrimaryExpressionContext ctx) { copyFrom(ctx); }
 	}
+	public static class ParenthesizedExpressionContext extends PrimaryExpressionContext {
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public ParenthesizedExpressionContext(PrimaryExpressionContext ctx) { copyFrom(ctx); }
+	}
 	public static class ConstantValueContext extends PrimaryExpressionContext {
 		public ConstantContext constant() {
 			return getRuleContext(ConstantContext.class,0);
@@ -1145,30 +1087,40 @@ public class SimpleSqlParser extends Parser {
 		PrimaryExpressionContext _localctx = new PrimaryExpressionContext(_ctx, getState());
 		enterRule(_localctx, 26, RULE_primaryExpression);
 		try {
-			setState(189);
+			setState(187);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case IDENTIFIER:
 				_localctx = new ColumnReferenceContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(187);
+				setState(181);
 				columnIdentifier();
 				}
 				break;
+			case T__4:
 			case TRUE_:
 			case FALSE_:
 			case MINUS:
-			case STRING:
-			case DOUBLE_LITERAL:
-			case BIGINT_LITERAL:
+			case FLOAT_LITERAL:
 			case INTEGER_LITERAL:
-			case SMALLINT_LITERAL:
 				_localctx = new ConstantValueContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(188);
+				setState(182);
 				constant();
+				}
+				break;
+			case T__0:
+				_localctx = new ParenthesizedExpressionContext(_localctx);
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(183);
+				match(T__0);
+				setState(184);
+				expression();
+				setState(185);
+				match(T__2);
 				}
 				break;
 			default:
@@ -1220,42 +1172,38 @@ public class SimpleSqlParser extends Parser {
 	public final ConstantContext constant() throws RecognitionException {
 		ConstantContext _localctx = new ConstantContext(_ctx, getState());
 		enterRule(_localctx, 28, RULE_constant);
+		int _la;
 		try {
-			int _alt;
 			setState(198);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case STRING:
+			case T__4:
 				_localctx = new StringLiteralContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(192); 
+				setState(189);
+				match(T__4);
+				setState(191); 
 				_errHandler.sync(this);
-				_alt = 1;
+				_la = _input.LA(1);
 				do {
-					switch (_alt) {
-					case 1:
-						{
-						{
-						setState(191);
-						match(STRING);
-						}
-						}
-						break;
-					default:
-						throw new NoViableAltException(this);
+					{
+					{
+					setState(190);
+					match(STRING);
 					}
-					setState(194); 
+					}
+					setState(193); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,16,_ctx);
-				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+					_la = _input.LA(1);
+				} while ( _la==STRING );
+				setState(195);
+				match(T__4);
 				}
 				break;
 			case MINUS:
-			case DOUBLE_LITERAL:
-			case BIGINT_LITERAL:
+			case FLOAT_LITERAL:
 			case INTEGER_LITERAL:
-			case SMALLINT_LITERAL:
 				_localctx = new NumberLiteralContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
@@ -1357,7 +1305,7 @@ public class SimpleSqlParser extends Parser {
 				setState(202);
 				tableIdentifier();
 				setState(203);
-				match(T__4);
+				match(T__5);
 				setState(204);
 				identifier();
 				}
@@ -1395,16 +1343,19 @@ public class SimpleSqlParser extends Parser {
 		}
 	}
 	public static class TableAliasContext extends TableIdentifierContext {
+		public IdentifierContext tableName;
+		public IdentifierContext alias;
+		public TerminalNode AS() { return getToken(SimpleSqlParser.AS, 0); }
 		public List<IdentifierContext> identifier() {
 			return getRuleContexts(IdentifierContext.class);
 		}
 		public IdentifierContext identifier(int i) {
 			return getRuleContext(IdentifierContext.class,i);
 		}
-		public TerminalNode AS() { return getToken(SimpleSqlParser.AS, 0); }
 		public TableAliasContext(TableIdentifierContext ctx) { copyFrom(ctx); }
 	}
 	public static class TableIdentifierDefaultContext extends TableIdentifierContext {
+		public IdentifierContext tableName;
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
 		}
@@ -1423,7 +1374,7 @@ public class SimpleSqlParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(209);
-				identifier();
+				((TableIdentifierDefaultContext)_localctx).tableName = identifier();
 				}
 				break;
 			case 2:
@@ -1431,11 +1382,11 @@ public class SimpleSqlParser extends Parser {
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(210);
-				identifier();
+				((TableAliasContext)_localctx).tableName = identifier();
 				setState(211);
 				match(AS);
 				setState(212);
-				identifier();
+				((TableAliasContext)_localctx).alias = identifier();
 				}
 				break;
 			}
@@ -1488,7 +1439,6 @@ public class SimpleSqlParser extends Parser {
 		public TerminalNode LTE() { return getToken(SimpleSqlParser.LTE, 0); }
 		public TerminalNode GT() { return getToken(SimpleSqlParser.GT, 0); }
 		public TerminalNode GTE() { return getToken(SimpleSqlParser.GTE, 0); }
-		public TerminalNode NSEQ() { return getToken(SimpleSqlParser.NSEQ, 0); }
 		public ComparisonOperatorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1504,7 +1454,7 @@ public class SimpleSqlParser extends Parser {
 			{
 			setState(218);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << EQ) | (1L << NSEQ) | (1L << NEQ) | (1L << NEQJ) | (1L << LT) | (1L << LTE) | (1L << GT) | (1L << GTE))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << EQ) | (1L << NEQ) | (1L << NEQJ) | (1L << LT) | (1L << LTE) | (1L << GT) | (1L << GTE))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -1615,25 +1565,15 @@ public class SimpleSqlParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
-	public static class BigIntLiteralContext extends NumberContext {
-		public TerminalNode BIGINT_LITERAL() { return getToken(SimpleSqlParser.BIGINT_LITERAL, 0); }
-		public TerminalNode MINUS() { return getToken(SimpleSqlParser.MINUS, 0); }
-		public BigIntLiteralContext(NumberContext ctx) { copyFrom(ctx); }
-	}
-	public static class DoubleLiteralContext extends NumberContext {
-		public TerminalNode DOUBLE_LITERAL() { return getToken(SimpleSqlParser.DOUBLE_LITERAL, 0); }
-		public TerminalNode MINUS() { return getToken(SimpleSqlParser.MINUS, 0); }
-		public DoubleLiteralContext(NumberContext ctx) { copyFrom(ctx); }
-	}
 	public static class IntegerLiteralContext extends NumberContext {
 		public TerminalNode INTEGER_LITERAL() { return getToken(SimpleSqlParser.INTEGER_LITERAL, 0); }
 		public TerminalNode MINUS() { return getToken(SimpleSqlParser.MINUS, 0); }
 		public IntegerLiteralContext(NumberContext ctx) { copyFrom(ctx); }
 	}
-	public static class SmallIntLiteralContext extends NumberContext {
-		public TerminalNode SMALLINT_LITERAL() { return getToken(SimpleSqlParser.SMALLINT_LITERAL, 0); }
+	public static class FloatLiteralContext extends NumberContext {
+		public TerminalNode FLOAT_LITERAL() { return getToken(SimpleSqlParser.FLOAT_LITERAL, 0); }
 		public TerminalNode MINUS() { return getToken(SimpleSqlParser.MINUS, 0); }
-		public SmallIntLiteralContext(NumberContext ctx) { copyFrom(ctx); }
+		public FloatLiteralContext(NumberContext ctx) { copyFrom(ctx); }
 	}
 
 	public final NumberContext number() throws RecognitionException {
@@ -1641,9 +1581,9 @@ public class SimpleSqlParser extends Parser {
 		enterRule(_localctx, 44, RULE_number);
 		int _la;
 		try {
-			setState(240);
+			setState(232);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,24,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
 			case 1:
 				_localctx = new IntegerLiteralContext(_localctx);
 				enterOuterAlt(_localctx, 1);
@@ -1663,7 +1603,7 @@ public class SimpleSqlParser extends Parser {
 				}
 				break;
 			case 2:
-				_localctx = new BigIntLiteralContext(_localctx);
+				_localctx = new FloatLiteralContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(229);
@@ -1677,43 +1617,7 @@ public class SimpleSqlParser extends Parser {
 				}
 
 				setState(231);
-				match(BIGINT_LITERAL);
-				}
-				break;
-			case 3:
-				_localctx = new SmallIntLiteralContext(_localctx);
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(233);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if (_la==MINUS) {
-					{
-					setState(232);
-					match(MINUS);
-					}
-				}
-
-				setState(235);
-				match(SMALLINT_LITERAL);
-				}
-				break;
-			case 4:
-				_localctx = new DoubleLiteralContext(_localctx);
-				enterOuterAlt(_localctx, 4);
-				{
-				setState(237);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if (_la==MINUS) {
-					{
-					setState(236);
-					match(MINUS);
-					}
-				}
-
-				setState(239);
-				match(DOUBLE_LITERAL);
+				match(FLOAT_LITERAL);
 				}
 				break;
 			}
@@ -1748,21 +1652,17 @@ public class SimpleSqlParser extends Parser {
 	private boolean valueExpression_sempred(ValueExpressionContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 1:
-			return precpred(_ctx, 5);
-		case 2:
-			return precpred(_ctx, 4);
-		case 3:
 			return precpred(_ctx, 3);
-		case 4:
+		case 2:
 			return precpred(_ctx, 1);
 		}
 		return true;
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\61\u00f5\4\2\t\2"+
-		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
-		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3*\u00ed\4\2\t\2\4"+
+		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
+		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\3\2\3\2\3"+
 		"\2\3\3\3\3\3\3\3\3\5\38\n\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\7"+
 		"\4D\n\4\f\4\16\4G\13\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\3\5\7\5Q\n\5\f\5\16"+
@@ -1772,74 +1672,69 @@ public class SimpleSqlParser extends Parser {
 		"\3\t\7\t\u0085\n\t\f\t\16\t\u0088\13\t\3\n\3\n\3\n\3\n\7\n\u008e\n\n\f"+
 		"\n\16\n\u0091\13\n\3\13\3\13\3\13\3\f\3\f\3\r\3\r\3\r\3\r\5\r\u009c\n"+
 		"\r\3\r\3\r\3\r\7\r\u00a1\n\r\f\r\16\r\u00a4\13\r\3\16\3\16\3\16\3\16\5"+
-		"\16\u00aa\n\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16"+
-		"\3\16\3\16\7\16\u00b9\n\16\f\16\16\16\u00bc\13\16\3\17\3\17\5\17\u00c0"+
-		"\n\17\3\20\6\20\u00c3\n\20\r\20\16\20\u00c4\3\20\3\20\5\20\u00c9\n\20"+
+		"\16\u00aa\n\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\7\16\u00b3\n\16\f\16"+
+		"\16\16\u00b6\13\16\3\17\3\17\3\17\3\17\3\17\3\17\5\17\u00be\n\17\3\20"+
+		"\3\20\6\20\u00c2\n\20\r\20\16\20\u00c3\3\20\3\20\3\20\5\20\u00c9\n\20"+
 		"\3\21\3\21\3\22\3\22\3\22\3\22\3\22\5\22\u00d2\n\22\3\23\3\23\3\23\3\23"+
 		"\3\23\5\23\u00d9\n\23\3\24\3\24\3\25\3\25\3\26\3\26\3\27\3\27\3\30\5\30"+
-		"\u00e4\n\30\3\30\3\30\5\30\u00e8\n\30\3\30\3\30\5\30\u00ec\n\30\3\30\3"+
-		"\30\5\30\u00f0\n\30\3\30\5\30\u00f3\n\30\3\30\2\4\30\32\31\2\4\6\b\n\f"+
-		"\16\20\22\24\26\30\32\34\36 \"$&(*,.\2\n\3\2\24\25\5\2\"\"\'\'**\3\2!"+
-		"$\3\2%&\3\2()\3\2\31 \3\2\24\26\3\2\27\30\2\u00fd\2\60\3\2\2\2\4\67\3"+
-		"\2\2\2\69\3\2\2\2\bJ\3\2\2\2\nW\3\2\2\2\f]\3\2\2\2\16{\3\2\2\2\20\u0080"+
-		"\3\2\2\2\22\u0089\3\2\2\2\24\u0092\3\2\2\2\26\u0095\3\2\2\2\30\u009b\3"+
-		"\2\2\2\32\u00a9\3\2\2\2\34\u00bf\3\2\2\2\36\u00c8\3\2\2\2 \u00ca\3\2\2"+
-		"\2\"\u00d1\3\2\2\2$\u00d8\3\2\2\2&\u00da\3\2\2\2(\u00dc\3\2\2\2*\u00de"+
-		"\3\2\2\2,\u00e0\3\2\2\2.\u00f2\3\2\2\2\60\61\5\4\3\2\61\62\7\2\2\3\62"+
-		"\3\3\2\2\2\638\5\6\4\2\648\5\n\6\2\658\5\f\7\2\668\5\16\b\2\67\63\3\2"+
-		"\2\2\67\64\3\2\2\2\67\65\3\2\2\2\67\66\3\2\2\28\5\3\2\2\29:\7\17\2\2:"+
-		";\7\20\2\2;<\5$\23\2<=\7\3\2\2=>\5&\24\2>E\5 \21\2?@\7\4\2\2@A\5&\24\2"+
-		"AB\5 \21\2BD\3\2\2\2C?\3\2\2\2DG\3\2\2\2EC\3\2\2\2EF\3\2\2\2FH\3\2\2\2"+
-		"GE\3\2\2\2HI\7\5\2\2I\7\3\2\2\2JK\7\21\2\2KL\7\22\2\2LM\7\3\2\2MR\5&\24"+
-		"\2NO\7\4\2\2OQ\5&\24\2PN\3\2\2\2QT\3\2\2\2RP\3\2\2\2RS\3\2\2\2SU\3\2\2"+
-		"\2TR\3\2\2\2UV\7\5\2\2V\t\3\2\2\2WX\7\16\2\2XY\7\t\2\2Y[\5$\23\2Z\\\5"+
-		"\24\13\2[Z\3\2\2\2[\\\3\2\2\2\\\13\3\2\2\2]^\7\13\2\2^_\7\f\2\2_`\5$\23"+
-		"\2`a\7\r\2\2ab\7\3\2\2bg\5\26\f\2cd\7\4\2\2df\5\26\f\2ec\3\2\2\2fi\3\2"+
-		"\2\2ge\3\2\2\2gh\3\2\2\2hj\3\2\2\2ig\3\2\2\2jx\7\5\2\2kl\7\6\2\2lq\5\26"+
-		"\f\2mn\7\4\2\2np\5\26\f\2om\3\2\2\2ps\3\2\2\2qo\3\2\2\2qr\3\2\2\2rt\3"+
-		"\2\2\2sq\3\2\2\2tu\7\5\2\2uw\3\2\2\2vk\3\2\2\2wz\3\2\2\2xv\3\2\2\2xy\3"+
-		"\2\2\2y\r\3\2\2\2zx\3\2\2\2{|\5\20\t\2|~\5\22\n\2}\177\5\24\13\2~}\3\2"+
-		"\2\2~\177\3\2\2\2\177\17\3\2\2\2\u0080\u0081\7\b\2\2\u0081\u0086\5\26"+
-		"\f\2\u0082\u0083\7\4\2\2\u0083\u0085\5\26\f\2\u0084\u0082\3\2\2\2\u0085"+
-		"\u0088\3\2\2\2\u0086\u0084\3\2\2\2\u0086\u0087\3\2\2\2\u0087\21\3\2\2"+
-		"\2\u0088\u0086\3\2\2\2\u0089\u008a\7\t\2\2\u008a\u008f\5&\24\2\u008b\u008c"+
-		"\7\4\2\2\u008c\u008e\5&\24\2\u008d\u008b\3\2\2\2\u008e\u0091\3\2\2\2\u008f"+
+		"\u00e4\n\30\3\30\3\30\5\30\u00e8\n\30\3\30\5\30\u00eb\n\30\3\30\2\4\30"+
+		"\32\31\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\2\7\3\2\25\26\3"+
+		"\2!%\3\2\32 \3\2\25\27\3\2\30\31\2\u00f0\2\60\3\2\2\2\4\67\3\2\2\2\69"+
+		"\3\2\2\2\bJ\3\2\2\2\nW\3\2\2\2\f]\3\2\2\2\16{\3\2\2\2\20\u0080\3\2\2\2"+
+		"\22\u0089\3\2\2\2\24\u0092\3\2\2\2\26\u0095\3\2\2\2\30\u009b\3\2\2\2\32"+
+		"\u00a9\3\2\2\2\34\u00bd\3\2\2\2\36\u00c8\3\2\2\2 \u00ca\3\2\2\2\"\u00d1"+
+		"\3\2\2\2$\u00d8\3\2\2\2&\u00da\3\2\2\2(\u00dc\3\2\2\2*\u00de\3\2\2\2,"+
+		"\u00e0\3\2\2\2.\u00ea\3\2\2\2\60\61\5\4\3\2\61\62\7\2\2\3\62\3\3\2\2\2"+
+		"\638\5\6\4\2\648\5\n\6\2\658\5\f\7\2\668\5\16\b\2\67\63\3\2\2\2\67\64"+
+		"\3\2\2\2\67\65\3\2\2\2\67\66\3\2\2\28\5\3\2\2\29:\7\20\2\2:;\7\21\2\2"+
+		";<\5$\23\2<=\7\3\2\2=>\5&\24\2>E\5 \21\2?@\7\4\2\2@A\5&\24\2AB\5 \21\2"+
+		"BD\3\2\2\2C?\3\2\2\2DG\3\2\2\2EC\3\2\2\2EF\3\2\2\2FH\3\2\2\2GE\3\2\2\2"+
+		"HI\7\5\2\2I\7\3\2\2\2JK\7\22\2\2KL\7\23\2\2LM\7\3\2\2MR\5&\24\2NO\7\4"+
+		"\2\2OQ\5&\24\2PN\3\2\2\2QT\3\2\2\2RP\3\2\2\2RS\3\2\2\2SU\3\2\2\2TR\3\2"+
+		"\2\2UV\7\5\2\2V\t\3\2\2\2WX\7\17\2\2XY\7\n\2\2Y[\5$\23\2Z\\\5\24\13\2"+
+		"[Z\3\2\2\2[\\\3\2\2\2\\\13\3\2\2\2]^\7\f\2\2^_\7\r\2\2_`\5$\23\2`a\7\16"+
+		"\2\2ab\7\3\2\2bg\5\26\f\2cd\7\4\2\2df\5\26\f\2ec\3\2\2\2fi\3\2\2\2ge\3"+
+		"\2\2\2gh\3\2\2\2hj\3\2\2\2ig\3\2\2\2jx\7\5\2\2kl\7\6\2\2lq\5\26\f\2mn"+
+		"\7\4\2\2np\5\26\f\2om\3\2\2\2ps\3\2\2\2qo\3\2\2\2qr\3\2\2\2rt\3\2\2\2"+
+		"sq\3\2\2\2tu\7\5\2\2uw\3\2\2\2vk\3\2\2\2wz\3\2\2\2xv\3\2\2\2xy\3\2\2\2"+
+		"y\r\3\2\2\2zx\3\2\2\2{|\5\20\t\2|~\5\22\n\2}\177\5\24\13\2~}\3\2\2\2~"+
+		"\177\3\2\2\2\177\17\3\2\2\2\u0080\u0081\7\t\2\2\u0081\u0086\5\26\f\2\u0082"+
+		"\u0083\7\4\2\2\u0083\u0085\5\26\f\2\u0084\u0082\3\2\2\2\u0085\u0088\3"+
+		"\2\2\2\u0086\u0084\3\2\2\2\u0086\u0087\3\2\2\2\u0087\21\3\2\2\2\u0088"+
+		"\u0086\3\2\2\2\u0089\u008a\7\n\2\2\u008a\u008f\5$\23\2\u008b\u008c\7\4"+
+		"\2\2\u008c\u008e\5$\23\2\u008d\u008b\3\2\2\2\u008e\u0091\3\2\2\2\u008f"+
 		"\u008d\3\2\2\2\u008f\u0090\3\2\2\2\u0090\23\3\2\2\2\u0091\u008f\3\2\2"+
-		"\2\u0092\u0093\7\n\2\2\u0093\u0094\5\26\f\2\u0094\25\3\2\2\2\u0095\u0096"+
+		"\2\u0092\u0093\7\13\2\2\u0093\u0094\5\26\f\2\u0094\25\3\2\2\2\u0095\u0096"+
 		"\5\30\r\2\u0096\27\3\2\2\2\u0097\u0098\b\r\1\2\u0098\u009c\5\32\16\2\u0099"+
-		"\u009a\7\26\2\2\u009a\u009c\5\30\r\4\u009b\u0097\3\2\2\2\u009b\u0099\3"+
+		"\u009a\7\27\2\2\u009a\u009c\5\30\r\4\u009b\u0097\3\2\2\2\u009b\u0099\3"+
 		"\2\2\2\u009c\u00a2\3\2\2\2\u009d\u009e\f\3\2\2\u009e\u009f\t\2\2\2\u009f"+
 		"\u00a1\5\30\r\4\u00a0\u009d\3\2\2\2\u00a1\u00a4\3\2\2\2\u00a2\u00a0\3"+
 		"\2\2\2\u00a2\u00a3\3\2\2\2\u00a3\31\3\2\2\2\u00a4\u00a2\3\2\2\2\u00a5"+
-		"\u00a6\b\16\1\2\u00a6\u00aa\5\34\17\2\u00a7\u00a8\t\3\2\2\u00a8\u00aa"+
-		"\5\32\16\4\u00a9\u00a5\3\2\2\2\u00a9\u00a7\3\2\2\2\u00aa\u00ba\3\2\2\2"+
-		"\u00ab\u00ac\f\7\2\2\u00ac\u00ad\t\4\2\2\u00ad\u00b9\5\32\16\b\u00ae\u00af"+
-		"\f\6\2\2\u00af\u00b0\t\5\2\2\u00b0\u00b9\5\32\16\7\u00b1\u00b2\f\5\2\2"+
-		"\u00b2\u00b3\t\6\2\2\u00b3\u00b9\5\32\16\6\u00b4\u00b5\f\3\2\2\u00b5\u00b6"+
-		"\5(\25\2\u00b6\u00b7\5\32\16\4\u00b7\u00b9\3\2\2\2\u00b8\u00ab\3\2\2\2"+
-		"\u00b8\u00ae\3\2\2\2\u00b8\u00b1\3\2\2\2\u00b8\u00b4\3\2\2\2\u00b9\u00bc"+
-		"\3\2\2\2\u00ba\u00b8\3\2\2\2\u00ba\u00bb\3\2\2\2\u00bb\33\3\2\2\2\u00bc"+
-		"\u00ba\3\2\2\2\u00bd\u00c0\5\"\22\2\u00be\u00c0\5\36\20\2\u00bf\u00bd"+
-		"\3\2\2\2\u00bf\u00be\3\2\2\2\u00c0\35\3\2\2\2\u00c1\u00c3\7+\2\2\u00c2"+
-		"\u00c1\3\2\2\2\u00c3\u00c4\3\2\2\2\u00c4\u00c2\3\2\2\2\u00c4\u00c5\3\2"+
-		"\2\2\u00c5\u00c9\3\2\2\2\u00c6\u00c9\5.\30\2\u00c7\u00c9\5,\27\2\u00c8"+
-		"\u00c2\3\2\2\2\u00c8\u00c6\3\2\2\2\u00c8\u00c7\3\2\2\2\u00c9\37\3\2\2"+
-		"\2\u00ca\u00cb\7\60\2\2\u00cb!\3\2\2\2\u00cc\u00cd\5$\23\2\u00cd\u00ce"+
-		"\7\7\2\2\u00ce\u00cf\5&\24\2\u00cf\u00d2\3\2\2\2\u00d0\u00d2\5&\24\2\u00d1"+
-		"\u00cc\3\2\2\2\u00d1\u00d0\3\2\2\2\u00d2#\3\2\2\2\u00d3\u00d9\5&\24\2"+
-		"\u00d4\u00d5\5&\24\2\u00d5\u00d6\7\23\2\2\u00d6\u00d7\5&\24\2\u00d7\u00d9"+
-		"\3\2\2\2\u00d8\u00d3\3\2\2\2\u00d8\u00d4\3\2\2\2\u00d9%\3\2\2\2\u00da"+
-		"\u00db\7\60\2\2\u00db\'\3\2\2\2\u00dc\u00dd\t\7\2\2\u00dd)\3\2\2\2\u00de"+
-		"\u00df\t\b\2\2\u00df+\3\2\2\2\u00e0\u00e1\t\t\2\2\u00e1-\3\2\2\2\u00e2"+
-		"\u00e4\7\"\2\2\u00e3\u00e2\3\2\2\2\u00e3\u00e4\3\2\2\2\u00e4\u00e5\3\2"+
-		"\2\2\u00e5\u00f3\7.\2\2\u00e6\u00e8\7\"\2\2\u00e7\u00e6\3\2\2\2\u00e7"+
-		"\u00e8\3\2\2\2\u00e8\u00e9\3\2\2\2\u00e9\u00f3\7-\2\2\u00ea\u00ec\7\""+
-		"\2\2\u00eb\u00ea\3\2\2\2\u00eb\u00ec\3\2\2\2\u00ec\u00ed\3\2\2\2\u00ed"+
-		"\u00f3\7/\2\2\u00ee\u00f0\7\"\2\2\u00ef\u00ee\3\2\2\2\u00ef\u00f0\3\2"+
-		"\2\2\u00f0\u00f1\3\2\2\2\u00f1\u00f3\7,\2\2\u00f2\u00e3\3\2\2\2\u00f2"+
-		"\u00e7\3\2\2\2\u00f2\u00eb\3\2\2\2\u00f2\u00ef\3\2\2\2\u00f3/\3\2\2\2"+
-		"\33\67ER[gqx~\u0086\u008f\u009b\u00a2\u00a9\u00b8\u00ba\u00bf\u00c4\u00c8"+
-		"\u00d1\u00d8\u00e3\u00e7\u00eb\u00ef\u00f2";
+		"\u00a6\b\16\1\2\u00a6\u00aa\5\34\17\2\u00a7\u00a8\7\"\2\2\u00a8\u00aa"+
+		"\5\32\16\4\u00a9\u00a5\3\2\2\2\u00a9\u00a7\3\2\2\2\u00aa\u00b4\3\2\2\2"+
+		"\u00ab\u00ac\f\5\2\2\u00ac\u00ad\t\3\2\2\u00ad\u00b3\5\32\16\6\u00ae\u00af"+
+		"\f\3\2\2\u00af\u00b0\5(\25\2\u00b0\u00b1\5\32\16\4\u00b1\u00b3\3\2\2\2"+
+		"\u00b2\u00ab\3\2\2\2\u00b2\u00ae\3\2\2\2\u00b3\u00b6\3\2\2\2\u00b4\u00b2"+
+		"\3\2\2\2\u00b4\u00b5\3\2\2\2\u00b5\33\3\2\2\2\u00b6\u00b4\3\2\2\2\u00b7"+
+		"\u00be\5\"\22\2\u00b8\u00be\5\36\20\2\u00b9\u00ba\7\3\2\2\u00ba\u00bb"+
+		"\5\26\f\2\u00bb\u00bc\7\5\2\2\u00bc\u00be\3\2\2\2\u00bd\u00b7\3\2\2\2"+
+		"\u00bd\u00b8\3\2\2\2\u00bd\u00b9\3\2\2\2\u00be\35\3\2\2\2\u00bf\u00c1"+
+		"\7\7\2\2\u00c0\u00c2\7&\2\2\u00c1\u00c0\3\2\2\2\u00c2\u00c3\3\2\2\2\u00c3"+
+		"\u00c1\3\2\2\2\u00c3\u00c4\3\2\2\2\u00c4\u00c5\3\2\2\2\u00c5\u00c9\7\7"+
+		"\2\2\u00c6\u00c9\5.\30\2\u00c7\u00c9\5,\27\2\u00c8\u00bf\3\2\2\2\u00c8"+
+		"\u00c6\3\2\2\2\u00c8\u00c7\3\2\2\2\u00c9\37\3\2\2\2\u00ca\u00cb\7)\2\2"+
+		"\u00cb!\3\2\2\2\u00cc\u00cd\5$\23\2\u00cd\u00ce\7\b\2\2\u00ce\u00cf\5"+
+		"&\24\2\u00cf\u00d2\3\2\2\2\u00d0\u00d2\5&\24\2\u00d1\u00cc\3\2\2\2\u00d1"+
+		"\u00d0\3\2\2\2\u00d2#\3\2\2\2\u00d3\u00d9\5&\24\2\u00d4\u00d5\5&\24\2"+
+		"\u00d5\u00d6\7\24\2\2\u00d6\u00d7\5&\24\2\u00d7\u00d9\3\2\2\2\u00d8\u00d3"+
+		"\3\2\2\2\u00d8\u00d4\3\2\2\2\u00d9%\3\2\2\2\u00da\u00db\7)\2\2\u00db\'"+
+		"\3\2\2\2\u00dc\u00dd\t\4\2\2\u00dd)\3\2\2\2\u00de\u00df\t\5\2\2\u00df"+
+		"+\3\2\2\2\u00e0\u00e1\t\6\2\2\u00e1-\3\2\2\2\u00e2\u00e4\7\"\2\2\u00e3"+
+		"\u00e2\3\2\2\2\u00e3\u00e4\3\2\2\2\u00e4\u00e5\3\2\2\2\u00e5\u00eb\7("+
+		"\2\2\u00e6\u00e8\7\"\2\2\u00e7\u00e6\3\2\2\2\u00e7\u00e8\3\2\2\2\u00e8"+
+		"\u00e9\3\2\2\2\u00e9\u00eb\7\'\2\2\u00ea\u00e3\3\2\2\2\u00ea\u00e7\3\2"+
+		"\2\2\u00eb/\3\2\2\2\31\67ER[gqx~\u0086\u008f\u009b\u00a2\u00a9\u00b2\u00b4"+
+		"\u00bd\u00c3\u00c8\u00d1\u00d8\u00e3\u00e7\u00ea";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -2,7 +2,8 @@
  #include "expressions/Comparison.h"
 
  
-namespace simplesql::expressions {
+namespace simplesql {
+namespace expressions {
  
 AnyValue* EqualTo::eval(Row* r, MemoryPool *mp) {
     AnyValue* leftValue = left->eval(r, mp);
@@ -24,4 +25,4 @@ AnyValue* LessThan::eval(Row* r, MemoryPool *mp) {
     return result; 
 }
 
-} // namespace simplesql::expressions
+}} // namespace simplesql::expressions

@@ -8,7 +8,7 @@
 #include "SimpleSqlVisitor.h"
 
 
-namespace simplesql::parser::antlr {
+namespace simplesql { namespace parser { namespace antlr {
 
 /**
  * This class provides an empty implementation of SimpleSqlVisitor, which can be
@@ -109,6 +109,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitParenthesizedExpression(SimpleSqlParser::ParenthesizedExpressionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitStringLiteral(SimpleSqlParser::StringLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -161,19 +165,11 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitBigIntLiteral(SimpleSqlParser::BigIntLiteralContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitSmallIntLiteral(SimpleSqlParser::SmallIntLiteralContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitDoubleLiteral(SimpleSqlParser::DoubleLiteralContext *ctx) override {
+  virtual antlrcpp::Any visitFloatLiteral(SimpleSqlParser::FloatLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
 
 };
 
-}  // namespace simplesql::parser::antlr
+}}}  // namespace simplesql::parser::antlr

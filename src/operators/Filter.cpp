@@ -1,7 +1,8 @@
 
 #include "Filter.h"
 
-namespace simplesql::operators {
+namespace simplesql{
+namespace operators {
 
 bool Filter::open() {
     // maybe assert `resolved` here.
@@ -23,4 +24,4 @@ NextResult Filter::next() {
     }
 }
 
-} // namespace simplesql::opterators
+}} // namespace simplesql::opterators

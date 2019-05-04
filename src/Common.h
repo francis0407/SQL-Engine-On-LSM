@@ -1,14 +1,12 @@
 
 #pragma once
 
+#include <cstddef>
 
 namespace simplesql {
 
 // Types 
 typedef unsigned char byte;
-
-typedef unsigned int size_t;
-
 
 // Arguments
 

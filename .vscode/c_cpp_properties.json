@@ -7,7 +7,7 @@
                 "${workspaceFolder}/deps/antlr4-cpp-runtime-4.7.2-source/runtime/src"
             ],
             "defines": [],
-            "compilerPath": "gcc",
+            "compilerPath": "/usr/bin/g++",
             "cStandard": "c11",
             "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64",

@@ -1,7 +1,8 @@
 
 #include "Project.h"
 
-namespace simplesql::operators {
+namespace simplesql {
+namespace operators {
 
 bool Project::open() {
     // maybe assert `resolved` here.
@@ -29,4 +30,4 @@ NextResult Project::next() {
     }
 }
 
-} // namespace simplesql::opterators
+}} // namespace simplesql::opterators

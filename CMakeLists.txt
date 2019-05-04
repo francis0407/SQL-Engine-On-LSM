@@ -20,12 +20,36 @@ add_definitions(-DDEBUG) # 相当于代码中 #define DEBUG
 
 # add_subdirectory(test) # 添加test子目录
 
-SET(EXECUTABLE_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/bin") # 可执行文件输出目录
+# SET(EXECUTABLE_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/bin") # 可执行文件输出目录
 
-INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/include") # 头文件包含目录
+INCLUDE_DIRECTORIES(
+   "${PROJECT_SOURCE_DIR}/include"
+   "${PROJECT_SOURCE_DIR}/include/antlr4-runtime" 
+   "${PROJECT_SOURCE_DIR}/src" 
+   "${PROJECT_SOURCE_DIR}/src/parser/antlr") # 头文件包含目录
 
-AUX_SOURCE_DIRECTORY(src DIR_SRCS) # 添加源代码文件夹, 自动扫描所有文件
+AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/src" simplesql) # 添加源代码文件夹, 自动扫描所有文件
+AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/src/expressions" simplesql_expressions)
+AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/src/datatypes" simplesql_datatypes)
+AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/src/operators" simplesql_operators)
+AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/src/parser" simplesql_parser)
+AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/src/parser/antlr" simplesql_parser_antlr)
 
-add_executable(main  # 输出名为xxx的可执行文件
-   ${DIR_SRCS}
+AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/test" tests)
+
+link_libraries(
+   "${PROJECT_SOURCE_DIR}/lib/libgtest.a"
+   "${PROJECT_SOURCE_DIR}/lib/libgtest_main.a"
+   "${PROJECT_SOURCE_DIR}/lib/libantlr4-runtime.a"
+   "${PROJECT_SOURCE_DIR}/lib/libantlr4-runtime.so" 
+   pthread)
+
+add_executable(unit_test # 输出名为xxx的可执行文件
+   ${simplesql}
+   ${simplesql_expressions}
+   ${simplesql_datatypes}
+   # ${simplesql_operators}
+   ${simplesql_parser}
+   ${simplesql_parser_antlr}
+   ${tests}
 )

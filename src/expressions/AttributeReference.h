@@ -4,7 +4,8 @@
 #include "expressions/Expression.h"
 #include "Attribute.h"
 
-namespace simplesql::expressions {
+namespace simplesql {
+namespace expressions {
 
 class AttributeReference: public LeafExpression {
 public:
@@ -13,4 +14,4 @@ public:
     Attribute reference;
 };
 
-} // simplesql::expressions
+}} // simplesql::expressions

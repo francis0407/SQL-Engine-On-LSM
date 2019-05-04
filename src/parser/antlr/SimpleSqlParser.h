@@ -7,7 +7,7 @@
 #include "antlr4-runtime.h"
 
 
-namespace simplesql::parser::antlr {
+namespace simplesql { namespace parser { namespace antlr {
 
 
 class  SimpleSqlParser : public antlr4::Parser {
@@ -16,11 +16,10 @@ public:
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, SELECT = 6, FROM = 7, 
     WHERE = 8, INSERT = 9, INTO = 10, VALUES = 11, DELETE = 12, CREATE = 13, 
     TABLE = 14, INDEX = 15, ON = 16, AS = 17, OR = 18, AND = 19, NOT = 20, 
-    TRUE_ = 21, FALSE_ = 22, EQ = 23, NSEQ = 24, NEQ = 25, NEQJ = 26, LT = 27, 
-    LTE = 28, GT = 29, GTE = 30, PLUS = 31, MINUS = 32, ASTERISK = 33, SLASH = 34, 
-    PERCENT = 35, DIV = 36, TILDE = 37, AMPERSAND = 38, PIPE = 39, HAT = 40, 
-    STRING = 41, DOUBLE_LITERAL = 42, BIGINT_LITERAL = 43, INTEGER_LITERAL = 44, 
-    SMALLINT_LITERAL = 45, IDENTIFIER = 46, WS = 47
+    TRUE_ = 21, FALSE_ = 22, EQ = 23, NEQ = 24, NEQJ = 25, LT = 26, LTE = 27, 
+    GT = 28, GTE = 29, PLUS = 30, MINUS = 31, ASTERISK = 32, SLASH = 33, 
+    PERCENT = 34, STRING = 35, FLOAT_LITERAL = 36, INTEGER_LITERAL = 37, 
+    IDENTIFIER = 38, WS = 39
   };
 
   enum {
@@ -374,9 +373,6 @@ public:
     antlr4::tree::TerminalNode *ASTERISK();
     antlr4::tree::TerminalNode *SLASH();
     antlr4::tree::TerminalNode *PERCENT();
-    antlr4::tree::TerminalNode *DIV();
-    antlr4::tree::TerminalNode *AMPERSAND();
-    antlr4::tree::TerminalNode *PIPE();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -385,11 +381,8 @@ public:
   public:
     ArithmeticUnaryContext(ValueExpressionContext *ctx);
 
-    antlr4::Token *opt = nullptr;
-    ValueExpressionContext *valueExpression();
     antlr4::tree::TerminalNode *MINUS();
-    antlr4::tree::TerminalNode *TILDE();
-    antlr4::tree::TerminalNode *HAT();
+    ValueExpressionContext *valueExpression();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -414,6 +407,15 @@ public:
     ColumnReferenceContext(PrimaryExpressionContext *ctx);
 
     ColumnIdentifierContext *columnIdentifier();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  ParenthesizedExpressionContext : public PrimaryExpressionContext {
+  public:
+    ParenthesizedExpressionContext(PrimaryExpressionContext *ctx);
+
+    ExpressionContext *expression();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -536,9 +538,11 @@ public:
   public:
     TableAliasContext(TableIdentifierContext *ctx);
 
+    SimpleSqlParser::IdentifierContext *tableName = nullptr;
+    SimpleSqlParser::IdentifierContext *alias = nullptr;
+    antlr4::tree::TerminalNode *AS();
     std::vector<IdentifierContext *> identifier();
     IdentifierContext* identifier(size_t i);
-    antlr4::tree::TerminalNode *AS();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -547,6 +551,7 @@ public:
   public:
     TableIdentifierDefaultContext(TableIdentifierContext *ctx);
 
+    SimpleSqlParser::IdentifierContext *tableName = nullptr;
     IdentifierContext *identifier();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -578,7 +583,6 @@ public:
     antlr4::tree::TerminalNode *LTE();
     antlr4::tree::TerminalNode *GT();
     antlr4::tree::TerminalNode *GTE();
-    antlr4::tree::TerminalNode *NSEQ();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -629,26 +633,6 @@ public:
    
   };
 
-  class  BigIntLiteralContext : public NumberContext {
-  public:
-    BigIntLiteralContext(NumberContext *ctx);
-
-    antlr4::tree::TerminalNode *BIGINT_LITERAL();
-    antlr4::tree::TerminalNode *MINUS();
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  DoubleLiteralContext : public NumberContext {
-  public:
-    DoubleLiteralContext(NumberContext *ctx);
-
-    antlr4::tree::TerminalNode *DOUBLE_LITERAL();
-    antlr4::tree::TerminalNode *MINUS();
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
   class  IntegerLiteralContext : public NumberContext {
   public:
     IntegerLiteralContext(NumberContext *ctx);
@@ -659,11 +643,11 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  class  SmallIntLiteralContext : public NumberContext {
+  class  FloatLiteralContext : public NumberContext {
   public:
-    SmallIntLiteralContext(NumberContext *ctx);
+    FloatLiteralContext(NumberContext *ctx);
 
-    antlr4::tree::TerminalNode *SMALLINT_LITERAL();
+    antlr4::tree::TerminalNode *FLOAT_LITERAL();
     antlr4::tree::TerminalNode *MINUS();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -695,4 +679,4 @@ private:
   static Initializer _init;
 };
 
-}  // namespace simplesql::parser::antlr
+}}}  // namespace simplesql::parser::antlr

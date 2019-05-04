@@ -8,7 +8,7 @@
 #include "SimpleSqlParser.h"
 
 
-namespace simplesql::parser::antlr {
+namespace simplesql { namespace parser { namespace antlr {
 
 /**
  * This class defines an abstract visitor for a parse tree
@@ -66,6 +66,8 @@ public:
 
     virtual antlrcpp::Any visitConstantValue(SimpleSqlParser::ConstantValueContext *context) = 0;
 
+    virtual antlrcpp::Any visitParenthesizedExpression(SimpleSqlParser::ParenthesizedExpressionContext *context) = 0;
+
     virtual antlrcpp::Any visitStringLiteral(SimpleSqlParser::StringLiteralContext *context) = 0;
 
     virtual antlrcpp::Any visitNumberLiteral(SimpleSqlParser::NumberLiteralContext *context) = 0;
@@ -92,13 +94,9 @@ public:
 
     virtual antlrcpp::Any visitIntegerLiteral(SimpleSqlParser::IntegerLiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitBigIntLiteral(SimpleSqlParser::BigIntLiteralContext *context) = 0;
-
-    virtual antlrcpp::Any visitSmallIntLiteral(SimpleSqlParser::SmallIntLiteralContext *context) = 0;
-
-    virtual antlrcpp::Any visitDoubleLiteral(SimpleSqlParser::DoubleLiteralContext *context) = 0;
+    virtual antlrcpp::Any visitFloatLiteral(SimpleSqlParser::FloatLiteralContext *context) = 0;
 
 
 };
 
-}  // namespace simplesql::parser::antlr
+}}} // namespace simplesql::parser::antlr

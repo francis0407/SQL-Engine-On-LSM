@@ -2,7 +2,8 @@
  #include "expressions/Literal.h"
 
  
-namespace simplesql::expressions {
+namespace simplesql {
+namespace expressions {
  
 AnyValue* Literal::eval(Row* r, MemoryPool *mp) {
     return value;
@@ -26,4 +27,4 @@ DataType Literal::dataType() const {
 }
 
 
-} // namespace simplesql::expressions
+}} // namespace simplesql::expressions

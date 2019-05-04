@@ -6,15 +6,13 @@
 #include "Common.h"
 #include "MemoryPool.h"
 
-namespace simplesql::datatypes {
+namespace simplesql {
+namespace datatypes {
 
 enum DataType : unsigned char { // ensure the enum variable only use ONE BYTE
     Boolean,
     Integer,
-    SmallInt,
-    BigInt,
     Float,
-    Double,
     String
 };
 
@@ -32,10 +30,7 @@ public:
     // Conversion
     virtual bool asBoolean() = 0;
     virtual int asInteger() = 0;
-    virtual short asSmallInt() = 0;
-    virtual long long int asLongLongInt() = 0;
     virtual float asFloat() = 0;
-    virtual double asDouble() = 0;
     virtual std::string asString() = 0;
 
     // Arithmetical
@@ -75,26 +70,6 @@ private:
     BooleanValue();
 };
 
-class BigIntValue: public AnyValue {
-public:
-    static const size_t defaultSize = 16;
-    long long int value = 0;
-    static BigIntValue* create(long long int _value);
-    static BigIntValue* create(long long int _value, MemoryPool* _mp);
-private:
-    BigIntValue();
-};
-
-class SmallIntValue: public AnyValue {
-public:
-    static const size_t defaultSize = 8;
-    short int value = 0;
-    static SmallIntValue* create(short int _value);
-    static SmallIntValue* create(short int _value, MemoryPool* _mp);
-private:
-    SmallIntValue();
-};
-
 class FloatValue: public AnyValue {
 public:
     static const size_t defaultSize = 12;
@@ -103,16 +78,6 @@ public:
     static FloatValue* create(float _value, MemoryPool* _mp);
 private:
     FloatValue();
-};
-
-class DoubleValue: public AnyValue {
-public:
-    static const size_t defaultSize = 16;
-    double value = 0.0;
-    static DoubleValue* create(double _value);
-    static DoubleValue* create(double _value, MemoryPool* _mp);
-private:
-    DoubleValue();
 };
 
 class StringValue: public AnyValue {
@@ -125,5 +90,5 @@ public:
 private:
     StringValue();
 };
-} // namespace simplesql::datatypes
+}} // namespace simplesql::datatypes
 

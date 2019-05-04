@@ -5,10 +5,12 @@
 #include "MemoryPool.h"
 #include "datatypes/ValueBase.h"
 
-namespace simplesql::expressions {
-    
-using namespace simplesql::datatypes;
+namespace simplesql {
 
+using namespace datatypes;
+
+namespace expressions {
+    
 enum ExpressionType {
     AttributeReference,
     // Comparison expressions
@@ -29,6 +31,7 @@ enum ExpressionType {
     Mod
 };
 
+// WHERE a > 10 AND b = 1
 class ExpressionBase {
 public:
     
@@ -56,4 +59,4 @@ public:
     ExpressionBase* right = nullptr;
 };
 
-} // namespace simplesql::expressions
+}} // namespace simplesql::expressions

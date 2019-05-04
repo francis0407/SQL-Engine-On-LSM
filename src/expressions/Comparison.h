@@ -3,7 +3,8 @@
 
 #include "Expression.h"
 
-namespace simplesql::expressions {
+namespace simplesql {
+namespace expressions {
 
 
 class EqualTo: public BinaryExpression {
@@ -16,4 +17,4 @@ public:
     virtual AnyValue* eval(Row* r, MemoryPool* mp) override;
 };
 
-} // simplesql::expressions
+}} // simplesql::expressions
