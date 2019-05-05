@@ -1,7 +1,6 @@
  
- #include "expressions/Comparison.h"
+#include "expressions/Comparison.h"
 
- 
 namespace simplesql {
 namespace expressions {
  

@@ -12,23 +12,23 @@ using namespace datatypes;
 namespace expressions {
     
 enum ExpressionType {
-    AttributeReference,
+    _AttributeReference,
     // Comparison expressions
-    EqualTo,
-    LessThan,
-    LessThanOrEqual,
-    GreaterThan,
-    GreaterThanOrEqual,
+    _EqualTo,
+    _LessThan,
+    _LessThanOrEqual,
+    _GreaterThan,
+    _GreaterThanOrEqual,
     // Predicates
-    And,
-    Or,
-    Not,
+    _And,
+    _Or,
+    _Not,
     // Arithmetical expressions
-    Add,
-    Minus,
-    Multiply,
-    Divide,
-    Mod
+    _Add,
+    _Minus,
+    _Multiply,
+    _Divide,
+    _Mod
 };
 
 // WHERE a > 10 AND b = 1
@@ -46,15 +46,19 @@ public:
 };
 
 class LeafExpression: public ExpressionBase {
+public:
     // Literals or AttributeReferences
 };
 
 class UnaryExpression: public ExpressionBase {
+public:
+    UnaryExpression(ExpressionBase* _child);
     ExpressionBase* child = nullptr;
 };
 
 class BinaryExpression: public ExpressionBase {
 public:
+    BinaryExpression(ExpressionBase* _left, ExpressionBase* _right);
     ExpressionBase* left = nullptr;
     ExpressionBase* right = nullptr;
 };

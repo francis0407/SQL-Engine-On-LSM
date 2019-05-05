@@ -3,8 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/deps/antlr4-cpp-runtime-4.7.2-source/runtime/src"
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/include/antlr4-runtime",
+                "${workspaceFolder}/src/parser/antlr"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",
@@ -17,6 +18,7 @@
                 ],
                 "limitSymbolsToIncludedHeaders": true
             }
+           
         }
     ],
     "version": 4

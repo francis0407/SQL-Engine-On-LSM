@@ -45,11 +45,11 @@ link_libraries(
    pthread)
 
 add_executable(unit_test # 输出名为xxx的可执行文件
-   ${simplesql}
-   ${simplesql_expressions}
-   ${simplesql_datatypes}
+   #${simplesql}
+   #${simplesql_expressions}
+   #${simplesql_datatypes}
    # ${simplesql_operators}
-   ${simplesql_parser}
-   ${simplesql_parser_antlr}
+   #${simplesql_parser}
+   #${simplesql_parser_antlr}
    ${tests}
 )
