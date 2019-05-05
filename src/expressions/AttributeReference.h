@@ -7,8 +7,13 @@
 namespace simplesql {
 namespace expressions {
 
-class AttributeReference: public LeafExpression {
+using std::string;
+
+class AttributeReference : public ExpressionBase {
 public:
+    AttributeReference(const string& _name);
+    AttributeReference(const string& _name, const string& _table);
+
     virtual AnyValue* eval(Row* r, MemoryPool* mp);
 
     Attribute reference;

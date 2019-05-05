@@ -16,8 +16,8 @@ public:
     static Literal* copyAsLiteral(AnyValue* _value);
     static Literal* create(int intValue);
     static Literal* create(bool boolValue);
-    static Literal* create(long long int bigIntValue);
-    static Literal* create(short smallIntValue);
+    static Literal* create(float floatValue);
+    static Literal* create(std::string stringValue);
 
     
     ~Literal();
