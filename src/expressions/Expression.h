@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <sstream>
+
 #include "Row.h"
 #include "MemoryPool.h"
 #include "datatypes/ValueBase.h"
@@ -31,22 +33,27 @@ enum ExpressionType {
     _Mod
 };
 
-// WHERE a > 10 AND b = 1
+
 class ExpressionBase {
 public:
-    
+    ExpressionBase();
     virtual AnyValue* eval(Row* r, MemoryPool* _mp) = 0;
     AnyValue* eval(Row* r); // use a default memory pool
 
+
+    ExpressionType type;
     ExpressionBase* children[2]; // Currently, we only support LeafNode, UnaryNode and BinaryNode. 
 
     bool resolved = false; // true if the attributes are resolved
 
     bool isAttributeReference() const;
+
+    std::stringstream explain() const;
 };
 
 class LeafExpression: public ExpressionBase {
 public:
+    LeafExpression();
     // Literals or AttributeReferences
 };
 

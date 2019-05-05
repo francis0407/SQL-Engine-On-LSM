@@ -9,7 +9,7 @@ namespace operators {
 class Filter: public OperatorBase {
 public:
     Filter(ExpressionBase* _condition, OperatorBase* _child);
-    
+    virtual ~Filter();
     bool open() override;
     NextResult next() override;
     bool close() override;

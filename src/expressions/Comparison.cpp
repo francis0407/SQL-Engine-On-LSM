@@ -1,27 +1,27 @@
  
-#include "expressions/Comparison.h"
+// #include "expressions/Comparison.h"
 
-namespace simplesql {
-namespace expressions {
+// namespace simplesql {
+// namespace expressions {
  
-AnyValue* EqualTo::eval(Row* r, MemoryPool *mp) {
-    AnyValue* leftValue = left->eval(r, mp);
-    AnyValue* rightValue = right->eval(r, mp);
+// AnyValue* EqualTo::eval(Row* r, MemoryPool *mp) {
+//     AnyValue* leftValue = left->eval(r, mp);
+//     AnyValue* rightValue = right->eval(r, mp);
 
-    bool equalTo = leftValue->equalTo(rightValue);
+//     bool equalTo = leftValue->equalTo(rightValue);
 
-    BooleanValue* result = BooleanValue::create(equalTo, mp);
-    return result; 
-}
+//     BooleanValue* result = BooleanValue::create(equalTo, mp);
+//     return result; 
+// }
 
-AnyValue* LessThan::eval(Row* r, MemoryPool *mp) {
-    AnyValue* leftValue = left->eval(r, mp);
-    AnyValue* rightValue = right->eval(r, mp);
+// AnyValue* LessThan::eval(Row* r, MemoryPool *mp) {
+//     AnyValue* leftValue = left->eval(r, mp);
+//     AnyValue* rightValue = right->eval(r, mp);
 
-    bool equalTo = rightValue->greaterThan(leftValue); // a < b ? === b > a?
+//     bool equalTo = rightValue->greaterThan(leftValue); // a < b ? === b > a?
 
-    BooleanValue* result = BooleanValue::create(equalTo, mp);
-    return result; 
-}
+//     BooleanValue* result = BooleanValue::create(equalTo, mp);
+//     return result; 
+// }
 
-}} // namespace simplesql::expressions
+// }} // namespace simplesql::expressions

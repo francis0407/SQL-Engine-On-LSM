@@ -7,20 +7,26 @@ namespace expressions {
 
 class Not : public UnaryExpression {
 public:
-    Not(ExpressionBase* _child);    
-    virtual AnyValue* eval(Row* r, MemoryPool* mp) override;
+    Not(ExpressionBase* _child) : UnaryExpression(_child) {}    
+    virtual AnyValue* eval(Row* r, MemoryPool* mp) override{
+        return nullptr;
+    }
 };
 
 class And : public BinaryExpression {
 public:
-    And(ExpressionBase* _left, ExpressionBase* _right);
-    virtual AnyValue* eval(Row* r, MemoryPool* mp) override;
+    And(ExpressionBase* _left, ExpressionBase* _right): BinaryExpression(_left, _right) {}
+    virtual AnyValue* eval(Row* r, MemoryPool* mp) override{
+        return nullptr;
+    }
 };
 
 class Or : public BinaryExpression {
 public:
-    Or(ExpressionBase* _left, ExpressionBase* _right);
-    virtual AnyValue* eval(Row* r, MemoryPool* mp) override;
+    Or(ExpressionBase* _left, ExpressionBase* _right): BinaryExpression(_left, _right) {}
+    virtual AnyValue* eval(Row* r, MemoryPool* mp) override{
+        return nullptr;
+    }
 };
 
 }} // namespace simplesql::expressions

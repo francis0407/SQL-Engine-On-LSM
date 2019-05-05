@@ -1,5 +1,5 @@
 
-// Generated from SimpleSql.g4 by ANTLR 4.7.2
+// Generated from /home/francis/File/Code/SQL-Engine-On-LSM/antlr4/SimpleSql.g4 by ANTLR 4.7.2
 
 #pragma once
 
@@ -448,8 +448,7 @@ public:
   public:
     StringLiteralContext(ConstantContext *ctx);
 
-    std::vector<antlr4::tree::TerminalNode *> STRING();
-    antlr4::tree::TerminalNode* STRING(size_t i);
+    antlr4::tree::TerminalNode *STRING();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };

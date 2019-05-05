@@ -18,8 +18,8 @@ enum DataType : unsigned char { // ensure the enum variable only use ONE BYTE
 
 class AnyValue {
 public:   
-    static AnyValue* create(DataType _valueType, byte* _valuePtr);
-    static AnyValue* create(DataType _valueType, byte* _valuePtr, MemoryPool* _mp);
+    static AnyValue* create(DataType _valueType, byte* _valuePtr) {return nullptr;}
+    static AnyValue* create(DataType _valueType, byte* _valuePtr, MemoryPool* _mp) {return nullptr;}
     virtual AnyValue* makeCopy();
 
     // Comparison
@@ -50,7 +50,7 @@ class IntegerValue: public AnyValue {
 public:
     static const size_t defaultSize = 12;
     int value = 0;
-    static IntegerValue* create(int _value);
+    static IntegerValue* create(int _value) {return nullptr;}
     static IntegerValue* create(int _value, MemoryPool* _mp);
 
     virtual bool equalTo(AnyValue* that) override;
@@ -64,7 +64,7 @@ class BooleanValue: public AnyValue {
 public:
     static const size_t defaultSize = 6;
     bool value = false;
-    static BooleanValue* create(bool _value);
+    static BooleanValue* create(bool _value) {return nullptr;}
     static BooleanValue* create(bool _value, MemoryPool* _mp);
 private:
     BooleanValue();
@@ -74,7 +74,7 @@ class FloatValue: public AnyValue {
 public:
     static const size_t defaultSize = 12;
     float value = 0.0;
-    static FloatValue* create(float _value);
+    static FloatValue* create(float _value) {return nullptr;}
     static FloatValue* create(float _value, MemoryPool* _mp);
 private:
     FloatValue();
@@ -83,10 +83,10 @@ private:
 class StringValue: public AnyValue {
 public:
     char* value = nullptr;
-    static StringValue* create(char* _value, size_t _len); // a simple string type
-    static StringValue* create(char* _value); // a string with 4 bytes in the head
-    static StringValue* create(char* _value, size_t _len, MemoryPool* _mp);
-    static StringValue* create(char* _value, MemoryPool* _mp);
+    static StringValue* create(const char* _value, size_t _len) {return nullptr;} // a simple string type
+    static StringValue* create(const char* _value); // a string with 4 bytes in the head
+    static StringValue* create(const char* _value, size_t _len, MemoryPool* _mp);
+    static StringValue* create(const char* _value, MemoryPool* _mp);
 private:
     StringValue();
 };

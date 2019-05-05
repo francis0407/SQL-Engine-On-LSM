@@ -2,6 +2,10 @@
 #include <string>
 
 #include "parser/AstBuilder.h"
+#include "operators/SeqScan.h"
+#include "operators/Join.h"
+#include "operators/Project.h"
+#include "operators/Filter.h"
 #include "expressions/AttributeReference.h"
 #include "expressions/Arithmetic.h"
 #include "expressions/Comparison.h"
@@ -11,13 +15,57 @@
 #include "catalog/RelationReference.h"
 
 using antlrcpp::Any;
+using namespace simplesql::operators;
 using namespace simplesql::expressions;
 using namespace simplesql::datatypes;
 using namespace simplesql::catalog;
 using namespace simplesql::parser;
 using std::string;
 
-// Any
+Any AstBuilder::visitSelectStatement(SimpleSqlParser::SelectStatementContext *ctx) {
+    auto selectCtx = ctx->selectClause();
+    auto whereCtx = ctx->whereCluse();
+    OperatorBase* opt = ctx->fromCluse()->accept(this); 
+
+    // construct filter
+    if (whereCtx != nullptr) {
+        ExpressionBase* condition = whereCtx->expression()->accept(this);
+        opt = new Filter(condition, opt);
+    }
+
+    // construct project
+    auto exprs = selectCtx->expression();
+    size_t num = exprs.size();
+    std::vector<ExpressionBase *> projectList;
+    for (int i = 0;i < num; i++)
+        projectList[i] = exprs[i]->accept(this);
+    opt = new Project(projectList, opt);
+
+    Any result = opt;
+    return result;
+}
+
+Any AstBuilder::visitFromCluse(SimpleSqlParser::FromCluseContext *ctx) {
+    // Note that we only return one Operator here.
+    // Multi-relations will use condition-less joins
+    auto tables = ctx->tableIdentifier();
+    size_t num = tables.size();
+    
+    // map the table identifiers to SeqScan operators
+    std::vector<SeqScan* > scans;
+    for (int i = 0; i < num; i++) {
+        RelationReference* ref = tables[i]->accept(this);
+        scans[i] = new SeqScan(ref);
+    }
+     
+    // fold-left the tables with join
+    OperatorBase* finalOperator = scans[0];
+    for (int i = 1; i < num; i++) 
+        finalOperator = new InnerJoin(finalOperator, scans[i], JoinSide::BuildLeft);    
+
+    Any result = finalOperator;
+    return result;
+}
 
 Any AstBuilder::visitLogicalNot(SimpleSqlParser::LogicalNotContext *ctx) {
     ExpressionBase* child = ctx->booleanExpression()->accept(this);
@@ -98,6 +146,10 @@ Any AstBuilder::visitArithmeticBinary(SimpleSqlParser::ArithmeticBinaryContext *
     return result;
 }
 
+Any AstBuilder::visitExpression(SimpleSqlParser::ExpressionContext *ctx) {
+    return ctx->booleanExpression()->accept(this);  
+}
+
 Any AstBuilder::visitArithmeticUnary(SimpleSqlParser::ArithmeticUnaryContext *ctx) {
     ExpressionBase* child = ctx->valueExpression()->accept(this);
     Any result = new UnaryMinus(child);
@@ -173,5 +225,6 @@ Any AstBuilder::visitFloatLiteral(SimpleSqlParser::FloatLiteralContext *ctx) {
     if (ctx->MINUS() != nullptr)
         value = -value;
     Any result = Literal::create(value);
+
     return result;
 }

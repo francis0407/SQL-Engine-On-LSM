@@ -13,9 +13,11 @@ using namespace simplesql::datatypes;
 class Attribute {
 public:
     Attribute(DataType _datatype, int _offset, std::string _name);
+    Attribute();
     DataType dataType;
     int offset;
     std::string name;
+    std::string tableReference;
 };
 
 class AttributeSeq {

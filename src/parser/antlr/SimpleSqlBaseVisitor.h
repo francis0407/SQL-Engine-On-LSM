@@ -1,5 +1,5 @@
 
-// Generated from SimpleSql.g4 by ANTLR 4.7.2
+// Generated from /home/francis/File/Code/SQL-Engine-On-LSM/antlr4/SimpleSql.g4 by ANTLR 4.7.2
 
 #pragma once
 
@@ -80,7 +80,7 @@ public:
   virtual antlrcpp::Any visitBooleanExpressionDefaule(SimpleSqlParser::BooleanExpressionDefauleContext *ctx) override {
     return visitChildren(ctx);
   }
-// ckp
+
   virtual antlrcpp::Any visitLogicalBinary(SimpleSqlParser::LogicalBinaryContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -120,7 +120,7 @@ public:
   virtual antlrcpp::Any visitNumberLiteral(SimpleSqlParser::NumberLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
-  
+
   virtual antlrcpp::Any visitBooleanLiteral(SimpleSqlParser::BooleanLiteralContext *ctx) override {
     return visitChildren(ctx);
   }

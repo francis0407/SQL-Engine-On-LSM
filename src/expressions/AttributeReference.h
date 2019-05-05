@@ -1,22 +1,23 @@
 
 #pragma once
 
-#include "expressions/Expression.h"
 #include "Attribute.h"
+#include "expressions/Expression.h"
 
 namespace simplesql {
 namespace expressions {
 
 using std::string;
 
-class AttributeReference : public ExpressionBase {
+class AttributeReference : public LeafExpression {
 public:
-    AttributeReference(const string& _name);
-    AttributeReference(const string& _name, const string& _table);
+  AttributeReference(const string &_name);
+  AttributeReference(const string &_name, const string &_table);
 
-    virtual AnyValue* eval(Row* r, MemoryPool* mp);
+  virtual AnyValue *eval(Row *r, MemoryPool *mp);
 
-    Attribute reference;
+  Attribute reference;
 };
 
-}} // simplesql::expressions
+} // namespace expressions
+} // namespace simplesql

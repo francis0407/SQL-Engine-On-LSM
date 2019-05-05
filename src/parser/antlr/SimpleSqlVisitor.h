@@ -1,5 +1,5 @@
 
-// Generated from SimpleSql.g4 by ANTLR 4.7.2
+// Generated from /home/francis/File/Code/SQL-Engine-On-LSM/antlr4/SimpleSql.g4 by ANTLR 4.7.2
 
 #pragma once
 
@@ -11,7 +11,7 @@
 namespace simplesql { namespace parser { namespace antlr {
 
 /**
- * This class defines an abstract visitor for a parse tree
+ * This class defines an abstract visitor for a parse tree 
  * produced by SimpleSqlParser.
  */
 class  SimpleSqlVisitor : public antlr4::tree::AbstractParseTreeVisitor {
@@ -99,4 +99,4 @@ public:
 
 };
 
-}}} // namespace simplesql::parser::antlr
+}}}  // namespace simplesql::parser::antlr

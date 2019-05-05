@@ -4,6 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/src",
+                "${workspaceFolder}/include",
                 "${workspaceFolder}/include/antlr4-runtime",
                 "${workspaceFolder}/src/parser/antlr"
             ],
