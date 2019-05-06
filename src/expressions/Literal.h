@@ -23,7 +23,8 @@ public:
     ~Literal();
 
     virtual AnyValue* eval(Row* r, MemoryPool* mp) override;
-
+    virtual bool equalTo(ExpressionBase* that) const override;
+    virtual std::string toString() const override;
     DataType dataType() const;
 
     AnyValue* value = nullptr;

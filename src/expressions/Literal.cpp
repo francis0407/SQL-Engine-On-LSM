@@ -14,7 +14,7 @@ Literal* Literal::copyAsLiteral(AnyValue* _value) {
     return nullptr;
 }
 
-Literal::Literal(AnyValue* _value) : LeafExpression() {
+Literal::Literal(AnyValue* _value) : LeafExpression(_Literal) {
     value = _value;
 }
 
@@ -47,5 +47,16 @@ Literal* Literal::create(float floatValue) {
     return new Literal(value);
 }
 
+bool Literal::equalTo(ExpressionBase* that) const {
+    if (that->type != _Literal)
+        return false;
+    Literal* _that = (Literal*) that;
+    return _that->value->equalTo(value) && _that->value->valueType == value->valueType;
+}
+
+std::string Literal::toString() const {
+    std::string result = value->toString();
+    return result; 
+}
 
 }} // namespace simplesql::expressions

@@ -22,6 +22,8 @@ public:
     static AnyValue* create(DataType _valueType, byte* _valuePtr, MemoryPool* _mp) {return nullptr;}
     virtual AnyValue* makeCopy();
 
+    virtual std::string toString();
+
     // Comparison
     virtual bool equalTo(AnyValue* that) = 0;
     virtual bool greaterThan(AnyValue* that) = 0;

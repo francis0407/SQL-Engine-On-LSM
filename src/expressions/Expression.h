@@ -14,7 +14,9 @@ using namespace datatypes;
 namespace expressions {
     
 enum ExpressionType {
+    _UnknownType,
     _AttributeReference,
+    _Literal,
     // Comparison expressions
     _EqualTo,
     _LessThan,
@@ -36,12 +38,12 @@ enum ExpressionType {
 
 class ExpressionBase {
 public:
-    ExpressionBase();
+    ExpressionBase(ExpressionType _type);
     virtual AnyValue* eval(Row* r, MemoryPool* _mp) = 0;
     AnyValue* eval(Row* r); // use a default memory pool
 
 
-    ExpressionType type;
+    const ExpressionType type;
     ExpressionBase* children[2]; // Currently, we only support LeafNode, UnaryNode and BinaryNode. 
 
     bool resolved = false; // true if the attributes are resolved
@@ -49,23 +51,26 @@ public:
     bool isAttributeReference() const;
 
     std::stringstream explain() const;
+
+    virtual bool equalTo(ExpressionBase* that) const;
+    virtual std::string toString() const;
 };
 
 class LeafExpression: public ExpressionBase {
 public:
-    LeafExpression();
+    LeafExpression(ExpressionType _type);
     // Literals or AttributeReferences
 };
 
 class UnaryExpression: public ExpressionBase {
 public:
-    UnaryExpression(ExpressionBase* _child);
+    UnaryExpression(ExpressionBase* _child, ExpressionType _type);
     ExpressionBase* child = nullptr;
 };
 
 class BinaryExpression: public ExpressionBase {
 public:
-    BinaryExpression(ExpressionBase* _left, ExpressionBase* _right);
+    BinaryExpression(ExpressionBase* _left, ExpressionBase* _right, ExpressionType _type);
     ExpressionBase* left = nullptr;
     ExpressionBase* right = nullptr;
 };
