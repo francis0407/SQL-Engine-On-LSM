@@ -51,9 +51,5 @@ std::string ExpressionBase::toString() const {
     return std::string("UnknownExpression");
 }
 
-std::stringstream ExpressionBase::explain() const {
-    return std::stringstream();
-}
-
 
 

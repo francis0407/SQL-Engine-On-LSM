@@ -52,8 +52,6 @@ public:
 
     bool isAttributeReference() const;
 
-    std::stringstream explain() const;
-
     virtual bool equalTo(ExpressionBase* that) const;
     virtual std::string toString() const;
 };
