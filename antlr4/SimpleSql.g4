@@ -54,10 +54,11 @@ booleanExpression
     ;
 
 valueExpression
-    : primaryExpression                                                                          #valueExpressionDefault 
-    | left=valueExpression opt=(PLUS | MINUS | ASTERISK | SLASH | PERCENT) right=valueExpression #arithmeticBinary
-    | MINUS valueExpression                                                                      #arithmeticUnary 
-    | left=valueExpression comparisonOperator right=valueExpression                              #comparison
+    : primaryExpression                                                               #valueExpressionDefault
+    | MINUS valueExpression                                                           #arithmeticUnary  
+    | left=valueExpression opt=(ASTERISK | SLASH | PERCENT) right=valueExpression     #arithmeticBinary
+    | left=valueExpression opt=(PLUS | MINUS ) right=valueExpression                  #arithmeticBinary
+    | left=valueExpression comparisonOperator right=valueExpression                   #comparison
     ;
 
 primaryExpression

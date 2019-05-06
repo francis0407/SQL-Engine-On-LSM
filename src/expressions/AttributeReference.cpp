@@ -8,7 +8,7 @@ AttributeReference::AttributeReference(const string& _name) : LeafExpression(_At
     reference.name = _name;
 }
 
-AttributeReference::AttributeReference(const string& _name, const string& _table) : LeafExpression(_AttributeReference) {
+AttributeReference::AttributeReference(const string& _table, const string& _name) : LeafExpression(_AttributeReference) {
     reference.name = _name;
     reference.tableReference = _table;
 }
@@ -18,7 +18,14 @@ AnyValue* AttributeReference::eval(Row* r, MemoryPool *mp) {
 }
 
 std::string AttributeReference::toString() const {
-    std::string result = reference.name;
-    return result;
+    std::string prefix = reference.tableReference.empty() ? "" : reference.tableReference;
+    return prefix + reference.name;
+}
+
+bool AttributeReference::equalTo(ExpressionBase* that) const {
+    if (that->type != _AttributeReference)
+        return false;
+    AttributeReference* _that = (AttributeReference*) that;
+    return _that->reference.equalTo(reference);
 }
 

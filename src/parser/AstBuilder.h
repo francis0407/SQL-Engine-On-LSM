@@ -10,6 +10,9 @@ namespace parser {
 
 using namespace simplesql::parser::antlr;
 
+// antlrcpp::Any cannot cast the derived class to its base class,
+// so that we have to explicitily cast all expressions to ExpressionBase*
+
 class AstBuilder : public SimpleSqlBaseVisitor {
 public:
     virtual antlrcpp::Any visitSelectStatement(SimpleSqlParser::SelectStatementContext *ctx) override;
@@ -21,7 +24,7 @@ public:
     virtual antlrcpp::Any visitLogicalNot(SimpleSqlParser::LogicalNotContext *ctx) override;
     
     virtual antlrcpp::Any visitLogicalBinary(SimpleSqlParser::LogicalBinaryContext *ctx) override;
-    
+      
     virtual antlrcpp::Any visitComparison(SimpleSqlParser::ComparisonContext *ctx) override;
 
     virtual antlrcpp::Any visitArithmeticBinary(SimpleSqlParser::ArithmeticBinaryContext *ctx) override;
@@ -35,7 +38,7 @@ public:
     virtual antlrcpp::Any visitParenthesizedExpression(SimpleSqlParser::ParenthesizedExpressionContext *ctx) override;
 
     virtual antlrcpp::Any visitStringLiteral(SimpleSqlParser::StringLiteralContext *ctx) override;
-
+ 
     virtual antlrcpp::Any visitBooleanLiteral(SimpleSqlParser::BooleanLiteralContext *ctx) override;
     
     virtual antlrcpp::Any visitColumnWithTable(SimpleSqlParser::ColumnWithTableContext *ctx) override;

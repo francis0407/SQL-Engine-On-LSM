@@ -5,7 +5,7 @@ using namespace simplesql::expressions;
 using namespace simplesql::datatypes;
 
 ExpressionBase::ExpressionBase(ExpressionType _type) : type(_type) {}
-
+ExpressionBase::~ExpressionBase(){}
 AnyValue* ExpressionBase::eval(Row* r) {
     MemoryPool mp; // use a new MemoryPool
     AnyValue* result = eval(r, &mp);
@@ -44,7 +44,7 @@ bool ExpressionBase::equalTo(ExpressionBase* that) const {
         return false;
     if (children[1] != nullptr)
         return children[1]->equalTo(that->children[1]);
-    return false;
+    return true;
 }
 
 std::string ExpressionBase::toString() const {

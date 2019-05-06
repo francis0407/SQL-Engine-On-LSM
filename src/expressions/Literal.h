@@ -17,7 +17,7 @@ public:
     static Literal* create(int intValue);
     static Literal* create(bool boolValue);
     static Literal* create(float floatValue);
-    static Literal* create(std::string stringValue);
+    static Literal* create(const std::string& stringValue);
 
     
     ~Literal();

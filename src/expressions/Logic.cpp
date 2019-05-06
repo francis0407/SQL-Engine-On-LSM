@@ -42,7 +42,7 @@ AnyValue* Or::eval(Row* row, MemoryPool* mp) {
 }
 
 
-std::string And::toString() const {
+std::string Or::toString() const {
     std::string leftString = left->toString();
     std::string rightString = right->toString();
     std::string result = "(" + leftString + "Or" + rightString + ")";

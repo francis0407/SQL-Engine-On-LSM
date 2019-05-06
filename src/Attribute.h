@@ -14,6 +14,7 @@ class Attribute {
 public:
     Attribute(DataType _datatype, int _offset, std::string _name);
     Attribute();
+    bool equalTo(const Attribute& that);
     DataType dataType;
     int offset;
     std::string name;

@@ -11,7 +11,7 @@
 namespace simplesql { namespace parser { namespace antlr {
 
 /**
- * This class defines an abstract visitor for a parse tree 
+ * This class defines an abstract visitor for a parse tree
  * produced by SimpleSqlParser.
  */
 class  SimpleSqlVisitor : public antlr4::tree::AbstractParseTreeVisitor {

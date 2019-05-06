@@ -28,6 +28,7 @@ enum ExpressionType {
     _Or,
     _Not,
     // Arithmetical expressions
+    _UnaryMinus,
     _Add,
     _Minus,
     _Multiply,
@@ -39,6 +40,7 @@ enum ExpressionType {
 class ExpressionBase {
 public:
     ExpressionBase(ExpressionType _type);
+    virtual ~ExpressionBase();
     virtual AnyValue* eval(Row* r, MemoryPool* _mp) = 0;
     AnyValue* eval(Row* r); // use a default memory pool
 

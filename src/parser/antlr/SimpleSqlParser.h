@@ -368,11 +368,11 @@ public:
     SimpleSqlParser::ValueExpressionContext *right = nullptr;
     std::vector<ValueExpressionContext *> valueExpression();
     ValueExpressionContext* valueExpression(size_t i);
-    antlr4::tree::TerminalNode *PLUS();
-    antlr4::tree::TerminalNode *MINUS();
     antlr4::tree::TerminalNode *ASTERISK();
     antlr4::tree::TerminalNode *SLASH();
     antlr4::tree::TerminalNode *PERCENT();
+    antlr4::tree::TerminalNode *PLUS();
+    antlr4::tree::TerminalNode *MINUS();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };

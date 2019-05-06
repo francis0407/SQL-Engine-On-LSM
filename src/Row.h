@@ -8,7 +8,7 @@ using namespace datatypes;
 
 class Row {
 public:
-    static Row* create(AnyValue* _columns[], int _columnNum, MemoryPool* _mp) {}
+    static Row* create(AnyValue* _columns[], int _columnNum, MemoryPool* _mp) {return nullptr;}
 
     AnyValue* getAny(size_t offset);
     // BooleanValue* getBoolean()

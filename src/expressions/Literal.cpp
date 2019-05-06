@@ -37,8 +37,8 @@ Literal* Literal::create(int intValue) {
     return new Literal(value);
 }
 
-Literal* Literal::create(std::string stringValue) {
-    StringValue* value = StringValue::create(stringValue.data(), stringValue.size());
+Literal* Literal::create(const std::string& stringValue) {
+    StringValue* value = StringValue::create(stringValue);
     return new Literal(value);
 }
 
@@ -51,7 +51,7 @@ bool Literal::equalTo(ExpressionBase* that) const {
     if (that->type != _Literal)
         return false;
     Literal* _that = (Literal*) that;
-    return _that->value->equalTo(value) && _that->value->valueType == value->valueType;
+    return _that->value->equalToSemantically(value);
 }
 
 std::string Literal::toString() const {

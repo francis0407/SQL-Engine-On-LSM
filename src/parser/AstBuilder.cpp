@@ -69,13 +69,14 @@ Any AstBuilder::visitFromCluse(SimpleSqlParser::FromCluseContext *ctx) {
 
 Any AstBuilder::visitLogicalNot(SimpleSqlParser::LogicalNotContext *ctx) {
     ExpressionBase* child = ctx->booleanExpression()->accept(this);
-    ExpressionBase* value = new Not(child);
+    ExpressionBase* value = (ExpressionBase *)(new Not(child));
     Any result = value;
     return result;
 }
 
 Any AstBuilder::visitLogicalBinary(SimpleSqlParser::LogicalBinaryContext *ctx) {
-    size_t opt = ctx->opt->getTokenIndex();
+    size_t opt = ctx->opt->getType();
+    // ctx->opt->getChannel
     ExpressionBase* left = ctx->left->accept(this);
     ExpressionBase* right = ctx->right->accept(this);
     ExpressionBase* value = nullptr;
@@ -90,9 +91,9 @@ Any AstBuilder::visitLogicalBinary(SimpleSqlParser::LogicalBinaryContext *ctx) {
     Any result = value;
     return result;
 }
-
+ 
 Any AstBuilder::visitComparison(SimpleSqlParser::ComparisonContext *ctx) {
-    size_t opt = ctx->comparisonOperator()->getStart()->getTokenIndex();
+    size_t opt = ctx->comparisonOperator()->getStart()->getType();
     ExpressionBase* left = ctx->left->accept(this);
     ExpressionBase* right = ctx->right->accept(this);
     ExpressionBase* value = nullptr;
@@ -101,6 +102,7 @@ Any AstBuilder::visitComparison(SimpleSqlParser::ComparisonContext *ctx) {
             value = new EqualTo(left, right);
             break; 
         case SimpleSqlParser::NEQ:
+        case SimpleSqlParser::NEQJ:
             value = new Not(new EqualTo(left, right));
             break;
         case SimpleSqlParser::LT:
@@ -121,7 +123,7 @@ Any AstBuilder::visitComparison(SimpleSqlParser::ComparisonContext *ctx) {
 }
 
 Any AstBuilder::visitArithmeticBinary(SimpleSqlParser::ArithmeticBinaryContext *ctx) {
-    size_t opt = ctx->opt->getTokenIndex();
+    size_t opt = ctx->opt->getType();
     ExpressionBase* left = ctx->left->accept(this);
     ExpressionBase* right = ctx->right->accept(this);
     ExpressionBase* value = nullptr;
@@ -152,7 +154,7 @@ Any AstBuilder::visitExpression(SimpleSqlParser::ExpressionContext *ctx) {
 
 Any AstBuilder::visitArithmeticUnary(SimpleSqlParser::ArithmeticUnaryContext *ctx) {
     ExpressionBase* child = ctx->valueExpression()->accept(this);
-    Any result = new UnaryMinus(child);
+    Any result = (ExpressionBase *)(new UnaryMinus(child));
     return result;
 }
 
@@ -174,23 +176,23 @@ Any AstBuilder::visitParenthesizedExpression(SimpleSqlParser::ParenthesizedExpre
 Any AstBuilder::visitStringLiteral(SimpleSqlParser::StringLiteralContext *ctx) {
     string stringWithQuotation = ctx->getText();
     string value = stringWithQuotation.substr(1, stringWithQuotation.size() - 2);
-    Any result = Literal::create(value);
+    Any result = (ExpressionBase *)Literal::create(value);
     return result;
 }
 
 Any AstBuilder::visitBooleanLiteral(SimpleSqlParser::BooleanLiteralContext *ctx) {
-    bool value = ctx->booleanValue()->TRUE_() != nullptr;
-    Any result = Literal::create(value);
+    bool value = ctx->booleanValue()->TRUE_() != nullptr;  
+    Any result = (ExpressionBase *)Literal::create(value);
     return result;
 }
 
 Any AstBuilder::visitColumnWithTable(SimpleSqlParser::ColumnWithTableContext *ctx) {
-    Any result = new AttributeReference(ctx->identifier()->getText(), ctx->tableIdentifier()->getText());
+    Any result = (ExpressionBase *)(new AttributeReference(ctx->tableIdentifier()->getText(), ctx->identifier()->getText()));
     return result;    
 }
  
 Any AstBuilder::visitColumnWithoutTable(SimpleSqlParser::ColumnWithoutTableContext *ctx) {
-    Any result = new AttributeReference(ctx->identifier()->getText());
+    Any result = (ExpressionBase *)(new AttributeReference(ctx->identifier()->getText()));
     return result;
 }
 
@@ -198,7 +200,7 @@ Any AstBuilder::visitTableIdentifierDefault(SimpleSqlParser::TableIdentifierDefa
     Any result = new RelationReference(ctx->tableName->getText());
     return result;
 }
-
+ 
 Any AstBuilder::visitTableAlias(SimpleSqlParser::TableAliasContext *ctx) {
     Any result = new RelationReference(ctx->tableName->getText(), ctx->alias->getText());
     return result;
@@ -208,7 +210,7 @@ Any AstBuilder::visitBooleanValue(SimpleSqlParser::BooleanValueContext *ctx) {
     bool value = false;
     if (ctx->FALSE_() == nullptr)
         value = true;
-    Any result = Literal::create(value);
+    Any result = (ExpressionBase *)Literal::create(value);
     return result;
 }
 
@@ -216,7 +218,7 @@ Any AstBuilder::visitIntegerLiteral(SimpleSqlParser::IntegerLiteralContext *ctx)
     int value = std::stoi(ctx->INTEGER_LITERAL()->getText());
     if (ctx->MINUS() != nullptr)
         value = -value;
-    Any result = Literal::create(value);
+    Any result = (ExpressionBase *)Literal::create(value);
     return result;
 }
 
@@ -224,7 +226,7 @@ Any AstBuilder::visitFloatLiteral(SimpleSqlParser::FloatLiteralContext *ctx) {
     float value = std::stof(ctx->FLOAT_LITERAL()->getText());
     if (ctx->MINUS() != nullptr)
         value = -value;
-    Any result = Literal::create(value);
+    Any result = (ExpressionBase *)Literal::create(value);
 
     return result;
 }
