@@ -27,11 +27,13 @@ enum OperatorType {
 // Use the traditional Volcano Model
 class OperatorBase {
 public:
-    OperatorBase():type(_SeqScan){}
-
+    OperatorBase(OperatorType _type) : type(_type){}
+    virtual ~OperatorBase(){}
     virtual bool open() = 0;
     virtual NextResult next() = 0;
     virtual bool close() = 0;
+
+    virtual bool equalTo(OperatorBase* that) const = 0;
 
     const OperatorType type; // Needs to be initialized in the constructor
 

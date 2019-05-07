@@ -6,7 +6,7 @@ namespace operators {
 
 using namespace simplesql::expressions;
 
-Filter::Filter(ExpressionBase* _condition, OperatorBase* _child) {
+Filter::Filter(ExpressionBase* _condition, OperatorBase* _child) : OperatorBase(_Filter) {
     condition = _condition;
     child = _child;
 
@@ -19,6 +19,14 @@ Filter::~Filter() {
         delete condition;
     if (child != nullptr)
         delete child;
+}
+
+bool Filter::equalTo(OperatorBase* that) const {
+    Filter* _that = (Filter*)that;
+    if (that == nullptr) return false;
+    if (that->type != _Filter) return false;
+    if (!condition->equalTo(_that->condition)) return false;
+    return child->equalTo(_that->child);
 }
 
 bool Filter::open() {

@@ -37,8 +37,8 @@ Any AstBuilder::visitSelectStatement(SimpleSqlParser::SelectStatementContext *ct
     auto exprs = selectCtx->expression();
     size_t num = exprs.size();
     std::vector<ExpressionBase *> projectList;
-    for (int i = 0;i < num; i++)
-        projectList[i] = exprs[i]->accept(this);
+    for (size_t i = 0;i < num; i++)
+        projectList.push_back(exprs[i]->accept(this));
     opt = new Project(projectList, opt);
 
     Any result = opt;
@@ -53,14 +53,14 @@ Any AstBuilder::visitFromCluse(SimpleSqlParser::FromCluseContext *ctx) {
     
     // map the table identifiers to SeqScan operators
     std::vector<SeqScan* > scans;
-    for (int i = 0; i < num; i++) {
+    for (size_t i = 0; i < num; i++) {
         RelationReference* ref = tables[i]->accept(this);
-        scans[i] = new SeqScan(ref);
+        scans.push_back(new SeqScan(ref));
     }
      
     // fold-left the tables with join
     OperatorBase* finalOperator = scans[0];
-    for (int i = 1; i < num; i++) 
+    for (size_t i = 1; i < num; i++) 
         finalOperator = new InnerJoin(finalOperator, scans[i], JoinSide::BuildLeft);    
 
     Any result = finalOperator;

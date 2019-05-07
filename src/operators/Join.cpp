@@ -10,7 +10,7 @@ InnerJoin::InnerJoin(
     OperatorBase* _right, 
     JoinSide _side, 
     ExpressionBase* _condition,
-    JoinMethod _method) {
+    JoinMethod _method) : OperatorBase(_InnerJoin) {
 
     left = _left;
     right = _right;
@@ -30,6 +30,19 @@ InnerJoin::~InnerJoin() {
         delete right;
     if (condition != nullptr)
         delete condition;
+}
+
+bool InnerJoin::equalTo(OperatorBase* that) const {
+    InnerJoin* _that = (InnerJoin*)that;
+    if (that->type != _InnerJoin)
+        return false;
+    if (!condition->equalTo(_that->condition))
+        return false;
+    if (!left->equalTo(_that->left))
+        return false;
+    if (!right->equalTo(_that->right))
+        return false;
+    return true;
 }
 
 bool InnerJoin::open() {

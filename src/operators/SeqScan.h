@@ -20,7 +20,8 @@ public:
     bool open() override;
     NextResult next() override;
     bool close() override;
-
+    virtual bool equalTo(OperatorBase* that) const override;
+    
     RelationReference* reference;
     
 };

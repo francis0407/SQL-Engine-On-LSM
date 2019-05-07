@@ -25,6 +25,7 @@ public:
     bool open() override;
     NextResult next() override;
     bool close() override;
+    virtual bool equalTo(OperatorBase* that) const override;
 
     OperatorBase* left = nullptr;
     OperatorBase* right = nullptr;

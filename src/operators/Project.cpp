@@ -4,7 +4,7 @@
 namespace simplesql {
 namespace operators {
 
-Project::Project(std::vector<ExpressionBase *>& _projectList, OperatorBase* _child) {
+Project::Project(const std::vector<ExpressionBase *>& _projectList, OperatorBase* _child) : OperatorBase(_Project) {
     child = _child;
     projectList.assign(_projectList.begin(), _projectList.end());
 
@@ -18,6 +18,16 @@ Project::~Project() {
            delete item;
     if (child != nullptr)
         delete child;
+}
+
+bool Project::equalTo(OperatorBase* that) const {
+    Project* _that = (Project*)that;
+    if (that == nullptr) return false;
+    if (that->type != _Project) return false;
+    for (size_t i = 0; i < projectList.size(); i++)
+        if(!projectList[i]->equalTo(_that->projectList[i]))
+            return false;
+    return child->equalTo(_that->child);
 }
 
 bool Project::open() {
