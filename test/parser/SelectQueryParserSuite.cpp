@@ -42,14 +42,13 @@ public:
         delete opt;
     }
     
-    std::vector<ExpressionBase *> buildExprList(ExpressionBase* expr, ...) {
+    std::vector<ExpressionBase *> buildExprList(int n, ...) {
         std::vector<ExpressionBase *> list;
-        list.push_back(expr);
-
         va_list ap;
-        va_start(ap, expr);
+        va_start(ap, n);
         ExpressionBase* tmp = nullptr;
-        while ((tmp = va_arg(ap, ExpressionBase*)) != nullptr) {
+        for (int i = 0; i < n; i++) {
+            tmp = va_arg(ap, ExpressionBase*);
             list.push_back(tmp);
         }
         va_end(ap);
@@ -64,7 +63,7 @@ TEST_F(SelectQueryParserSuite, BasicQuery) {
     assertQuery(
         "SELECT A FROM B",
         new Project(
-            buildExprList(new AttributeReference("A")),
+            buildExprList(1, new AttributeReference("A")),
             new SeqScan(new RelationReference("B"))   
         )
     );
@@ -72,7 +71,7 @@ TEST_F(SelectQueryParserSuite, BasicQuery) {
     assertQuery(
         "SELECT A FROM B WHERE C > D", 
         new Project(
-            buildExprList(new AttributeReference("A")),
+            buildExprList(1, new AttributeReference("A")),
             new Filter(
                 new GreaterThan(new AttributeReference("C"), new AttributeReference("D")),
                 new SeqScan(new RelationReference("B"))
@@ -82,7 +81,7 @@ TEST_F(SelectQueryParserSuite, BasicQuery) {
     assertQuery(
         "SELECT A FROM B, C WHERE E = F",
         new Project(
-            buildExprList(new AttributeReference("A")),
+            buildExprList(1, new AttributeReference("A")),
             new Filter(
                 new EqualTo(new AttributeReference("E"), new AttributeReference("F")),
                 new InnerJoin(
@@ -100,6 +99,7 @@ TEST_F(SelectQueryParserSuite, MultiAttributeProject) {
         "SELECT A, B, C FROM D",
         new Project(
             buildExprList(
+                3,
                 new AttributeReference("A"), 
                 new AttributeReference("B"),
                 new AttributeReference("C")),
@@ -111,6 +111,7 @@ TEST_F(SelectQueryParserSuite, MultiAttributeProject) {
         "SELECT A + 1, B - C, E.D FROM E AS P",
         new Project(
             buildExprList(
+                3,
                 new Add(new AttributeReference("A"), Literal::create(1)),
                 new Minus(new AttributeReference("B"), new AttributeReference("C")),
                 new AttributeReference("E", "D")

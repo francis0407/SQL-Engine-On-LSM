@@ -13,9 +13,8 @@ Project::Project(const std::vector<ExpressionBase *>& _projectList, OperatorBase
 }
 
 Project::~Project() {
-    for(auto item: projectList)
-        if (item != nullptr)   
-           delete item;
+    for (size_t i = 0; i < projectList.size(); i++)
+        delete projectList[i];
     if (child != nullptr)
         delete child;
 }
