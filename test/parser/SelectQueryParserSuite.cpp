@@ -60,6 +60,15 @@ public:
 };
 
 TEST_F(SelectQueryParserSuite, BasicQuery) {
+    // only P
+    assertQuery(
+        "SELECT A FROM B",
+        new Project(
+            buildExprList(new AttributeReference("A")),
+            new SeqScan(new RelationReference("B"))   
+        )
+    );
+    // S-P
     assertQuery(
         "SELECT A FROM B WHERE C > D", 
         new Project(
@@ -69,7 +78,7 @@ TEST_F(SelectQueryParserSuite, BasicQuery) {
                 new SeqScan(new RelationReference("B"))
             )
     ));
-
+    // S-P-J
     assertQuery(
         "SELECT A FROM B, C WHERE E = F",
         new Project(
@@ -85,3 +94,28 @@ TEST_F(SelectQueryParserSuite, BasicQuery) {
         )
     );
 }
+
+TEST_F(SelectQueryParserSuite, MultiAttributeProject) {
+    assertQuery(
+        "SELECT A, B, C FROM D",
+        new Project(
+            buildExprList(
+                new AttributeReference("A"), 
+                new AttributeReference("B"),
+                new AttributeReference("C")),
+            new SeqScan(new RelationReference("D"))
+        )
+    );
+
+    assertQuery(
+        "SELECT A + 1, B - C, E.D FROM E AS P",
+        new Project(
+            buildExprList(
+                new Add(new AttributeReference("A"), Literal::create(1)),
+                new Minus(new AttributeReference("B"), new AttributeReference("C")),
+                new AttributeReference("E", "D")
+            ),
+            new SeqScan(new RelationReference("E", "P"))
+        )
+    );
+} 
