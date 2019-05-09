@@ -10,6 +10,7 @@ namespace simplesql {
 namespace datatypes {
 
 enum DataType : unsigned char { // ensure the enum variable only use ONE BYTE
+    Unresolved,
     Boolean,
     Integer,
     Float,

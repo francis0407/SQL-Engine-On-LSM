@@ -14,7 +14,10 @@ class Attribute {
 public:
     Attribute(DataType _datatype, int _offset, std::string _name);
     Attribute();
+    Attribute& operator= (const Attribute&);
     bool equalTo(const Attribute& that);
+    
+    
     DataType dataType;
     int offset;
     std::string name;
@@ -24,10 +27,13 @@ public:
 class AttributeSeq {
 public:
     AttributeSeq();
+    void clean();
     void append(const Attribute& attribute);
+    Attribute* findAttribute(const Attribute& attr);
+    AttributeSeq& operator= (const AttributeSeq& that);
+    AttributeSeq& operator+= (const AttributeSeq& that); 
+
     std::vector<Attribute> attributes;
-private:
-    int bytes = 0;
 };
 
 } // namespace simplesql

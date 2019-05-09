@@ -31,11 +31,13 @@ bool Project::equalTo(OperatorBase* that) const {
 
 bool Project::open() {
     // maybe assert `resolved` here.
-    return true;
+    
+    return child->open();
 }
 
 bool Project::close() {
-    return true;
+    
+    return child->close();
 }
 
 NextResult Project::next() {

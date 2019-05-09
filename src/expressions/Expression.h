@@ -2,6 +2,7 @@
 #pragma once
 
 #include <sstream>
+#include <functional>
 
 #include "Row.h"
 #include "MemoryPool.h"
@@ -45,6 +46,7 @@ public:
     AnyValue* eval(Row* r); // use a default memory pool
 
 
+    DataType dataType;
     const ExpressionType type;
     ExpressionBase* children[2]; // Currently, we only support LeafNode, UnaryNode and BinaryNode. 
 
@@ -54,25 +56,37 @@ public:
 
     virtual bool equalTo(ExpressionBase* that) const;
     virtual std::string toString() const;
+    virtual bool isLeafExpression() const;
+    virtual bool isUnaryExpression() const;
+    virtual bool isBinaryExpression() const;
+    virtual void resolveDataType() const;
+
+    virtual ExpressionBase* transform(const std::function<ExpressionBase*(ExpressionBase*)>& func) = 0;
 };
 
 class LeafExpression: public ExpressionBase {
 public:
     LeafExpression(ExpressionType _type);
+    virtual ~LeafExpression();
+    virtual ExpressionBase* transform(const std::function<ExpressionBase*(ExpressionBase*)>& func) override;
     // Literals or AttributeReferences
 };
 
 class UnaryExpression: public ExpressionBase {
 public:
     UnaryExpression(ExpressionBase* _child, ExpressionType _type);
-    ExpressionBase* child = nullptr;
+    virtual ~UnaryExpression();
+    ExpressionBase* &child;
+    virtual ExpressionBase* transform(const std::function<ExpressionBase*(ExpressionBase*)>& func) override;
 };
 
 class BinaryExpression: public ExpressionBase {
 public:
     BinaryExpression(ExpressionBase* _left, ExpressionBase* _right, ExpressionType _type);
-    ExpressionBase* left = nullptr;
-    ExpressionBase* right = nullptr;
+    virtual ~BinaryExpression();
+    ExpressionBase* &left;
+    ExpressionBase* &right ;
+    virtual ExpressionBase* transform(const std::function<ExpressionBase*(ExpressionBase*)>& func) override;
 };
 
 }} // namespace simplesql::expressions

@@ -35,13 +35,18 @@ public:
 
     virtual bool equalTo(OperatorBase* that) const = 0;
 
+    bool isBinaryOperator() const;
+    bool isUnaryOperator() const;
+    bool isLeafOperator() const;
+
+    long long fashHash() const;
+
     const OperatorType type; // Needs to be initialized in the constructor
 
     OperatorBase* children[2]; // We only have LeafNode, UnaryNode and BinaryNode
     
     bool resolved = false;
 
-    AttributeSeq inputs;
     AttributeSeq outputs;
 };
 

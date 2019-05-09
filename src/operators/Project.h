@@ -17,8 +17,10 @@ public:
     NextResult next() override;
     bool close() override;
     virtual bool equalTo(OperatorBase* that) const override;
-    std::vector<ExpressionBase *> projectList;
 
+
+    std::vector<ExpressionBase *> projectList;
+    std::string projectString() const;
     bool hasNoneReference = true; // should analyze the project list to change this
 
     OperatorBase* child = nullptr;
