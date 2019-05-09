@@ -53,6 +53,7 @@ public:
     Mod(ExpressionBase* _left, ExpressionBase* _right);
     virtual AnyValue* eval(Row* r, MemoryPool* mp) override;
     virtual std::string toString() const override;
+    virtual void resolveDataType() override; 
 };
 
 }} // namespace simplesql::expressions

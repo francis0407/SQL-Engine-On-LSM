@@ -12,6 +12,10 @@ bool isNumber(DataType type) {
 AnyValue::AnyValue() {}
 AnyValue::~AnyValue() {}
 
+bool AnyValue::asBoolean() const {
+    return true;
+}
+
 IntegerValue::~IntegerValue() {}
 
 IntegerValue::IntegerValue(int _value) : value(_value) {
@@ -70,6 +74,10 @@ bool BooleanValue::equalToSemantically(AnyValue* that) const {
     if (that->valueType != Boolean)
         return false;
     return ((BooleanValue*)that)->value == value;
+}
+
+bool BooleanValue::asBoolean() const {
+    return value;
 }
 
 StringValue::~StringValue() {

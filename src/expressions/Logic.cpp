@@ -16,7 +16,10 @@ void Not::resolveDataType() {
 }
 
 AnyValue* Not::eval(Row* row, MemoryPool* mp) {
-    return nullptr;
+    AnyValue* childValue = child->eval(row, mp);
+    checkNullResult(childValue);
+    BooleanValue* result = BooleanValue::create(!(childValue->asBoolean), mp);
+    return result;
 }
 
 std::string Not::toString() const {
@@ -38,7 +41,17 @@ void And::resolveDataType() {
 }
 
 AnyValue* And::eval(Row* row, MemoryPool* mp) {
-    return nullptr;
+    BooleanValue* result = BooleanValue::create(false, mp);
+    AnyValue* leftValue = left->eval(row, mp);
+    checkNullResult(leftValue);
+    if (!leftValue->asBoolean())
+        return result;
+    AnyValue* rightValue = right->eval(row, mp);
+    checkNullResult(rightValue);
+    if (!rightValue->asBoolean())
+        return result;
+    result->value = true;
+    return result;
 }
 
 std::string And::toString() const {
@@ -59,10 +72,20 @@ void Or::resolveDataType() {
         dataType = Boolean;
     }
 }
-AnyValue* Or::eval(Row* row, MemoryPool* mp) {
-    return nullptr;
-}
 
+AnyValue* Or::eval(Row* row, MemoryPool* mp) {
+    BooleanValue* result = BooleanValue::create(true, mp);
+    AnyValue* leftValue = left->eval(row, mp);
+    checkNullResult(leftValue);
+    if (leftValue->asBoolean())
+        return result;
+    AnyValue* rightValue = right->eval(row, mp);
+    checkNullResult(rightValue);
+    if (rightValue->asBoolean())
+        return result;
+    result->value = false;
+    return result;
+}
 
 std::string Or::toString() const {
     std::string leftString = left->toString();

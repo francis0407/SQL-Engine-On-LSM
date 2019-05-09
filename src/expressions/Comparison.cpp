@@ -1,4 +1,6 @@
- 
+
+#include <cstring>
+
 #include "expressions/Comparison.h"
 
 using namespace simplesql::expressions;
@@ -10,7 +12,7 @@ Comparison::Comparison(ExpressionBase* _left, ExpressionBase* _right, Expression
 }
 
 void Comparison::resolveDataType() {
-    if (!isNumber(left->dataType) || !isNumber(right->dataType)) {
+    if (!isNumber(left->dataType) || !isNumber(right->dataType) && left->dataType != right->dataType) {
         dataType = Unresolved;
         return;
     }
@@ -23,7 +25,39 @@ EqualTo::EqualTo(ExpressionBase* _left, ExpressionBase* _right) : Comparison(_le
 }
 
 AnyValue* EqualTo::eval(Row* r, MemoryPool *mp) {
-    return nullptr;
+    AnyValue* leftValue = left->eval(r, mp);
+    AnyValue* rightValue = right->eval(r, mp);
+    checkNullResult(leftValue, rightValue);
+    BooleanValue* result = BooleanValue::create(false, mp);
+    switch (leftValue->valueType) {
+        case Integer: {
+            if (rightValue->valueType == Integer)
+                result->value = ((IntegerValue*)leftValue)->value == ((IntegerValue*)rightValue)->value;
+            else if (rightValue->valueType == Float)
+                result->value = ((IntegerValue*)leftValue)->value == ((FloatValue*)rightValue)->value;
+            break;
+        }
+        case Float: {
+            if (rightValue->valueType == Integer)
+                result->value = ((FloatValue*)leftValue)->value == ((IntegerValue*)rightValue)->value;
+            else if (rightValue->valueType == Float)
+                result->value = ((FloatValue*)leftValue)->value == ((FloatValue*)rightValue)->value;
+            break;
+        }
+        case Boolean: {
+            if (rightValue->valueType == Boolean)
+                result->value = ((BooleanValue*)leftValue)->value == ((BooleanValue*)rightValue)->value;
+            break;
+        }
+        case String: {
+            StringValue* sl = (StringValue*)leftValue;
+            StringValue* sr = (StringValue*)rightValue;
+            if (rightValue->valueType == String)
+                result->value = StringValue::compare(sl->data(), sl->size(), sr->data(), sr->size()) == 0;
+            break;
+        }
+    }
+    return result;
 }
 
 std::string EqualTo::toString() const {
@@ -38,7 +72,39 @@ LessThan::LessThan(ExpressionBase* _left, ExpressionBase* _right) : Comparison(_
 }
 
 AnyValue* LessThan::eval(Row* r, MemoryPool *mp) {
-    return nullptr;
+    AnyValue* leftValue = left->eval(r, mp);
+    AnyValue* rightValue = right->eval(r, mp);
+    checkNullResult(leftValue, rightValue);
+    BooleanValue* result = BooleanValue::create(false, mp);
+    switch (leftValue->valueType) {
+        case Integer: {
+            if (rightValue->valueType == Integer)
+                result->value = ((IntegerValue*)leftValue)->value < ((IntegerValue*)rightValue)->value;
+            else if (rightValue->valueType == Float)
+                result->value = ((IntegerValue*)leftValue)->value < ((FloatValue*)rightValue)->value;
+            break;
+        }
+        case Float: {
+            if (rightValue->valueType == Integer)
+                result->value = ((FloatValue*)leftValue)->value < ((IntegerValue*)rightValue)->value;
+            else if (rightValue->valueType == Float)
+                result->value = ((FloatValue*)leftValue)->value < ((FloatValue*)rightValue)->value;
+            break;
+        }
+        case Boolean: {
+            if (rightValue->valueType == Boolean)
+                result->value = ((BooleanValue*)leftValue)->value < ((BooleanValue*)rightValue)->value;
+            break;
+        }
+        case String: {
+            StringValue* sl = (StringValue*)leftValue;
+            StringValue* sr = (StringValue*)rightValue;
+            if (rightValue->valueType == String)
+                result->value = StringValue::compare(sl->data(), sl->size(), sr->data(), sr->size()) < 0;
+            break;
+        }
+    }
+    return result;
 }
 
 std::string LessThan::toString() const {
@@ -53,7 +119,39 @@ LessThanOrEqual::LessThanOrEqual(ExpressionBase* _left, ExpressionBase* _right) 
 }
 
 AnyValue* LessThanOrEqual::eval(Row* r, MemoryPool *mp) {
-    return nullptr;
+    AnyValue* leftValue = left->eval(r, mp);
+    AnyValue* rightValue = right->eval(r, mp);
+    checkNullResult(leftValue, rightValue);
+    BooleanValue* result = BooleanValue::create(false, mp);
+    switch (leftValue->valueType) {
+        case Integer: {
+            if (rightValue->valueType == Integer)
+                result->value = ((IntegerValue*)leftValue)->value <= ((IntegerValue*)rightValue)->value;
+            else if (rightValue->valueType == Float)
+                result->value = ((IntegerValue*)leftValue)->value <= ((FloatValue*)rightValue)->value;
+            break;
+        }
+        case Float: {
+            if (rightValue->valueType == Integer)
+                result->value = ((FloatValue*)leftValue)->value <= ((IntegerValue*)rightValue)->value;
+            else if (rightValue->valueType == Float)
+                result->value = ((FloatValue*)leftValue)->value <= ((FloatValue*)rightValue)->value;
+            break;
+        }
+        case Boolean: {
+            if (rightValue->valueType == Boolean)
+                result->value = ((BooleanValue*)leftValue)->value <= ((BooleanValue*)rightValue)->value;
+            break;
+        }
+        case String: {
+            StringValue* sl = (StringValue*)leftValue;
+            StringValue* sr = (StringValue*)rightValue;
+            if (rightValue->valueType == String)
+                result->value = StringValue::compare(sl->data(), sl->size(), sr->data(), sr->size()) <= 0;
+            break;
+        }
+    }
+    return result;
 }
 
 std::string LessThanOrEqual::toString() const {
@@ -68,7 +166,39 @@ GreaterThan::GreaterThan(ExpressionBase* _left, ExpressionBase* _right) : Compar
 }
         
 AnyValue* GreaterThan::eval(Row* r, MemoryPool *mp) {
-    return nullptr;
+    AnyValue* leftValue = left->eval(r, mp);
+    AnyValue* rightValue = right->eval(r, mp);
+    checkNullResult(leftValue, rightValue);
+    BooleanValue* result = BooleanValue::create(false, mp);
+    switch (leftValue->valueType) {
+        case Integer: {
+            if (rightValue->valueType == Integer)
+                result->value = ((IntegerValue*)leftValue)->value > ((IntegerValue*)rightValue)->value;
+            else if (rightValue->valueType == Float)
+                result->value = ((IntegerValue*)leftValue)->value > ((FloatValue*)rightValue)->value;
+            break;
+        }
+        case Float: {
+            if (rightValue->valueType == Integer)
+                result->value = ((FloatValue*)leftValue)->value > ((IntegerValue*)rightValue)->value;
+            else if (rightValue->valueType == Float)
+                result->value = ((FloatValue*)leftValue)->value > ((FloatValue*)rightValue)->value;
+            break;
+        }
+        case Boolean: {
+            if (rightValue->valueType == Boolean)
+                result->value = ((BooleanValue*)leftValue)->value > ((BooleanValue*)rightValue)->value;
+            break;
+        }
+        case String: {
+            StringValue* sl = (StringValue*)leftValue;
+            StringValue* sr = (StringValue*)rightValue;
+            if (rightValue->valueType == String)
+                result->value = StringValue::compare(sl->data(), sl->size(), sr->data(), sr->size()) > 0;
+            break;
+        }
+    }
+    return result;
 }
 
 std::string GreaterThan::toString() const {
@@ -83,7 +213,39 @@ GreaterThanOrEqual::GreaterThanOrEqual(ExpressionBase* _left, ExpressionBase* _r
 }
 
 AnyValue* GreaterThanOrEqual::eval(Row* r, MemoryPool *mp) {
-    return nullptr;
+    AnyValue* leftValue = left->eval(r, mp);
+    AnyValue* rightValue = right->eval(r, mp);
+    checkNullResult(leftValue, rightValue);
+    BooleanValue* result = BooleanValue::create(false, mp);
+    switch (leftValue->valueType) {
+        case Integer: {
+            if (rightValue->valueType == Integer)
+                result->value = ((IntegerValue*)leftValue)->value >=((IntegerValue*)rightValue)->value;
+            else if (rightValue->valueType == Float)
+                result->value = ((IntegerValue*)leftValue)->value >= ((FloatValue*)rightValue)->value;
+            break;
+        }
+        case Float: {
+            if (rightValue->valueType == Integer)
+                result->value = ((FloatValue*)leftValue)->value >= ((IntegerValue*)rightValue)->value;
+            else if (rightValue->valueType == Float)
+                result->value = ((FloatValue*)leftValue)->value >= ((FloatValue*)rightValue)->value;
+            break;
+        }
+        case Boolean: {
+            if (rightValue->valueType == Boolean)
+                result->value = ((BooleanValue*)leftValue)->value >= ((BooleanValue*)rightValue)->value;
+            break;
+        }
+        case String: {
+            StringValue* sl = (StringValue*)leftValue;
+            StringValue* sr = (StringValue*)rightValue;
+            if (rightValue->valueType == String)
+                result->value = StringValue::compare(sl->data(), sl->size(), sr->data(), sr->size()) >= 0;
+            break;
+        }
+    }
+    return result;
 }
 
 std::string GreaterThanOrEqual::toString() const {
@@ -92,28 +254,3 @@ std::string GreaterThanOrEqual::toString() const {
     std::string result = "(" + leftString + ">=" + rightString + ")";
     return result;
 }
-    
-// namespace simplesql {
-// namespace expressions {
- 
-// AnyValue* EqualTo::eval(Row* r, MemoryPool *mp) {
-//     AnyValue* leftValue = left->eval(r, mp);
-//     AnyValue* rightValue = right->eval(r, mp);
-
-//     bool equalTo = leftValue->equalTo(rightValue);
-
-//     BooleanValue* result = BooleanValue::create(equalTo, mp);
-//     return result; 
-// }
-
-// AnyValue* LessThan::eval(Row* r, MemoryPool *mp) {
-//     AnyValue* leftValue = left->eval(r, mp);
-//     AnyValue* rightValue = right->eval(r, mp);
-
-//     bool equalTo = rightValue->greaterThan(leftValue); // a < b ? === b > a?
-
-//     BooleanValue* result = BooleanValue::create(equalTo, mp);
-//     return result; 
-// }
-
-// }} // namespace simplesql::expressions

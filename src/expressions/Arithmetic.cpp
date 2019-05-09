@@ -90,7 +90,22 @@ Minus::Minus(ExpressionBase* _left, ExpressionBase* _right) : BinaryArithmetic(_
 }
 
 AnyValue* Minus::eval(Row* r, MemoryPool* mp) {
-    return nullptr;
+    AnyValue* leftValue = left->eval(r, mp);
+    AnyValue* rightValue = right->eval(r, mp);
+    checkNullResult(leftValue, rightValue);
+    AnyValue* result = nullptr;
+    if ((leftValue->valueType == Float && rightValue->valueType == Integer)
+        || (leftValue->valueType == Integer && rightValue->valueType == Float)) {
+        result = FloatValue::create(
+            ((FloatValue*)leftValue)->value - ((IntegerValue*)rightValue)->value, mp);
+    } else if (leftValue->valueType == Float && rightValue->valueType == Float) {
+        result = FloatValue::create(
+            ((FloatValue*)leftValue)->value - ((FloatValue*)rightValue)->value, mp);
+    } else if (leftValue->valueType == Integer && rightValue->valueType == Integer) {
+        result = IntegerValue::create(
+            ((IntegerValue*)leftValue)->value - ((IntegerValue*)rightValue)->value, mp);
+    }
+    return result;
 }
 
 std::string Minus::toString() const {
@@ -105,7 +120,22 @@ Multiply::Multiply(ExpressionBase* _left, ExpressionBase* _right) : BinaryArithm
 }
 
 AnyValue* Multiply::eval(Row* r, MemoryPool* mp) {
-    return nullptr;
+    AnyValue* leftValue = left->eval(r, mp);
+    AnyValue* rightValue = right->eval(r, mp);
+    checkNullResult(leftValue, rightValue);
+    AnyValue* result = nullptr;
+    if ((leftValue->valueType == Float && rightValue->valueType == Integer)
+        || (leftValue->valueType == Integer && rightValue->valueType == Float)) {
+        result = FloatValue::create(
+            ((FloatValue*)leftValue)->value * ((IntegerValue*)rightValue)->value, mp);
+    } else if (leftValue->valueType == Float && rightValue->valueType == Float) {
+        result = FloatValue::create(
+            ((FloatValue*)leftValue)->value * ((FloatValue*)rightValue)->value, mp);
+    } else if (leftValue->valueType == Integer && rightValue->valueType == Integer) {
+        result = IntegerValue::create(
+            ((IntegerValue*)leftValue)->value * ((IntegerValue*)rightValue)->value, mp);
+    }
+    return result;
 }
 
 std::string Multiply::toString() const {
@@ -120,7 +150,22 @@ Divide::Divide(ExpressionBase* _left, ExpressionBase* _right) : BinaryArithmetic
 }
 
 AnyValue* Divide::eval(Row* r, MemoryPool* mp) {
-    return nullptr;
+    AnyValue* leftValue = left->eval(r, mp);
+    AnyValue* rightValue = right->eval(r, mp);
+    checkNullResult(leftValue, rightValue);
+    AnyValue* result = nullptr;
+    if ((leftValue->valueType == Float && rightValue->valueType == Integer)
+        || (leftValue->valueType == Integer && rightValue->valueType == Float)) {
+        result = FloatValue::create(
+            ((FloatValue*)leftValue)->value / ((IntegerValue*)rightValue)->value, mp);
+    } else if (leftValue->valueType == Float && rightValue->valueType == Float) {
+        result = FloatValue::create(
+            ((FloatValue*)leftValue)->value / ((FloatValue*)rightValue)->value, mp);
+    } else if (leftValue->valueType == Integer && rightValue->valueType == Integer) {
+        result = IntegerValue::create(
+            ((IntegerValue*)leftValue)->value / ((IntegerValue*)rightValue)->value, mp);
+    }
+    return result;
 }
 
 std::string Divide::toString() const {
@@ -131,11 +176,22 @@ std::string Divide::toString() const {
 }
 
 Mod::Mod(ExpressionBase* _left, ExpressionBase* _right) : BinaryArithmetic(_left, _right, _Mod) {
+    
+}
 
+void Mod::resolveDataType() {
+    if (left->dataType != Integer || right->dataType != Integer)
+        dataType = Unresolved;
+    else
+        dataType = Integer;
 }
 
 AnyValue* Mod::eval(Row* r, MemoryPool* mp) {
-    return nullptr;
+    IntegerValue* leftValue = (IntegerValue*)left->eval(r, mp);
+    IntegerValue* rightValue = (IntegerValue*)right->eval(r, mp);
+    checkNullResult(leftValue, rightValue);
+    AnyValue* result = IntegerValue::create(leftValue->value % rightValue->value, mp);
+    return result;
 }
 
 std::string Mod::toString() const {

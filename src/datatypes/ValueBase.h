@@ -36,7 +36,7 @@ public:
     // virtual bool greaterThanOrEqual(AnyValue * that) = 0;
     
     // // Conversion
-    // virtual bool asBoolean() = 0;
+    virtual bool asBoolean() const;
     // virtual int asInteger() = 0;
     // virtual float asFloat() = 0;
     // virtual std::string asString() = 0;
@@ -78,6 +78,7 @@ public:
     static BooleanValue* create(bool _value, MemoryPool* _mp);
     virtual std::string toString() const override;
     virtual bool equalToSemantically(AnyValue* that) const override;
+    virtual bool asBoolean() const override;
     // virtual bool equalTo(AnyValue* that) const override;
 private:
     BooleanValue(bool _value);
@@ -108,6 +109,7 @@ public:
     static StringValue* create(const std::string& _value);
     static StringValue* create(const char* _value, size_t _len, MemoryPool* _mp);
     static StringValue* create(const char* _value, MemoryPool* _mp);
+    static int compare(const char* s1, size_t n1, const char* s2, size_t n2);
     virtual std::string toString() const override;
     virtual bool equalToSemantically(AnyValue* that) const override;
     // virtual bool equalTo(AnyValue* that) const override;
