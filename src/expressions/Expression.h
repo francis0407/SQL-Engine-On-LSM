@@ -59,7 +59,7 @@ public:
     virtual bool isLeafExpression() const;
     virtual bool isUnaryExpression() const;
     virtual bool isBinaryExpression() const;
-    virtual void resolveDataType() const;
+    virtual void resolveDataType();
 
     virtual ExpressionBase* transform(const std::function<ExpressionBase*(ExpressionBase*)>& func) = 0;
 };
@@ -68,6 +68,7 @@ class LeafExpression: public ExpressionBase {
 public:
     LeafExpression(ExpressionType _type);
     virtual ~LeafExpression();
+    virtual bool isLeafExpression() const override;
     virtual ExpressionBase* transform(const std::function<ExpressionBase*(ExpressionBase*)>& func) override;
     // Literals or AttributeReferences
 };
@@ -77,6 +78,7 @@ public:
     UnaryExpression(ExpressionBase* _child, ExpressionType _type);
     virtual ~UnaryExpression();
     ExpressionBase* &child;
+    virtual bool isUnaryExpression() const override;
     virtual ExpressionBase* transform(const std::function<ExpressionBase*(ExpressionBase*)>& func) override;
 };
 
@@ -85,7 +87,8 @@ public:
     BinaryExpression(ExpressionBase* _left, ExpressionBase* _right, ExpressionType _type);
     virtual ~BinaryExpression();
     ExpressionBase* &left;
-    ExpressionBase* &right ;
+    ExpressionBase* &right;
+    virtual bool isBinaryExpression() const override;
     virtual ExpressionBase* transform(const std::function<ExpressionBase*(ExpressionBase*)>& func) override;
 };
 

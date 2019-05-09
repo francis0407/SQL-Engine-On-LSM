@@ -8,6 +8,17 @@ Not::Not(ExpressionBase* _child) : UnaryExpression(_child, _Not) {
 
 }
 
+void Not::resolveDataType() {
+    switch (child->dataType) {
+        case Unresolved:
+            dataType = Unresolved;
+            break;
+        default:
+            dataType = Boolean;
+            break;
+    }
+}
+
 AnyValue* Not::eval(Row* row, MemoryPool* mp) {
     return nullptr;
 }
@@ -20,6 +31,14 @@ std::string Not::toString() const {
 
 And::And(ExpressionBase* _left, ExpressionBase* _right) : BinaryExpression(_left, _right, _And) {
 
+}
+
+void And::resolveDataType() {
+    if (left->dataType == Unresolved || right->dataType == Unresolved)
+        dataType = Unresolved;
+    else {
+        dataType = Boolean;
+    }
 }
 
 AnyValue* And::eval(Row* row, MemoryPool* mp) {
@@ -37,6 +56,13 @@ Or::Or(ExpressionBase* _left, ExpressionBase* _right) : BinaryExpression(_left, 
 
 }
 
+void Or::resolveDataType() {
+    if (left->dataType == Unresolved || right->dataType == Unresolved)
+        dataType = Unresolved;
+    else {
+        dataType = Boolean;
+    }
+}
 AnyValue* Or::eval(Row* row, MemoryPool* mp) {
     return nullptr;
 }

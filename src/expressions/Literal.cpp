@@ -23,7 +23,7 @@ Literal::~Literal() {
         delete value;
 }
 
-DataType Literal::dataType() const {
+DataType Literal::valueType() const {
     return value->valueType;
 }
 

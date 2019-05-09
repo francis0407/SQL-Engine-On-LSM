@@ -11,6 +11,8 @@ bool ExpressionBase::isBinaryExpression() const { return false;}
 bool ExpressionBase::isUnaryExpression() const { return false;}
 bool ExpressionBase::isLeafExpression() const { return false;}
 
+void ExpressionBase::resolveDataType() { return;}
+
 AnyValue* ExpressionBase::eval(Row* r) {
     MemoryPool mp; // use a new MemoryPool
     AnyValue* result = eval(r, &mp);
@@ -26,6 +28,8 @@ LeafExpression::~LeafExpression() {
     
 }
 
+bool LeafExpression::isLeafExpression() const { return true; }
+
 ExpressionBase* LeafExpression::transform(const std::function<ExpressionBase*(ExpressionBase*)>& func) {
     return func(this);    
 }
@@ -39,6 +43,7 @@ UnaryExpression::~UnaryExpression() {
     if (child != nullptr)
         delete child;
 }
+bool UnaryExpression::isUnaryExpression() const { return true; }
 
 ExpressionBase* UnaryExpression::transform(const std::function<ExpressionBase*(ExpressionBase*)>& func) {
     child = func(child);
@@ -54,6 +59,10 @@ BinaryExpression::~BinaryExpression() {
         delete left;
     if (right != nullptr)
         delete right;
+}
+
+bool BinaryExpression::isBinaryExpression() const {
+    return true;
 }
 
 ExpressionBase* BinaryExpression::transform(const std::function<ExpressionBase*(ExpressionBase*)>& func) {

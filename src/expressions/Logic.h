@@ -10,6 +10,7 @@ public:
     Not(ExpressionBase* _child);  
     virtual AnyValue* eval(Row* r, MemoryPool* mp) override;
     virtual std::string toString() const override;
+    virtual void resolveDataType() override;
 };
 
 class And : public BinaryExpression {
@@ -17,6 +18,7 @@ public:
     And(ExpressionBase* _left, ExpressionBase* _right);
     virtual AnyValue* eval(Row* r, MemoryPool* mp) override;
     virtual std::string toString() const override;
+    virtual void resolveDataType() override;
 };
 
 class Or : public BinaryExpression {
@@ -24,6 +26,7 @@ public:
     Or(ExpressionBase* _left, ExpressionBase* _right);
     virtual AnyValue* eval(Row* r, MemoryPool* mp) override;
     virtual std::string toString() const override;
+    virtual void resolveDataType() override;
 };
 
 }} // namespace simplesql::expressions
