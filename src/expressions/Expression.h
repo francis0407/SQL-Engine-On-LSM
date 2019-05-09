@@ -7,6 +7,7 @@
 #include "Row.h"
 #include "MemoryPool.h"
 #include "datatypes/ValueBase.h"
+#include "expressions/EvaluationException.h"
 
 namespace simplesql {
 
@@ -60,6 +61,10 @@ public:
     virtual bool isUnaryExpression() const;
     virtual bool isBinaryExpression() const;
     virtual void resolveDataType();
+    void checkNullResult(AnyValue* v);
+    void checkNullResult(AnyValue* v1, AnyValue* v2);
+    void throwErrorType(DataType inputType);
+    void throwErrorType(DataType inputType1, DataType inputType2);
 
     virtual ExpressionBase* transform(const std::function<ExpressionBase*(ExpressionBase*)>& func) = 0;
 };
@@ -91,5 +96,32 @@ public:
     virtual bool isBinaryExpression() const override;
     virtual ExpressionBase* transform(const std::function<ExpressionBase*(ExpressionBase*)>& func) override;
 };
+
+
+inline void ExpressionBase::checkNullResult(AnyValue* v) {
+    if (v == nullptr) 
+        throw EvaluationException(
+                std::string("nullptr in Expression:") + std::to_string(type) + " " + toString());
+}
+
+inline void ExpressionBase::checkNullResult(AnyValue* v1, AnyValue* v2) {
+    if (v1 == nullptr || v2 == nullptr) 
+        throw EvaluationException(
+                std::string("nullptr in Expression:") + std::to_string(type) + " " + toString());
+}
+
+inline void ExpressionBase::throwErrorType(DataType inputType) {
+    throw EvaluationException(
+        std::string("Wrong input type:") + std::to_string(inputType) 
+            + "in Expression: " + std::to_string(type) + " " + toString()
+    );
+}
+
+inline void ExpressionBase::throwErrorType(DataType inputType1, DataType inputType2) {
+    throw EvaluationException(
+        std::string("Wrong input type:") + std::to_string(inputType1) + "," + std::to_string(inputType2)
+            + "in Expression: " + std::to_string(type) + " " + toString()
+    );
+}
 
 }} // namespace simplesql::expressions

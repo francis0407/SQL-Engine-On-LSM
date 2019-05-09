@@ -4,7 +4,9 @@
 using namespace simplesql::expressions;
 using namespace simplesql::datatypes;
 
-ExpressionBase::ExpressionBase(ExpressionType _type) : type(_type), dataType(Unresolved) {}
+ExpressionBase::ExpressionBase(ExpressionType _type) : type(_type), dataType(Unresolved) {
+    resolveDataType();
+}
 ExpressionBase::~ExpressionBase(){}
 
 bool ExpressionBase::isBinaryExpression() const { return false;}

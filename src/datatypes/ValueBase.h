@@ -17,6 +17,8 @@ enum DataType : unsigned char { // ensure the enum variable only use ONE BYTE
     String
 };
 
+bool isNumber(DataType type);
+
 class AnyValue {
 public:   
     virtual ~AnyValue();

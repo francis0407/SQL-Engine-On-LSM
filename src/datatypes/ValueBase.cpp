@@ -5,6 +5,10 @@
 using namespace simplesql::datatypes;
 using namespace simplesql;
 
+bool isNumber(DataType type) {
+    return type == Integer || type == Float;
+}
+
 AnyValue::AnyValue() {}
 AnyValue::~AnyValue() {}
 

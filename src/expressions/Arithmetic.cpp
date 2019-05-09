@@ -9,8 +9,30 @@ UnaryMinus::UnaryMinus(ExpressionBase* _child) : UnaryExpression(_child, _UnaryM
 
 }
 
+void UnaryMinus::resolveDataType() {
+    if (!isNumber(child->dataType))
+        dataType = Unresolved;
+    else
+        dataType = child->dataType;
+}
+
 AnyValue* UnaryMinus::eval(Row* r, MemoryPool* mp) {
-    return nullptr;
+    AnyValue* childValue = child->eval(r, mp);
+    AnyValue* result = nullptr;
+    checkNullResult(childValue);
+    switch(childValue->valueType) {
+        case Integer:
+            result = IntegerValue::create(
+                -(((IntegerValue*)childValue)->value), mp);
+            break;
+        case Float:
+            result = FloatValue::create(
+                -(((FloatValue*)childValue)->value), mp);
+            break;
+        default:
+            throwErrorType(childValue->valueType);
+    }
+    return result;
 }
 
 std::string UnaryMinus::toString() const {
@@ -19,12 +41,41 @@ std::string UnaryMinus::toString() const {
     return result;
 }
 
-Add::Add(ExpressionBase* _left, ExpressionBase* _right) : BinaryExpression(_left, _right, _Add) {
+BinaryArithmetic::BinaryArithmetic(ExpressionBase* _left, ExpressionBase* _right, ExpressionType _type)
+    : BinaryExpression(_left, _right, _type) {
+
+}
+
+void BinaryArithmetic::resolveDataType() {
+    if (!isNumber(left->dataType) || !isNumber(right->dataType))
+        dataType = Unresolved;
+    else if (left->dataType == Float || right->dataType == Float)
+        dataType = Float;
+    else
+        dataType = Integer;
+}
+
+Add::Add(ExpressionBase* _left, ExpressionBase* _right) : BinaryArithmetic(_left, _right, _Add) {
 
 }
 
 AnyValue* Add::eval(Row* r, MemoryPool* mp) {
-    return nullptr;
+    AnyValue* leftValue = left->eval(r, mp);
+    AnyValue* rightValue = right->eval(r, mp);
+    checkNullResult(leftValue, rightValue);
+    AnyValue* result = nullptr;
+    if ((leftValue->valueType == Float && rightValue->valueType == Integer)
+        || (leftValue->valueType == Integer && rightValue->valueType == Float)) {
+        result = FloatValue::create(
+            ((FloatValue*)leftValue)->value + ((IntegerValue*)rightValue)->value, mp);
+    } else if (leftValue->valueType == Float && rightValue->valueType == Float) {
+        result = FloatValue::create(
+            ((FloatValue*)leftValue)->value + ((FloatValue*)rightValue)->value, mp);
+    } else if (leftValue->valueType == Integer && rightValue->valueType == Integer) {
+        result = IntegerValue::create(
+            ((IntegerValue*)leftValue)->value + ((IntegerValue*)rightValue)->value, mp);
+    }
+    return result;
 }
 
 std::string Add::toString() const {
@@ -34,7 +85,7 @@ std::string Add::toString() const {
     return result;
 }
 
-Minus::Minus(ExpressionBase* _left, ExpressionBase* _right) : BinaryExpression(_left, _right, _Minus) {
+Minus::Minus(ExpressionBase* _left, ExpressionBase* _right) : BinaryArithmetic(_left, _right, _Minus) {
 
 }
 
@@ -49,7 +100,7 @@ std::string Minus::toString() const {
     return result;
 }
 
-Multiply::Multiply(ExpressionBase* _left, ExpressionBase* _right) : BinaryExpression(_left, _right, _Multiply) {
+Multiply::Multiply(ExpressionBase* _left, ExpressionBase* _right) : BinaryArithmetic(_left, _right, _Multiply) {
 
 }
 
@@ -64,7 +115,7 @@ std::string Multiply::toString() const {
     return result;
 }
 
-Divide::Divide(ExpressionBase* _left, ExpressionBase* _right) : BinaryExpression(_left, _right, _Divide) {
+Divide::Divide(ExpressionBase* _left, ExpressionBase* _right) : BinaryArithmetic(_left, _right, _Divide) {
 
 }
 
@@ -79,7 +130,7 @@ std::string Divide::toString() const {
     return result;
 }
 
-Mod::Mod(ExpressionBase* _left, ExpressionBase* _right) : BinaryExpression(_left, _right, _Mod) {
+Mod::Mod(ExpressionBase* _left, ExpressionBase* _right) : BinaryArithmetic(_left, _right, _Mod) {
 
 }
 

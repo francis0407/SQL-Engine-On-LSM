@@ -11,37 +11,44 @@ public:
 
     virtual AnyValue* eval(Row* r, MemoryPool* mp) override;
     virtual std::string toString() const override;
+    virtual void resolveDataType() override; 
 };
 
-class Add : public BinaryExpression {
+class BinaryArithmetic : public BinaryExpression {
+public:
+    BinaryArithmetic(ExpressionBase* _left, ExpressionBase* _right, ExpressionType _type);
+    virtual void resolveDataType() override;    
+};
+
+class Add : public BinaryArithmetic {
 public:
     Add(ExpressionBase* _left, ExpressionBase* _right);
     virtual AnyValue* eval(Row* r, MemoryPool* mp) override;
     virtual std::string toString() const override;
 };
 
-class Minus : public BinaryExpression {
+class Minus : public BinaryArithmetic {
 public:
     Minus(ExpressionBase* _left, ExpressionBase* _right);
     virtual AnyValue* eval(Row* r, MemoryPool* mp) override;
     virtual std::string toString() const override;
 };
 
-class Multiply : public BinaryExpression {
+class Multiply : public BinaryArithmetic {
 public:
     Multiply(ExpressionBase* _left, ExpressionBase* _right);
     virtual AnyValue* eval(Row* r, MemoryPool* mp) override;
     virtual std::string toString() const override;
 };
 
-class Divide : public BinaryExpression {
+class Divide : public BinaryArithmetic {
 public:
     Divide(ExpressionBase* _left, ExpressionBase* _right);
     virtual AnyValue* eval(Row* r, MemoryPool* mp) override;
     virtual std::string toString() const override;
 };
 
-class Mod : public BinaryExpression {
+class Mod : public BinaryArithmetic {
 public:
     Mod(ExpressionBase* _left, ExpressionBase* _right);
     virtual AnyValue* eval(Row* r, MemoryPool* mp) override;

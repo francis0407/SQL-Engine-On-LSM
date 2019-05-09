@@ -4,7 +4,21 @@
 using namespace simplesql::expressions;
 using namespace simplesql::datatypes;
 
-EqualTo::EqualTo(ExpressionBase* _left, ExpressionBase* _right) : BinaryExpression(_left, _right, _EqualTo) {
+Comparison::Comparison(ExpressionBase* _left, ExpressionBase* _right, ExpressionType _type)
+    : BinaryExpression(_left, _right, _type) {
+
+}
+
+void Comparison::resolveDataType() {
+    if (!isNumber(left->dataType) || !isNumber(right->dataType)) {
+        dataType = Unresolved;
+        return;
+    }
+    dataType = Boolean;
+}
+
+
+EqualTo::EqualTo(ExpressionBase* _left, ExpressionBase* _right) : Comparison(_left, _right, _EqualTo) {
 
 }
 
@@ -19,7 +33,7 @@ std::string EqualTo::toString() const {
     return result;
 }
 
-LessThan::LessThan(ExpressionBase* _left, ExpressionBase* _right) : BinaryExpression(_left, _right, _LessThan) {
+LessThan::LessThan(ExpressionBase* _left, ExpressionBase* _right) : Comparison(_left, _right, _LessThan) {
 
 }
 
@@ -34,7 +48,7 @@ std::string LessThan::toString() const {
     return result;
 }
 
-LessThanOrEqual::LessThanOrEqual(ExpressionBase* _left, ExpressionBase* _right) : BinaryExpression(_left, _right, _LessThanOrEqual) {
+LessThanOrEqual::LessThanOrEqual(ExpressionBase* _left, ExpressionBase* _right) : Comparison(_left, _right, _LessThanOrEqual) {
 
 }
 
@@ -49,7 +63,7 @@ std::string LessThanOrEqual::toString() const {
     return result;
 }
 
-GreaterThan::GreaterThan(ExpressionBase* _left, ExpressionBase* _right) : BinaryExpression(_left, _right, _GreaterThan) {
+GreaterThan::GreaterThan(ExpressionBase* _left, ExpressionBase* _right) : Comparison(_left, _right, _GreaterThan) {
 
 }
         
@@ -64,7 +78,7 @@ std::string GreaterThan::toString() const {
     return result;
 }
 
-GreaterThanOrEqual::GreaterThanOrEqual(ExpressionBase* _left, ExpressionBase* _right) : BinaryExpression(_left, _right, _GreaterThanOrEqual) {
+GreaterThanOrEqual::GreaterThanOrEqual(ExpressionBase* _left, ExpressionBase* _right) : Comparison(_left, _right, _GreaterThanOrEqual) {
 
 }
 

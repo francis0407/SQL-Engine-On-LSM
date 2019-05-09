@@ -9,14 +9,10 @@ Not::Not(ExpressionBase* _child) : UnaryExpression(_child, _Not) {
 }
 
 void Not::resolveDataType() {
-    switch (child->dataType) {
-        case Unresolved:
-            dataType = Unresolved;
-            break;
-        default:
-            dataType = Boolean;
-            break;
-    }
+    if (child->dataType == Unresolved)
+        dataType = Unresolved;
+    else 
+        dataType = Boolean;
 }
 
 AnyValue* Not::eval(Row* row, MemoryPool* mp) {
