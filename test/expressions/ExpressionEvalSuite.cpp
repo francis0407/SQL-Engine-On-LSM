@@ -72,5 +72,79 @@ TEST_F(ExpressionEvalSuite, ArithmeticExpression) {
 }
 
 TEST_F(ExpressionEvalSuite, ComparisonExpression) {
+    assertExpression(new EqualTo(literal(1), literal(2)), false);
+    assertExpression(new EqualTo(literal(3), literal(3)), true);
+    assertExpression(new EqualTo(literal(4), literal(3.0f)), false);
+    assertExpression(new EqualTo(literal(3), literal(3.0f)), true);
+    assertExpression(new EqualTo(literal(3.0f), literal(3.0f)), true);
+    assertExpression(new EqualTo(literal(true), literal(true)), true);
+    assertExpression(new EqualTo(literal(true), literal(false)), false);
+    assertExpression(new EqualTo(literal("xxx"), literal("xxxy")), false);
+    assertExpression(new EqualTo(literal("xxx"), literal("xxx")), true);
+
+    assertExpression(new LessThan(literal(1), literal(2)), true);
+    assertExpression(new LessThan(literal(3), literal(3)), false);
+    assertExpression(new LessThan(literal(5), literal(3)), false);
+    assertExpression(new LessThan(literal(4), literal(3.0f)), false);
+    assertExpression(new LessThan(literal(2), literal(3.0f)), true);
+    assertExpression(new LessThan(literal(3.0f), literal(3.0f)), false);
+    assertExpression(new LessThan(literal(true), literal(true)), false);
+    assertExpression(new LessThan(literal(false), literal(true)), false);
+    assertExpression(new LessThan(literal("xxx"), literal("xxxy")), true);
+    assertExpression(new LessThan(literal("xxx"), literal("xxx")), false);
+    assertExpression(new LessThan(literal("aaaa"), literal("bb")), true);
+
+    assertExpression(new LessThanOrEqual(literal(1), literal(2)), true);
+    assertExpression(new LessThanOrEqual(literal(3), literal(3)), true);
+    assertExpression(new LessThanOrEqual(literal(4), literal(3.0f)), false);
+    assertExpression(new LessThanOrEqual(literal(3), literal(3.0f)), true);
+    assertExpression(new LessThanOrEqual(literal(5.0f), literal(3.0f)), false);
+    assertExpression(new LessThanOrEqual(literal(true), literal(true)), true);
+    assertExpression(new LessThanOrEqual(literal(true), literal(false)), false);
+    assertExpression(new LessThanOrEqual(literal(false), literal(true)), true);
+    assertExpression(new LessThanOrEqual(literal("xxx"), literal("xxxy")), true);
+    assertExpression(new LessThanOrEqual(literal("xxx"), literal("xxx")), true);
+    assertExpression(new LessThanOrEqual(literal("aaab"), literal("aabc")), true);
     
+    assertExpression(new GreaterThan(literal(1), literal(2)), false);
+    assertExpression(new GreaterThan(literal(3), literal(3)), false);
+    assertExpression(new GreaterThan(literal(4), literal(3.0f)), true);
+    assertExpression(new GreaterThan(literal(3), literal(3.0f)), false);
+    assertExpression(new GreaterThan(literal(5.0f), literal(3.0f)), true);
+    assertExpression(new GreaterThan(literal(true), literal(true)), false);
+    assertExpression(new GreaterThan(literal(true), literal(false)), true);
+    assertExpression(new GreaterThan(literal(false), literal(true)), false);
+    assertExpression(new GreaterThan(literal("xxx"), literal("xxxy")), false);
+    assertExpression(new GreaterThan(literal("xxx"), literal("xxx")), false);
+    assertExpression(new GreaterThan(literal("aaab"), literal("aabc")), false);
+    
+    assertExpression(new GreaterThanOrEqual(literal(1), literal(2)), false);
+    assertExpression(new GreaterThanOrEqual(literal(3), literal(3)), true);
+    assertExpression(new GreaterThanOrEqual(literal(5), literal(3)), true);
+    assertExpression(new GreaterThanOrEqual(literal(4), literal(3.0f)), true);
+    assertExpression(new GreaterThanOrEqual(literal(2), literal(3.0f)), false);
+    assertExpression(new GreaterThanOrEqual(literal(3.0f), literal(3.0f)), true);
+    assertExpression(new GreaterThanOrEqual(literal(true), literal(true)), true);
+    assertExpression(new GreaterThanOrEqual(literal(false), literal(true)), true);
+    assertExpression(new GreaterThanOrEqual(literal("xxx"), literal("xxxy")), false);
+    assertExpression(new GreaterThanOrEqual(literal("xxx"), literal("xxx")), true);
+    assertExpression(new GreaterThanOrEqual(literal("aaaa"), literal("bb")), false);
+}
+
+TEST_F(ExpressionEvalSuite, LogicExpression) {
+    assertExpression(new Not(literal("fuck")), false);
+    assertExpression(new Not(literal(1)), false);
+    assertExpression(new Not(literal(10.0f)), false);
+    assertExpression(new Not(literal(true)), false);
+    assertExpression(new Not(literal(false)), true);
+
+    assertExpression(new And(literal(true), literal(true)), true);
+    assertExpression(new And(literal(true), literal(false)), false);
+    assertExpression(new And(literal(false), literal(true)), false);
+    assertExpression(new And(literal(false), literal(false)), false);
+
+    assertExpression(new Or(literal(true), literal(true)), true);
+    assertExpression(new Or(literal(false), literal(true)), true);
+    assertExpression(new Or(literal(true), literal(false)), true);
+    assertExpression(new Or(literal(false), literal(false)), false);
 }
