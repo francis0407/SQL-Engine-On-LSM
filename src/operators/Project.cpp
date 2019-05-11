@@ -4,11 +4,11 @@
 namespace simplesql {
 namespace operators {
 
-Project::Project(const std::vector<ExpressionBase *>& _projectList, OperatorBase* _child) : OperatorBase(_Project) {
+Project::Project(const std::vector<ExpressionBase *>& _projectList, OperatorBase* _child) 
+    : OperatorBase(_Project), child(children[0]) {
     child = _child;
     projectList.assign(_projectList.begin(), _projectList.end());
 
-    children[0] = _child;
     children[1] = nullptr;
 }
 
@@ -38,6 +38,13 @@ bool Project::open() {
 bool Project::close() {
     
     return child->close();
+}
+
+std::string Project::projectString() const {
+    std::string result;
+    for (auto iter : projectList) 
+        result += iter->toString() + ",";
+    return result;
 }
 
 NextResult Project::next() {

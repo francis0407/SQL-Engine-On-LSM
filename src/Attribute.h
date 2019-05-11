@@ -19,6 +19,7 @@ public:
     
     
     DataType dataType;
+    int group;
     int offset;
     std::string name;
     std::string tableReference;

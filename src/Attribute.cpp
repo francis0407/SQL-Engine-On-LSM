@@ -6,7 +6,7 @@ Attribute::Attribute() {
 
 }
 Attribute::Attribute(DataType _datatype, int _offset, std::string _name)
-    : dataType(_datatype), offset(_offset), name(_name) {
+    : dataType(_datatype), group(0), offset(_offset), name(_name) {
 
 }
 
@@ -35,11 +35,12 @@ void AttributeSeq::append(const Attribute& attr) {
 }
 
 Attribute* AttributeSeq::findAttribute(const Attribute& attr) {
-    for (auto iter : attributes) {
-        if (iter.equalTo(attr))
-            return &iter;
-        if (attr.tableReference.empty() && iter.name == attr.name)
-            return &iter;
+    for (int i = 0; i < attributes.size(); i++) {
+        Attribute* iter = &attributes[i];
+        if (iter->equalTo(attr))
+            return iter;
+        if (attr.tableReference.empty() && iter->name == attr.name)
+            return iter;
     }
     return nullptr;
 }

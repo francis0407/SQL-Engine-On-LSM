@@ -7,10 +7,10 @@ namespace catalog {
 
 class CatalogBase {
 public:
-    CatalogBase();
-    virtual ~CatalogBase();
+    CatalogBase(){}
+    virtual ~CatalogBase(){}
     
-    bool findRelation(RelationReference& relation);
+    virtual bool findRelation(RelationReference& relation) = 0;
 
 };
 

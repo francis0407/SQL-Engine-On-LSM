@@ -33,9 +33,13 @@ AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/src/expressions" simplesql_expressio
 AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/src/datatypes" simplesql_datatypes)
 AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/src/operators" simplesql_operators)
 AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/src/parser" simplesql_parser)
+AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/src/analyzer" simplesql_analyzer)
 AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/src/parser/antlr" simplesql_parser_antlr)
 
 AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/test/parser" tests_parser)
+AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/test/expressions" tests_expressions)
+AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/test/analyzer" tests_analyzer)
+
 AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/test" tests)
 link_libraries(
    "${PROJECT_SOURCE_DIR}/lib/libgtest.a"
@@ -51,6 +55,8 @@ add_executable(unit_test # 输出名为xxx的可执行文件
    ${simplesql_operators}
    ${simplesql_parser}
    ${simplesql_parser_antlr}
+   ${simplesql_analyzer}
    ${tests_parser}
-   #${tests}
+   ${tests_analyzer}
+   ${tests_expressions}
 )

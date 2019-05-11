@@ -10,17 +10,13 @@ InnerJoin::InnerJoin(
     OperatorBase* _right, 
     JoinSide _side, 
     ExpressionBase* _condition,
-    JoinMethod _method) : OperatorBase(_InnerJoin) {
+    JoinMethod _method) : OperatorBase(_InnerJoin), left(children[0]), right(children[1]) {
 
     left = _left;
     right = _right;
     side = _side;
     condition = _condition == nullptr? Literal::create(true) : _condition;
     method = _method;
-
-    children[0] = left;
-    children[1] = right;
-    
 }
 
 InnerJoin::~InnerJoin() {

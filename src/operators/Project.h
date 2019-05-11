@@ -23,7 +23,7 @@ public:
     std::string projectString() const;
     bool hasNoneReference = true; // should analyze the project list to change this
 
-    OperatorBase* child = nullptr;
+    OperatorBase* &child;
 };
 
 }} // namespace simplesql::operators

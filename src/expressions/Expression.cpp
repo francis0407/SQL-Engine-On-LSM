@@ -37,8 +37,9 @@ ExpressionBase* LeafExpression::transform(const std::function<ExpressionBase*(Ex
 }
 
 UnaryExpression::UnaryExpression(ExpressionBase* _child, ExpressionType _type)
- : ExpressionBase(_type), child(_child) {
+ : ExpressionBase(_type), child(children[0]) {
     children[1] = nullptr;
+    child = _child;
 }
 
 UnaryExpression::~UnaryExpression() {
@@ -53,7 +54,9 @@ ExpressionBase* UnaryExpression::transform(const std::function<ExpressionBase*(E
 }
 
 BinaryExpression::BinaryExpression(ExpressionBase* _left, ExpressionBase* _right, ExpressionType _type)
- : ExpressionBase(_type), left(_left), right(_right) {
+ : ExpressionBase(_type), left(children[0]), right(children[1]) {
+     left = _left;
+     right = _right;
 }
 
 BinaryExpression::~BinaryExpression() {

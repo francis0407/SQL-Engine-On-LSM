@@ -26,7 +26,7 @@ public:
     virtual bool equalTo(ExpressionBase* that) const override;
     virtual std::string toString() const override;
     DataType valueType() const;
-    virtual void resolveDataType() override;
+    // virtual void resolveDataType() override;
     AnyValue* value = nullptr;
 protected:
     Literal(AnyValue* _value);

@@ -64,10 +64,12 @@ AnyValue* Add::eval(Row* r, MemoryPool* mp) {
     AnyValue* rightValue = right->eval(r, mp);
     checkNullResult(leftValue, rightValue);
     AnyValue* result = nullptr;
-    if ((leftValue->valueType == Float && rightValue->valueType == Integer)
-        || (leftValue->valueType == Integer && rightValue->valueType == Float)) {
+    if (leftValue->valueType == Float && rightValue->valueType == Integer) {
         result = FloatValue::create(
             ((FloatValue*)leftValue)->value + ((IntegerValue*)rightValue)->value, mp);
+    } else if (leftValue->valueType == Integer && rightValue->valueType == Float) {
+        result = FloatValue::create(
+            ((IntegerValue*)leftValue)->value + ((FloatValue*)rightValue)->value, mp);
     } else if (leftValue->valueType == Float && rightValue->valueType == Float) {
         result = FloatValue::create(
             ((FloatValue*)leftValue)->value + ((FloatValue*)rightValue)->value, mp);
@@ -94,11 +96,13 @@ AnyValue* Minus::eval(Row* r, MemoryPool* mp) {
     AnyValue* rightValue = right->eval(r, mp);
     checkNullResult(leftValue, rightValue);
     AnyValue* result = nullptr;
-    if ((leftValue->valueType == Float && rightValue->valueType == Integer)
-        || (leftValue->valueType == Integer && rightValue->valueType == Float)) {
+    if (leftValue->valueType == Float && rightValue->valueType == Integer) {
         result = FloatValue::create(
             ((FloatValue*)leftValue)->value - ((IntegerValue*)rightValue)->value, mp);
-    } else if (leftValue->valueType == Float && rightValue->valueType == Float) {
+    } else if (leftValue->valueType == Integer && rightValue->valueType == Float) {
+        result = FloatValue::create(
+            ((IntegerValue*)leftValue)->value - ((FloatValue*)rightValue)->value, mp);
+    }  else if (leftValue->valueType == Float && rightValue->valueType == Float) {
         result = FloatValue::create(
             ((FloatValue*)leftValue)->value - ((FloatValue*)rightValue)->value, mp);
     } else if (leftValue->valueType == Integer && rightValue->valueType == Integer) {
@@ -124,11 +128,13 @@ AnyValue* Multiply::eval(Row* r, MemoryPool* mp) {
     AnyValue* rightValue = right->eval(r, mp);
     checkNullResult(leftValue, rightValue);
     AnyValue* result = nullptr;
-    if ((leftValue->valueType == Float && rightValue->valueType == Integer)
-        || (leftValue->valueType == Integer && rightValue->valueType == Float)) {
+    if (leftValue->valueType == Float && rightValue->valueType == Integer) {
         result = FloatValue::create(
             ((FloatValue*)leftValue)->value * ((IntegerValue*)rightValue)->value, mp);
-    } else if (leftValue->valueType == Float && rightValue->valueType == Float) {
+    } else if (leftValue->valueType == Integer && rightValue->valueType == Float) {
+        result = FloatValue::create(
+            ((IntegerValue*)leftValue)->value * ((FloatValue*)rightValue)->value, mp);
+    }  else if (leftValue->valueType == Float && rightValue->valueType == Float) {
         result = FloatValue::create(
             ((FloatValue*)leftValue)->value * ((FloatValue*)rightValue)->value, mp);
     } else if (leftValue->valueType == Integer && rightValue->valueType == Integer) {
@@ -154,11 +160,13 @@ AnyValue* Divide::eval(Row* r, MemoryPool* mp) {
     AnyValue* rightValue = right->eval(r, mp);
     checkNullResult(leftValue, rightValue);
     AnyValue* result = nullptr;
-    if ((leftValue->valueType == Float && rightValue->valueType == Integer)
-        || (leftValue->valueType == Integer && rightValue->valueType == Float)) {
+    if (leftValue->valueType == Float && rightValue->valueType == Integer) {
         result = FloatValue::create(
             ((FloatValue*)leftValue)->value / ((IntegerValue*)rightValue)->value, mp);
-    } else if (leftValue->valueType == Float && rightValue->valueType == Float) {
+    } else if (leftValue->valueType == Integer && rightValue->valueType == Float) {
+        result = FloatValue::create(
+            ((IntegerValue*)leftValue)->value / ((FloatValue*)rightValue)->value, mp);
+    }  else if (leftValue->valueType == Float && rightValue->valueType == Float) {
         result = FloatValue::create(
             ((FloatValue*)leftValue)->value / ((FloatValue*)rightValue)->value, mp);
     } else if (leftValue->valueType == Integer && rightValue->valueType == Integer) {

@@ -13,7 +13,6 @@ using namespace simplesql::catalog;
 class Analyzer : public RuleExecutor {
 public:
     Analyzer(CatalogBase* _catalog);
-
 private:
     CatalogBase* catalog;
 };

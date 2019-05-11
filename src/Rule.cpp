@@ -26,13 +26,13 @@ OperatorBase* RuleBase::recursivelyApply(OperatorBase* opt) {
     if (opt->isLeafOperator())
         return apply(opt);
     else if (opt->isUnaryOperator()) {
-        OperatorBase* child = apply(opt->children[0]);
+        OperatorBase* child = recursivelyApply(opt->children[0]);
         opt->children[0] = child;
         return apply(opt);
     }
     else {
-        OperatorBase* newLeft = apply(opt->children[0]);
-        OperatorBase* newRight = apply(opt->children[1]);
+        OperatorBase* newLeft = recursivelyApply(opt->children[0]);
+        OperatorBase* newRight = recursivelyApply(opt->children[1]);
         opt->children[0] = newLeft;
         opt->children[1] = newRight;
         return apply(opt);
@@ -64,4 +64,5 @@ OperatorBase* RuleExecutor::execute(OperatorBase* opt) {
             }
         }
     }
+    return opt;
 }

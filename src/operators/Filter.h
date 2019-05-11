@@ -15,7 +15,7 @@ public:
     bool close() override;
     virtual bool equalTo(OperatorBase* that) const override;
     ExpressionBase* condition = nullptr;
-    OperatorBase* child = nullptr;
+    OperatorBase* &child;
 };
 
 

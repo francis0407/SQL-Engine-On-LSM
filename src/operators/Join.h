@@ -27,8 +27,8 @@ public:
     bool close() override;
     virtual bool equalTo(OperatorBase* that) const override;
 
-    OperatorBase* left = nullptr;
-    OperatorBase* right = nullptr;
+    OperatorBase* &left;
+    OperatorBase* &right;
 
     ExpressionBase* condition = nullptr;
     JoinSide side;

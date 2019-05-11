@@ -6,11 +6,11 @@ namespace operators {
 
 using namespace simplesql::expressions;
 
-Filter::Filter(ExpressionBase* _condition, OperatorBase* _child) : OperatorBase(_Filter) {
+Filter::Filter(ExpressionBase* _condition, OperatorBase* _child) 
+    : OperatorBase(_Filter), child(children[0]) {
     condition = _condition;
     child = _child;
 
-    children[0] = _child;
     children[1] = nullptr;
 }
 

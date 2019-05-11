@@ -18,7 +18,7 @@ void Not::resolveDataType() {
 AnyValue* Not::eval(Row* row, MemoryPool* mp) {
     AnyValue* childValue = child->eval(row, mp);
     checkNullResult(childValue);
-    BooleanValue* result = BooleanValue::create(!(childValue->asBoolean), mp);
+    BooleanValue* result = BooleanValue::create(!(childValue->asBoolean()), mp);
     return result;
 }
 

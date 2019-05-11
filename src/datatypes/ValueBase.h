@@ -25,7 +25,7 @@ public:
     DataType valueType;      // 4 + 1, avoid memory alignment
     static AnyValue* create(DataType _valueType, byte* _valuePtr) {return nullptr;}
     static AnyValue* create(DataType _valueType, byte* _valuePtr, MemoryPool* _mp) {return nullptr;}
-    virtual AnyValue* makeCopy() {return nullptr;}
+    virtual AnyValue* makeCopy() = 0;
 
     virtual std::string toString() const = 0;
 
@@ -54,52 +54,58 @@ protected:
 
 class IntegerValue: public AnyValue {
 public:
+    IntegerValue();
     virtual ~IntegerValue();
-    static const size_t defaultSize = 12;
     int value = 0;
     static IntegerValue* create(int _value);
     static IntegerValue* create(int _value, MemoryPool* _mp);
-
+    virtual AnyValue* makeCopy() override;
     virtual std::string toString() const override;
     virtual bool equalToSemantically(AnyValue* that) const override;
     // virtual bool equalTo(AnyValue* that) const override;
     // virtual bool greaterThan(AnyValue* that) override;
     // virtual bool greaterThanOrEqual(AnyValue * that) override;
 private:
+    static IntegerValue prototype;
     IntegerValue(int _value);
 };
 
 class BooleanValue: public AnyValue {
 public:
+    BooleanValue();
     virtual ~BooleanValue();
-    static const size_t defaultSize = 6;
     bool value = false;
     static BooleanValue* create(bool _value);
     static BooleanValue* create(bool _value, MemoryPool* _mp);
+    virtual AnyValue* makeCopy() override;
     virtual std::string toString() const override;
     virtual bool equalToSemantically(AnyValue* that) const override;
     virtual bool asBoolean() const override;
     // virtual bool equalTo(AnyValue* that) const override;
 private:
+    static BooleanValue prototype;
     BooleanValue(bool _value);
 };
 
 class FloatValue: public AnyValue {
 public:
+    FloatValue();
     virtual ~FloatValue();
-    static const size_t defaultSize = 12;
     float value = 0.0;
     static FloatValue* create(float _value);
     static FloatValue* create(float _value, MemoryPool* _mp);
+    virtual AnyValue* makeCopy() override;
     virtual std::string toString() const override;
     virtual bool equalToSemantically(AnyValue* that) const override;
     // virtual bool equalTo(AnyValue* that) const override;
 private:
+    static FloatValue prototype;
     FloatValue(float _value);
 };
 
 class StringValue: public AnyValue {
 public:
+    StringValue();
     virtual ~StringValue();
     char* value = nullptr; // a string with 8 bytes in the head
     size_t size() const;
@@ -110,11 +116,15 @@ public:
     static StringValue* create(const char* _value, size_t _len, MemoryPool* _mp);
     static StringValue* create(const char* _value, MemoryPool* _mp);
     static int compare(const char* s1, size_t n1, const char* s2, size_t n2);
+    virtual AnyValue* makeCopy() override;
     virtual std::string toString() const override;
     virtual bool equalToSemantically(AnyValue* that) const override;
     // virtual bool equalTo(AnyValue* that) const override;
 private:
+    static StringValue prototype;
     StringValue(char* _value);
+    static void init(const char* _value, size_t _len, StringValue* target);
+    bool needRelease = false;
 };
 
 }} // namespace simplesql::datatypes
