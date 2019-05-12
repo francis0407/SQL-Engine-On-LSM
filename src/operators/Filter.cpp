@@ -30,27 +30,28 @@ bool Filter::equalTo(OperatorBase* that) const {
 }
 
 bool Filter::open() {
-    return true;
+    return child->open();
+    // return true;
 }
 
 bool Filter::close() {
-    return true;
+    return child->close();
 }
 
 NextResult Filter::next() {
-    // while(true) {
-    //     NextResult nextResult = child->next();
-    //     if (nextResult.row == nullptr)
-    //         return NextResult(nullptr);
+    while(true) {
+        NextResult nextResult = child->next();
+        if (nextResult.row == nullptr)
+            return NextResult(nullptr);
         
-    //     AnyValue* value = condition->eval(nextResult.row);
-    //     bool filtered = !(value->asBoolean());
+        AnyValue* value = condition->eval(nextResult.row);
+        bool filtered = !(value->asBoolean());
 
-    //     if (filtered)
-    //         continue;
-    //     else
-    //         return nextResult;
-    // }
+        if (filtered)
+            continue;
+        else
+            return nextResult;
+    }
     return NextResult(nullptr);
 }
 

@@ -18,6 +18,7 @@ enum DataType : unsigned char { // ensure the enum variable only use ONE BYTE
 };
 
 bool isNumber(DataType type);
+size_t valueSize(DataType type);
 
 class AnyValue {
 public:   

@@ -34,6 +34,13 @@ void AttributeSeq::append(const Attribute& attr) {
     attributes.push_back(attr);
 }
 
+size_t AttributeSeq::bytes() {
+    if (_bytes != 0) return _bytes;
+    for (auto iter : attributes)
+       _bytes += valueSize(iter.dataType);
+    return _bytes;
+}
+
 Attribute* AttributeSeq::findAttribute(const Attribute& attr) {
     for (int i = 0; i < attributes.size(); i++) {
         Attribute* iter = &attributes[i];

@@ -7,7 +7,7 @@
 #include "operators/Project.h"
 #include "operators/Filter.h"
 #include "operators/Join.h"
-#include "operators/SeqScan.h"
+#include "operators/Scan.h"
 
 #include "analyzer/Analyzer.h"
 #include "analyzer/AnalysisException.h"
@@ -102,8 +102,8 @@ TEST_F(AnalyzerSuite, ResolveRelation) {
             new Filter(
                 new EqualTo(new AttributeReference("B1"), new AttributeReference("A2")),
                 new InnerJoin(
-                    new SeqScan(new RelationReference("A")),
-                    new SeqScan(new RelationReference("B")),
+                    new Scan(new RelationReference("A")),
+                    new Scan(new RelationReference("B")),
                     BuildLeft
                 )
             )
@@ -124,8 +124,8 @@ TEST_F(AnalyzerSuite, ResolveRelation) {
             new Filter(
                 new EqualTo(new AttributeReference("B1"), new AttributeReference("A2")),
                 new InnerJoin(
-                    new SeqScan(new RelationReference("C")),
-                    new SeqScan(new RelationReference("B")),
+                    new Scan(new RelationReference("C")),
+                    new Scan(new RelationReference("B")),
                     BuildLeft
                 )
             )
@@ -155,8 +155,8 @@ TEST_F(AnalyzerSuite, ResolveAttributes) {
             new Filter(
                 new EqualTo(new AttributeReference("B1"), new AttributeReference("A2")),
                 new InnerJoin(
-                    new SeqScan(new RelationReference("A")),
-                    new SeqScan(new RelationReference("B")),
+                    new Scan(new RelationReference("A")),
+                    new Scan(new RelationReference("B")),
                     BuildLeft
                 )
             )
@@ -176,8 +176,8 @@ TEST_F(AnalyzerSuite, ResolveAttributes) {
             new Filter(
                 new EqualTo(new AttributeReference("B5"), new AttributeReference("A2")),
                 new InnerJoin(
-                    new SeqScan(new RelationReference("A")),
-                    new SeqScan(new RelationReference("B")),
+                    new Scan(new RelationReference("A")),
+                    new Scan(new RelationReference("B")),
                     BuildLeft
                 )
             )

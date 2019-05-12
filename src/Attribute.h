@@ -30,11 +30,14 @@ public:
     AttributeSeq();
     void clean();
     void append(const Attribute& attribute);
+    size_t bytes();
     Attribute* findAttribute(const Attribute& attr);
     AttributeSeq& operator= (const AttributeSeq& that);
     AttributeSeq& operator+= (const AttributeSeq& that); 
 
     std::vector<Attribute> attributes;
+private:
+    size_t _bytes = 0;
 };
 
 } // namespace simplesql

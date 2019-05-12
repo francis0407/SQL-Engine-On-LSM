@@ -9,7 +9,7 @@
 #include "operators/Project.h"
 #include "operators/Filter.h"
 #include "operators/Join.h"
-#include "operators/SeqScan.h"
+#include "operators/Scan.h"
 
 #include "expressions/Literal.h"
 #include "expressions/Logic.h"
@@ -64,7 +64,7 @@ TEST_F(SelectQueryParserSuite, BasicQuery) {
         "SELECT A FROM B",
         new Project(
             buildExprList(1, new AttributeReference("A")),
-            new SeqScan(new RelationReference("B"))   
+            new Scan(new RelationReference("B"))   
         )
     );
     // S-P
@@ -74,7 +74,7 @@ TEST_F(SelectQueryParserSuite, BasicQuery) {
             buildExprList(1, new AttributeReference("A")),
             new Filter(
                 new GreaterThan(new AttributeReference("C"), new AttributeReference("D")),
-                new SeqScan(new RelationReference("B"))
+                new Scan(new RelationReference("B"))
             )
     ));
     // S-P-J
@@ -85,8 +85,8 @@ TEST_F(SelectQueryParserSuite, BasicQuery) {
             new Filter(
                 new EqualTo(new AttributeReference("E"), new AttributeReference("F")),
                 new InnerJoin(
-                    new SeqScan(new RelationReference("B")),
-                    new SeqScan(new RelationReference("C")),
+                    new Scan(new RelationReference("B")),
+                    new Scan(new RelationReference("C")),
                     BuildLeft
                 )
             )
@@ -103,7 +103,7 @@ TEST_F(SelectQueryParserSuite, MultiAttributeProject) {
                 new AttributeReference("A"), 
                 new AttributeReference("B"),
                 new AttributeReference("C")),
-            new SeqScan(new RelationReference("D"))
+            new Scan(new RelationReference("D"))
         )
     );
 
@@ -116,7 +116,7 @@ TEST_F(SelectQueryParserSuite, MultiAttributeProject) {
                 new Minus(new AttributeReference("B"), new AttributeReference("C")),
                 new AttributeReference("E", "D")
             ),
-            new SeqScan(new RelationReference("E", "P"))
+            new Scan(new RelationReference("E", "P"))
         )
     );
 } 

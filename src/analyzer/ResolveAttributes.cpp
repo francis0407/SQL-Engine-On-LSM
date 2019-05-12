@@ -3,14 +3,14 @@
 #include "expressions/Literal.h"
 #include "analyzer/Analyzer.h"
 #include "analyzer/AnalysisException.h"
-#include "operators/SeqScan.h"
+#include "operators/Scan.h"
 #include "operators/Operator.h"
 #include "operators/Filter.h"
 #include "operators/Project.h"
 #include "operators/Join.h"
 
 using namespace simplesql::analyzer;
-
+ 
 std::function<ExpressionBase*(ExpressionBase*)> ResolveAttributes::resolveAttributes(AttributeSeq* attrs) {
     return [attrs](ExpressionBase* expr) -> ExpressionBase* {
         switch (expr->type) {
@@ -42,8 +42,8 @@ std::function<ExpressionBase*(ExpressionBase*)> ResolveAttributes::resolveAttrib
 
 OperatorBase* ResolveAttributes::apply(OperatorBase* opt) {
     switch (opt->type) {
-        case _SeqScan: {
-            opt->outputs = ((SeqScan*)opt)->reference->attributes;
+        case _Scan: {
+            opt->outputs = ((Scan*)opt)->reference->attributes;
             opt->resolved = true;     
             break;
         }

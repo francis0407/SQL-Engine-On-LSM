@@ -11,11 +11,18 @@ namespace operators {
 using std::string;
 using namespace simplesql::catalog;
 
-class SeqScan: public OperatorBase {
+enum ScanMethod {
+    SeqScan,
+    IndexScan,
+    FileScan,
+    ExtendScan
+};
+
+class Scan: public OperatorBase {
 public:
-    // SeqScan(const string& _tableName); 
-    SeqScan(RelationReference* _relation);
-    virtual ~SeqScan();
+
+    Scan(RelationReference* _relation);
+    virtual ~Scan();
 
     bool open() override;
     NextResult next() override;
@@ -23,7 +30,7 @@ public:
     virtual bool equalTo(OperatorBase* that) const override;
     
     RelationReference* reference;
-    
+    ScanMethod method;
 };
 
 }} // namespace simplesql::operators

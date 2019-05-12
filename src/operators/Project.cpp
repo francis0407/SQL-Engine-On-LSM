@@ -1,14 +1,13 @@
 
 #include "Project.h"
 
-namespace simplesql {
-namespace operators {
-
+using namespace simplesql::operators;
+ 
 Project::Project(const std::vector<ExpressionBase *>& _projectList, OperatorBase* _child) 
     : OperatorBase(_Project), child(children[0]) {
-    child = _child;
+    child = _child; 
     projectList.assign(_projectList.begin(), _projectList.end());
-
+ 
     children[1] = nullptr;
 }
 
@@ -48,27 +47,25 @@ std::string Project::projectString() const {
 }
 
 NextResult Project::next() {
-    // NextResult nextResult = child->next();
-    // if (nextResult.row == nullptr)
-    //     return NextResult(nullptr);
+    NextResult nextResult = child->next();
+    if (nextResult.row == nullptr)
+        return NextResult(nullptr);
 
-    // if (hasNoneReference) {
-    //     // If there are non-reference columns such as "a + 1"
-    //     // results for project
-    //     MemoryPool* mp = nextResult.mp;
-    //     size_t listLen = projectList.size();
-    //     AnyValue** results = (AnyValue**)mp->allocate(listLen * sizeof(AnyValue*));
-    //     for (int i = 0; i < listLen; i++)
-    //         results[i] = projectList[i]->eval(nextResult.row, mp); 
-        
-    //     Row* newRow = Row::create(results, listLen, mp);
-    //     return NextResult(newRow, mp);
-    // }
-    // else {
-    //     // we keep the input, only change the offset of the AttributeReference
-    //     return nextResult;
-    // }
+    if (hasNoneReference) {
+        // If there are non-reference columns such as "a + 1"
+        // results for project
+        MemoryPool* mp = nextResult.mp;
+        size_t listLen = projectList.size();
+        AnyValue** results = (AnyValue**)mp->allocate(listLen * sizeof(AnyValue*));
+        for (int i = 0; i < listLen; i++)
+            results[i] = projectList[i]->eval(nextResult.row, mp); 
+         
+        Row* newRow = Row::create(results, outputs, mp);
+        return NextResult(newRow, mp);
+    }
+    else {
+        // we keep the input, only change the offset of the AttributeReference
+        return nextResult;
+    }
     return NextResult(nullptr);
 }
-
-}} // namespace simplesql::opterators

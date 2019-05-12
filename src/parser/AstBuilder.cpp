@@ -2,7 +2,7 @@
 #include <string>
 
 #include "parser/AstBuilder.h"
-#include "operators/SeqScan.h"
+#include "operators/Scan.h"
 #include "operators/Join.h"
 #include "operators/Project.h"
 #include "operators/Filter.h"
@@ -51,11 +51,11 @@ Any AstBuilder::visitFromCluse(SimpleSqlParser::FromCluseContext *ctx) {
     auto tables = ctx->tableIdentifier();
     size_t num = tables.size();
     
-    // map the table identifiers to SeqScan operators
-    std::vector<SeqScan* > scans;
+    // map the table identifiers to Scan operators
+    std::vector<Scan* > scans;
     for (size_t i = 0; i < num; i++) {
         RelationReference* ref = tables[i]->accept(this);
-        scans.push_back(new SeqScan(ref));
+        scans.push_back(new Scan(ref));
     }
      
     // fold-left the tables with join

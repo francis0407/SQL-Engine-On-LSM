@@ -14,6 +14,17 @@ bool simplesql::datatypes::isNumber(DataType type) {
     return type == Integer || type == Float;
 }
 
+size_t simplesql::datatypes::valueSize(DataType type) {
+    switch (type) {
+        case Unresolved : return 0;
+        case Integer : return sizeof(int);
+        case Float : return sizeof(float);
+        case Boolean : return sizeof(bool);
+        case String : return sizeof(char*);
+    }
+    return 0;
+}
+
 AnyValue::AnyValue() {}
 AnyValue::~AnyValue() {}
 

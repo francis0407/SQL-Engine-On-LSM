@@ -5,7 +5,7 @@ using namespace simplesql::operators;
 
 
 bool OperatorBase::isLeafOperator() const {
-    return type == _SeqScan;
+    return type == _Scan;
 }
 
 bool OperatorBase::isUnaryOperator() const {
