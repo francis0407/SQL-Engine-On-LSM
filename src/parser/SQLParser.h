@@ -17,7 +17,7 @@ public:
 
     ExpressionBase* parseExpression(const string& expression);
     OperatorBase* parseSelectQuery(const string& sql);
-    
+    OperatorBase* parseStatement(const string& sql);
 private:
     AstBuilder visitor;
 

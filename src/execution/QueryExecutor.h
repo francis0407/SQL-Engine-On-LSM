@@ -1,5 +1,6 @@
 #pragma once
 
+#include "execution/Relation.h"
 #include "analyzer/Analyzer.h"
 #include "parser/SQLParser.h"
 
@@ -12,16 +13,30 @@ using namespace simplesql::operators;
 using namespace simplesql;
 
 
-class QueryExecutor {
+// TODO: add optimizer
+
+class QueryExecutor : public RuleExecutor {
 public:
-    QueryExecutor();
+    QueryExecutor(CatalogBase* catalog);
     QueryExecutor(SQLParser* _parser, Analyzer* _analyzer);
+    ~QueryExecutor();
+    virtual OperatorBase* run(OperatorBase* opt) override;
+
+    void SQL(const std::string sql, Relation& result); // TODO : return 
+
     SQLParser* parser;
     Analyzer* analyzer;
-    
 private:
+    void initRules();
     bool prepareForExecution();
     
+};
+
+class ResolveAttributeOffset : public RuleBase {
+public:
+    // Reuse the analyzer method `resolveAttribute` to finally compute the
+    // attribute offsets.
+    virtual OperatorBase* apply(OperatorBase* opt) override;
 };
 
 }} // namespace simplesql::execution

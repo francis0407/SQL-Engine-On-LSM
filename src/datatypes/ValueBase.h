@@ -24,7 +24,7 @@ class AnyValue {
 public:   
     virtual ~AnyValue();
     DataType valueType;      // 4 + 1, avoid memory alignment
-    static AnyValue* create(DataType _valueType, byte* _valuePtr) {return nullptr;}
+    static AnyValue* create(DataType _valueType, byte* _valuePtr);
     static AnyValue* create(DataType _valueType, byte* _valuePtr, MemoryPool* _mp) {return nullptr;}
     virtual AnyValue* makeCopy() = 0;
 

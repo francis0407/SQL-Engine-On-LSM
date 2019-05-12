@@ -28,6 +28,17 @@ size_t simplesql::datatypes::valueSize(DataType type) {
 AnyValue::AnyValue() {}
 AnyValue::~AnyValue() {}
 
+AnyValue* AnyValue::create(DataType _valueType, byte* _valuePtr) {
+    switch (_valueType) {
+        case Unresolved : return nullptr;
+        case Integer : return IntegerValue::create(*(int*)_valuePtr);
+        case Float : return FloatValue::create(*(float*)_valuePtr);
+        case Boolean : return BooleanValue::create(*(bool*)_valuePtr);
+        case String : return StringValue::create((char*)_valuePtr);
+    }
+    return nullptr;
+}
+
 bool AnyValue::asBoolean() const {
     return true;
 }
@@ -171,6 +182,12 @@ void StringValue::init(const char* _value, size_t _len, StringValue* target) {
 StringValue* StringValue::create(const std::string& _value) {
     StringValue* result = new StringValue();
     init(_value.data(), _value.size(), result);
+    return result;
+}
+
+StringValue* StringValue::create(const char* _value) {
+    StringValue* result = new StringValue();
+    init(_value + 4, *(size_t*)_value, result);
     return result;
 }
 

@@ -13,6 +13,7 @@ using namespace simplesql::catalog;
 class Analyzer : public RuleExecutor {
 public:
     Analyzer(CatalogBase* _catalog);
+    virtual OperatorBase* run(OperatorBase* opt) override;
 private:
     CatalogBase* catalog;
 };
@@ -29,8 +30,7 @@ private:
 class ResolveAttributes : public RuleBase {
 public:
     virtual OperatorBase* apply(OperatorBase* opt) override;
-private:
-    std::function<ExpressionBase*(ExpressionBase*)> resolveAttributes(AttributeSeq* attrs);
+    static std::function<ExpressionBase*(ExpressionBase*)> resolveAttributes(AttributeSeq* attrs);
 };
 
 }} // namespace simplesql::analyzer

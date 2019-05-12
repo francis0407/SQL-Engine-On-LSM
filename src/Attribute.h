@@ -12,15 +12,14 @@ using namespace simplesql::datatypes;
 
 class Attribute {
 public:
-    Attribute(DataType _datatype, int _offset, std::string _name);
+    Attribute(DataType _datatype, size_t _offset, std::string _name);
     Attribute();
     Attribute& operator= (const Attribute&);
     bool equalTo(const Attribute& that);
     
     
     DataType dataType;
-    int group;
-    int offset;
+    size_t offset;
     std::string name;
     std::string tableReference;
 };

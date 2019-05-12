@@ -20,13 +20,12 @@ enum ScanMethod {
 
 class Scan: public OperatorBase {
 public:
-
     Scan(RelationReference* _relation);
     virtual ~Scan();
 
-    bool open() override;
-    NextResult next() override;
-    bool close() override;
+    virtual bool open() override;
+    virtual NextResult next() override;
+    virtual bool close() override;
     virtual bool equalTo(OperatorBase* that) const override;
     
     RelationReference* reference;

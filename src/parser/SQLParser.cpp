@@ -52,3 +52,7 @@ OperatorBase* SQLParser::parseSelectQuery(const string& sql) {
         throw ParseException();
     }
 }
+
+OperatorBase* SQLParser::parseStatement(const string& sql) {
+    return parseSelectQuery(sql);
+}

@@ -5,8 +5,8 @@ using namespace simplesql;
 Attribute::Attribute() {
 
 }
-Attribute::Attribute(DataType _datatype, int _offset, std::string _name)
-    : dataType(_datatype), group(0), offset(_offset), name(_name) {
+Attribute::Attribute(DataType _datatype, size_t _offset, std::string _name)
+    : dataType(_datatype), offset(_offset), name(_name) {
 
 }
 
@@ -22,7 +22,7 @@ Attribute& Attribute::operator= (const Attribute& that) {
     return *this;
 }
 
-AttributeSeq::AttributeSeq() {
+AttributeSeq::AttributeSeq() : _bytes(0) {
     
 }
 

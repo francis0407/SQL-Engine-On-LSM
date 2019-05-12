@@ -12,3 +12,7 @@ Analyzer::Analyzer(CatalogBase* _catalog) {
             new ResolveAttributes())
     );
 }
+
+OperatorBase* Analyzer::run(OperatorBase* opt) {
+    return execute(opt);
+}
