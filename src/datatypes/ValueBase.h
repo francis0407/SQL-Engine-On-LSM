@@ -25,7 +25,7 @@ public:
     virtual ~AnyValue();
     DataType valueType;      // 4 + 1, avoid memory alignment
     static AnyValue* create(DataType _valueType, byte* _valuePtr);
-    static AnyValue* create(DataType _valueType, byte* _valuePtr, MemoryPool* _mp) {return nullptr;}
+    static AnyValue* create(DataType _valueType, byte* _valuePtr, MemoryPool* _mp);
     virtual AnyValue* makeCopy() = 0;
 
     virtual std::string toString() const = 0;
@@ -112,10 +112,10 @@ public:
     size_t size() const;
     char* data() const;
     static StringValue* create(const char* _value, size_t _len); // a simple string type
-    static StringValue* create(const char* _value);
+    static StringValue* create(char* _value);
     static StringValue* create(const std::string& _value);
     static StringValue* create(const char* _value, size_t _len, MemoryPool* _mp);
-    static StringValue* create(const char* _value, MemoryPool* _mp);
+    static StringValue* create(char* _value, MemoryPool* _mp);
     static int compare(const char* s1, size_t n1, const char* s2, size_t n2);
     virtual AnyValue* makeCopy() override;
     virtual std::string toString() const override;

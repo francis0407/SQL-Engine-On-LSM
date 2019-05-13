@@ -23,6 +23,7 @@ add_definitions(-DDEBUG) # 相当于代码中 #define DEBUG
 # SET(EXECUTABLE_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/bin") # 可执行文件输出目录
 
 INCLUDE_DIRECTORIES(
+   "${PROJECT_SOURCE_DIR}"
    "${PROJECT_SOURCE_DIR}/include"
    "${PROJECT_SOURCE_DIR}/include/antlr4-runtime" 
    "${PROJECT_SOURCE_DIR}/src" 
@@ -40,6 +41,7 @@ AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/src/parser/antlr" simplesql_parser_a
 AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/test/parser" tests_parser)
 AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/test/expressions" tests_expressions)
 AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/test/analyzer" tests_analyzer)
+AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/test/execution" tests_execution)
 
 AUX_SOURCE_DIRECTORY("${PROJECT_SOURCE_DIR}/test" tests)
 link_libraries(
@@ -61,4 +63,5 @@ add_executable(unit_test # 输出名为xxx的可执行文件
    ${tests_parser}
    ${tests_analyzer}
    ${tests_expressions}
+   ${tests_execution}
 )

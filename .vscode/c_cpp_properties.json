@@ -6,12 +6,13 @@
                 "${workspaceFolder}/src",
                 "${workspaceFolder}/include",
                 "${workspaceFolder}/include/antlr4-runtime",
-                "${workspaceFolder}/src/parser/antlr"
+                "${workspaceFolder}/src/parser/antlr",
+                "${workspaceFolder}"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",
             "cStandard": "c11",
-            "cppStandard": "c++17",
+            "cppStandard": "c++11",
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [
@@ -19,7 +20,6 @@
                 ],
                 "limitSymbolsToIncludedHeaders": true
             }
-           
         }
     ],
     "version": 4

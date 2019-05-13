@@ -39,6 +39,17 @@ AnyValue* AnyValue::create(DataType _valueType, byte* _valuePtr) {
     return nullptr;
 }
 
+AnyValue* AnyValue::create(DataType _valueType, byte* _valuePtr, MemoryPool* _mp) {
+    switch (_valueType) {
+        case Unresolved : return nullptr;
+        case Integer : return IntegerValue::create(*(int*)_valuePtr, _mp);
+        case Float : return FloatValue::create(*(float*)_valuePtr, _mp);
+        case Boolean : return BooleanValue::create(*(bool*)_valuePtr, _mp);
+        case String : return StringValue::create((char*)_valuePtr, _mp);
+    }
+    return nullptr;
+}
+
 bool AnyValue::asBoolean() const {
     return true;
 }
@@ -185,9 +196,10 @@ StringValue* StringValue::create(const std::string& _value) {
     return result;
 }
 
-StringValue* StringValue::create(const char* _value) {
+StringValue* StringValue::create(char* _value) {
     StringValue* result = new StringValue();
-    init(_value + 4, *(size_t*)_value, result);
+    result->value = _value;
+    init(result->data(), result->size(), result);
     return result;
 }
 
@@ -200,8 +212,20 @@ StringValue* StringValue::create(const char* _value, size_t _len) {
 StringValue* StringValue::create(const char* _value, size_t _len, MemoryPool* _mp) {
     StringValue* result = (StringValue*) _mp->allocate(sizeof(StringValue));
     memcpy(result, &prototype, sizeof(StringValue));
-    init(_value, _len, result);
+    char* buffer = (char*) _mp->allocate(sizeof(size_t) + _len);
+    memcpy(buffer, &_len, sizeof(size_t));
+    memcpy(buffer + sizeof(size_t), _value, _len);
+    result->value = buffer;
+    result->needRelease = false;
     return result;
+}
+
+StringValue* StringValue::create(char* _value, MemoryPool* _mp) {
+    StringValue* result = (StringValue*) _mp->allocate(sizeof(StringValue));
+    memcpy(result, &prototype, sizeof(StringValue));
+    result->value = _value;
+    result->needRelease = false;
+    return result; 
 }
 
 AnyValue* StringValue::makeCopy() {

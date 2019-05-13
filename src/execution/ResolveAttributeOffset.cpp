@@ -14,10 +14,23 @@ using namespace simplesql;
 
 OperatorBase* ResolveAttributeOffset::apply(OperatorBase* opt) {
     size_t total = 0;
-    for (auto iter = opt->outputs.attributes.begin(); iter != opt->outputs.attributes.end(); iter++) {
-        iter->offset = total;
-        total += valueSize(iter->dataType);
+    if (opt->type == _Project && !(((Project*) opt)->hasNoneReference)) {
+        Project* project = (Project*) opt;
+        OperatorBase* child = project->child;
+        for (auto iter = opt->outputs.attributes.begin(); iter != opt->outputs.attributes.end(); iter++) {
+            for (auto childIter : child->outputs.attributes) {
+                if (iter->equalTo(childIter)) {
+                    iter->offset = childIter.offset;
+                }
+            }
+        }
+    } else {
+        for (auto iter = opt->outputs.attributes.begin(); iter != opt->outputs.attributes.end(); iter++) {
+            iter->offset = total;
+            total += valueSize(iter->dataType);
+        }
     }
+
     switch (opt->type) {
         case _Project: {
             Project* project = (Project*) opt;

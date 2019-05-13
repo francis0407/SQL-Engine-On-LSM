@@ -44,7 +44,7 @@ NextResult Filter::next() {
         if (nextResult.row == nullptr)
             return NextResult(nullptr);
         
-        AnyValue* value = condition->eval(nextResult.row);
+        AnyValue* value = condition->eval(nextResult.row, nextResult.mp);
         bool filtered = !(value->asBoolean());
 
         if (filtered)

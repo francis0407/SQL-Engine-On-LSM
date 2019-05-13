@@ -22,8 +22,8 @@ public:
     ~QueryExecutor();
     virtual OperatorBase* run(OperatorBase* opt) override;
 
-    void SQL(const std::string sql, Relation& result); // TODO : return 
-
+    void executeSQL(const std::string sql, Relation& result); // TODO : return 
+    void executeTree(OperatorBase* opt, Relation& result);
     SQLParser* parser;
     Analyzer* analyzer;
 private:

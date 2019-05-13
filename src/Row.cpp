@@ -32,8 +32,8 @@ Row* Row::create(AnyValue* columns[], AttributeSeq& attrs, MemoryPool* mp) {
                 break;
             }
             case String: {
-                char** v = (char**) buf;
-                *v = ((StringValue*)columns[i])->value;
+                // char** v = (char**) buf;
+                buf = (byte*)((StringValue*)columns[i])->value;
                 buf += sizeof(char**);  
                 break;
             }

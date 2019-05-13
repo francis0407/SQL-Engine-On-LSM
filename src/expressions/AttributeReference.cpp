@@ -14,8 +14,7 @@ AttributeReference::AttributeReference(const string& _table, const string& _name
 }
 
 AnyValue* AttributeReference::eval(Row* r, MemoryPool *mp) {
-    return nullptr;
-    // return AnyValue::create(reference.dataType, r->values + reference.offset, mp);
+    return AnyValue::create(reference.dataType, r->values + reference.offset, mp);
 }
 
 std::string AttributeReference::toString() const {

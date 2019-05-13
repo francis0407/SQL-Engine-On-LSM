@@ -20,6 +20,7 @@ std::function<ExpressionBase*(ExpressionBase*)> ResolveAttributes::resolveAttrib
                 if (attr != nullptr) {
                     ref->reference = *attr;
                     ref->resolved = true;
+                    ref->dataType = ref->reference.dataType;
                 }
                 break;
             }

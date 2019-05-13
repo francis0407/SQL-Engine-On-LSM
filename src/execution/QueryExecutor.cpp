@@ -36,7 +36,27 @@ OperatorBase* QueryExecutor::run(OperatorBase* opt) {
     return execute(opt);
 }
 
-void QueryExecutor::SQL(const std::string sql, Relation& result) {
+void QueryExecutor::executeTree(OperatorBase* opt, Relation& result) {
+    try {
+        opt = analyzer->run(opt);
+        opt = run(opt);
+        opt->open();
+        while(true) {
+            NextResult nextResult = opt->next();
+            if (nextResult.row == nullptr)
+                break;
+            result.append(nextResult.row, opt->outputs);
+        }
+        opt->close();
+    } catch (ParseException& pe) {
+
+    } catch (AnalysisException& ae) {
+
+    } catch (std::exception& e) {
+    }
+}
+
+void QueryExecutor::executeSQL(const std::string sql, Relation& result) {
     try {
         OperatorBase* opt = parser->parseStatement(sql);
         opt = analyzer->run(opt);

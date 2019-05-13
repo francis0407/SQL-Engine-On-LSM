@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/unit_test",
-            "args": [],
+            "args": ["--gtest_filter=Execution*"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
