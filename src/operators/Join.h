@@ -33,7 +33,11 @@ public:
     ExpressionBase* condition = nullptr;
     JoinSide side;
     JoinMethod method;
-    
+private:
+    bool nestedLoopOpen();
+    NextResult nestedLoopNext();
+    bool nestedLoopClose();
+    NextResult streamNext;
 };
 
 }} // namespace simplesql::operators

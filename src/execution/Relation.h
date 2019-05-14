@@ -14,9 +14,11 @@ class Relation {
 public:
     Relation();
     ~Relation();
-    void append(Row* row, const AttributeSeq& schema);
-    std::vector<std::vector<AnyValue*> > rows;
+    void append(Row* row);
+    std::vector<Row*> rows;
     int columns = 0;
+private:
+    MemoryPool* mp;
 };
 
 

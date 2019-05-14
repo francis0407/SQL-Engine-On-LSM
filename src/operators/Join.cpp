@@ -42,13 +42,68 @@ bool InnerJoin::equalTo(OperatorBase* that) const {
 }
 
 bool InnerJoin::open() {
-    return true;
+    switch (method) {
+        case NestedLoopJoin:
+            return nestedLoopOpen();
+        default:
+            return false;
+    }
 }
 
 bool InnerJoin::close() {
-    return true;
+    switch (method) {
+        case NestedLoopJoin:
+            return nestedLoopClose();
+        default:
+            return false;
+    }
 }
 
 NextResult InnerJoin::next() {
+    switch (method) {
+        case NestedLoopJoin:
+            return nestedLoopNext();
+        default:
+            return NextResult(nullptr);
+    }
+}
+
+/************ Nested Loop Inner Join ************/
+bool InnerJoin::nestedLoopOpen() {
+    if (!(left->open() && right->open())) return false;
+    if (side == BuildLeft)
+        streamNext = right->next();
+    else
+        streamNext = left->next();
+}
+
+bool InnerJoin::nestedLoopClose() {
+    return left->close() && right->close();
+}
+
+NextResult InnerJoin::nestedLoopNext() {
+    OperatorBase *stream, *build;
+    if (side == BuildLeft) {
+        build = left;
+        stream = right;
+    } else {
+        build = right;
+        stream = left;
+    }
+    while (streamNext.row != nullptr) {            
+        while (true) {
+            NextResult buildNext = build->next();
+            if (buildNext.row == nullptr) break;
+            Row* concatRow;
+            if (side == BuildLeft) concatRow = Row::concat(buildNext.row, streamNext.row, buildNext.mp);
+            else concatRow = Row::concat(streamNext.row, buildNext.row, buildNext.mp);
+            // probe
+            bool valid = condition->eval(concatRow, buildNext.mp)->asBoolean();
+            if (valid) return NextResult(concatRow, buildNext.mp);
+        }
+        build->close();
+        build->open();
+        streamNext = stream->next();
+    }
     return NextResult(nullptr);
 }

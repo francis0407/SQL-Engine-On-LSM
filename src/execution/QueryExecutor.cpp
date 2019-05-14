@@ -45,7 +45,7 @@ void QueryExecutor::executeTree(OperatorBase* opt, Relation& result) {
             NextResult nextResult = opt->next();
             if (nextResult.row == nullptr)
                 break;
-            result.append(nextResult.row, opt->outputs);
+            result.append(nextResult.row);
         }
         opt->close();
     } catch (ParseException& pe) {
@@ -68,7 +68,7 @@ void QueryExecutor::executeSQL(const std::string sql, Relation& result) {
             NextResult nextResult = opt->next();
             if (nextResult.row == nullptr)
                 break;
-            result.append(nextResult.row, opt->outputs);
+            result.append(nextResult.row);
         }
         opt->close();
     } catch (ParseException& pe) {

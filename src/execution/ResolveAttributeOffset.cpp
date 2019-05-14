@@ -13,24 +13,11 @@ using namespace simplesql::datatypes;
 using namespace simplesql;
 
 OperatorBase* ResolveAttributeOffset::apply(OperatorBase* opt) {
-    size_t total = 0;
-    if (opt->type == _Project && !(((Project*) opt)->hasNoneReference)) {
-        Project* project = (Project*) opt;
-        OperatorBase* child = project->child;
-        for (auto iter = opt->outputs.attributes.begin(); iter != opt->outputs.attributes.end(); iter++) {
-            for (auto childIter : child->outputs.attributes) {
-                if (iter->equalTo(childIter)) {
-                    iter->offset = childIter.offset;
-                }
-            }
-        }
-    } else {
-        for (auto iter = opt->outputs.attributes.begin(); iter != opt->outputs.attributes.end(); iter++) {
-            iter->offset = total;
-            total += valueSize(iter->dataType);
-        }
+    size_t offset = 0;
+    for (auto iter = opt->outputs.attributes.begin(); iter != opt->outputs.attributes.end(); iter++) {
+        iter->offset = offset;
+        offset++;
     }
-
     switch (opt->type) {
         case _Project: {
             Project* project = (Project*) opt;
@@ -50,7 +37,7 @@ OperatorBase* ResolveAttributeOffset::apply(OperatorBase* opt) {
             // add left.bytes to right.outputs
             AttributeSeq rightOutputs = join->right->outputs;
             for (auto iter = rightOutputs.attributes.begin(); iter != rightOutputs.attributes.end(); iter++)
-                iter->offset += join->left->outputs.bytes();    
+                iter->offset += join->left->outputs.attributes.size();   
             join->condition->transform(ResolveAttributes::resolveAttributes(&rightOutputs));
             break;
         }

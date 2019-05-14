@@ -21,7 +21,6 @@ public:
 
     std::vector<ExpressionBase *> projectList;
     std::string projectString() const;
-    bool hasNoneReference = true; // should analyze the project list to change this
 
     OperatorBase* &child;
 };

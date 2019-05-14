@@ -9,6 +9,7 @@
 #include "operators/Scan.h"
 #include "operators/Project.h"
 #include "operators/Filter.h"
+#include "operators/Join.h"
 
 #include "catalog/Catalog.h"
 #include "catalog/RelationReference.h"
@@ -40,11 +41,13 @@ public:
     }
     QueryExecutor* qe;
 
-    template<int rows, int columns>
+    template<size_t rows, size_t columns>
     void assertResult(const Relation& result, AnyValue* answer[rows][columns] ) {
-        for (int i = 0; i < rows; i++)
-            for (int j = 0; j < columns; j++) {
-                ASSERT_TRUE(result.rows[i][j]->equalToSemantically(answer[i][j]));
+        ASSERT_EQ(result.columns, columns);
+        ASSERT_EQ(result.rows.size(), rows);
+        for (size_t i = 0; i < rows; i++)
+            for (size_t j = 0; j < columns; j++) {
+                ASSERT_TRUE(result.rows[i]->values[j]->equalToSemantically(answer[i][j]));
                 delete answer[i][j];
             }
     }
@@ -78,4 +81,85 @@ TEST_F(ExecutionSuite, Q1) {
         {IntegerValue::create(2), StringValue::create(string("a2"))}
     };
     assertResult<2, 2>(result, answer);
+}
+
+TEST_F(ExecutionSuite, Q2) {
+    // natrual join 
+
+    // SELECT A1, A4, B4  
+    // FROM   A, B
+    // WHERE  A1 = B1
+    Relation result;
+    OperatorBase* query =
+        new Project(
+            buildExprList(3, new AttributeReference("A1"), new AttributeReference("A4"), new AttributeReference("B4")),
+            new InnerJoin(
+                new TestScan(new RelationReference("A"), true),
+                new TestScan(new RelationReference("B"), false),
+                BuildLeft,
+                new EqualTo(new AttributeReference("A1"), new AttributeReference("B1"))
+            )
+        );
+    qe->executeTree(query, result);
+    AnyValue* answer[3][3] = {
+        {IntegerValue::create(1), StringValue::create(string("a1")), StringValue::create(string("b1"))},
+        {IntegerValue::create(2), StringValue::create(string("a2")), StringValue::create(string("b2"))},
+        {IntegerValue::create(3), StringValue::create(string("a3")), StringValue::create(string("b3"))}
+    };   
+    assertResult<3, 3>(result, answer);
+}
+
+TEST_F(ExecutionSuite, Q3) {
+    // SELECT A1, B1, A3
+    // FROM   A, B
+    // WHERE  A3 = B3
+
+    Relation result;
+    OperatorBase* query =
+        new Project(
+            buildExprList(3, new AttributeReference("A1"), new AttributeReference("B1"), new AttributeReference("A3")),
+            new InnerJoin(
+                new TestScan(new RelationReference("A"), true),
+                new TestScan(new RelationReference("B"), false),
+                BuildRight,
+                new EqualTo(new AttributeReference("A3"), new AttributeReference("B3"))
+            )
+        );
+    qe->executeTree(query, result);
+    AnyValue* answer[5][3] = {
+        {IntegerValue::create(1), IntegerValue::create(1), BooleanValue::create(true)},
+        {IntegerValue::create(1), IntegerValue::create(2), BooleanValue::create(true)},
+        {IntegerValue::create(2), IntegerValue::create(1), BooleanValue::create(true)},
+        {IntegerValue::create(2), IntegerValue::create(2), BooleanValue::create(true)},
+        {IntegerValue::create(3), IntegerValue::create(3), BooleanValue::create(false)},
+    };
+    assertResult<5, 3>(result, answer);
+}
+
+TEST_F(ExecutionSuite, Q4) {
+    // Self join
+    // SELECT A.A1, A.A4, C.A4
+    // FROM   A, A AS C
+    // WHERE  A.A1 = C.A1
+    // AND    A.A3 = TRUE
+        Relation result;
+    OperatorBase* query =
+        new Project(
+            buildExprList(3, new AttributeReference("A", "A1"), new AttributeReference("A","A4"), new AttributeReference("C", "A4")),
+            new InnerJoin(
+                new Filter(
+                    new EqualTo(new AttributeReference("A", "A3"), Literal::create(true)),
+                    new TestScan(new RelationReference("A"), true)
+                ),
+                new TestScan(new RelationReference("A", "C"), true),
+                BuildRight,
+                new EqualTo(new AttributeReference("A", "A1"), new AttributeReference("C", "A1"))
+            )
+        );
+    qe->executeTree(query, result);
+    AnyValue* answer[2][3] = {
+        {IntegerValue::create(1), StringValue::create(string("a1")), StringValue::create(string("a1"))},
+        {IntegerValue::create(2), StringValue::create(string("a2")), StringValue::create(string("a2"))},
+    };
+    assertResult<2, 3>(result, answer);
 }

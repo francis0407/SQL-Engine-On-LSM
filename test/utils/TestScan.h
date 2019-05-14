@@ -70,16 +70,12 @@ public:
             mp = nullptr;
         }
         mp = new MemoryPool();
-        AnyValue* vs[4];
-        vs[0] = IntegerValue::create(get<0>(data[index]));
-        vs[1] = FloatValue::create(get<1>(data[index]));
-        vs[2] = BooleanValue::create(get<2>(data[index]));
-        vs[3] = StringValue::create(get<3>(data[index]));
-        Row* row = Row::create(vs, outputs, mp);
-        delete vs[0];
-        delete vs[1];
-        delete vs[2];
-        delete vs[3];
+        AnyValue** vs = (AnyValue**)mp->allocate(sizeof(AnyValue*) * 4);
+        vs[0] = IntegerValue::create(get<0>(data[index]), mp);
+        vs[1] = FloatValue::create(get<1>(data[index]), mp);
+        vs[2] = BooleanValue::create(get<2>(data[index]), mp);
+        vs[3] = StringValue::create(get<3>(data[index]), mp);
+        Row* row = Row::create(vs, 4, mp);
         index ++;
         return NextResult(row, mp);
     }

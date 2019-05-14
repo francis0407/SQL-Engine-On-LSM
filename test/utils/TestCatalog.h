@@ -45,10 +45,12 @@ public:
     virtual bool findRelation(RelationReference& relation) override {
         auto r = catalog.find(relation.tableName);
         if (r == catalog.end()) return false;
-        for (auto iter : r->second)
-            relation.attributes.append(iter);
         if (relation.referenceName.empty())
             relation.referenceName = relation.tableName;
+        for (auto iter : r->second) {
+            iter.tableReference = relation.referenceName;
+            relation.attributes.append(iter);
+        }
         relation.tableID = r->first[0];
         relation.resolved = true;
         return true;

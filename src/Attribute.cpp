@@ -5,9 +5,13 @@ using namespace simplesql;
 Attribute::Attribute() {
 
 }
+
 Attribute::Attribute(DataType _datatype, size_t _offset, std::string _name)
     : dataType(_datatype), offset(_offset), name(_name) {
+}
 
+Attribute::Attribute(DataType _datatype, size_t _offset, std::string _tableReference, std::string _name)
+    : dataType(_datatype), offset(_offset), name(_name), tableReference(_tableReference) {
 }
 
 bool Attribute::equalTo(const Attribute& that) {

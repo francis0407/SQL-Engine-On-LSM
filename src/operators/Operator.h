@@ -10,7 +10,8 @@ namespace operators {
 using namespace expressions;
 
 struct NextResult {
-    NextResult (Row* _row) : row(_row), mp(nullptr){}
+    NextResult () : row(nullptr), mp(nullptr) {}
+    NextResult (Row* _row) : row(_row), mp(nullptr) {}
     NextResult (Row* _row, MemoryPool* _mp) : row(_row), mp(_mp) {}
     Row* row = nullptr;  // returns nullptr if there is no more rows
     MemoryPool* mp = nullptr; // MemoryPool should be created and deleted by the SourceNode

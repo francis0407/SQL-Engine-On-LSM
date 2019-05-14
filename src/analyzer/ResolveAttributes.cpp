@@ -71,20 +71,14 @@ OperatorBase* ResolveAttributes::apply(OperatorBase* opt) {
                     std::string("Can't resolve the project list ") + project->projectString());
             }
             project->outputs.clean();
-            
-            // Project has two modes:
-            // 1. Only select the columns
-            // 2. columns with computation
-            bool allAttributes = true;
+
             for (auto iter : project->projectList)
                 if (iter->isAttributeReference()) {
                     AttributeReference* ref = (AttributeReference*) iter;
                     project->outputs.append(ref->reference);
                 } else {
-                    project->outputs.append(Attribute(iter->dataType, -1, iter->toString()));
-                    allAttributes = false;
+                    project->outputs.append(Attribute(iter->dataType, 0, iter->toString()));
                 }
-            project->hasNoneReference = !allAttributes;
             break; 
         }
         case _InnerJoin: {

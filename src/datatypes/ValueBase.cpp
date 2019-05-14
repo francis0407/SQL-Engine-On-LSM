@@ -81,6 +81,10 @@ AnyValue* IntegerValue::makeCopy() {
    return new IntegerValue(this->value);
 }
 
+AnyValue* IntegerValue::makeCopy(MemoryPool* mp) {
+   return IntegerValue::create(this->value, mp);
+}
+
 std::string IntegerValue::toString() const {
     return std::to_string(value);
 }
@@ -114,7 +118,11 @@ FloatValue* FloatValue::create(float _value, MemoryPool* _mp) {
 }
 
 AnyValue* FloatValue::makeCopy() {
-   return new FloatValue(this->value);
+    return new FloatValue(this->value);
+}
+
+AnyValue* FloatValue::makeCopy(MemoryPool* mp) {
+    return FloatValue::create(this->value, mp);
 }
 
 std::string FloatValue::toString() const {
@@ -151,6 +159,10 @@ BooleanValue* BooleanValue::create(bool _value, MemoryPool* _mp) {
 
 AnyValue* BooleanValue::makeCopy() {
    return new BooleanValue(this->value);
+}
+
+AnyValue* BooleanValue::makeCopy(MemoryPool* mp) {
+   return BooleanValue::create(this->value, mp);
 }
 
 std::string BooleanValue::toString() const {
@@ -196,7 +208,8 @@ StringValue* StringValue::create(const std::string& _value) {
     return result;
 }
 
-StringValue* StringValue::create(char* _value) {
+StringValue* StringValue::create(char* _value) { 
+    // TODO: Bug
     StringValue* result = new StringValue();
     result->value = _value;
     init(result->data(), result->size(), result);
@@ -208,6 +221,10 @@ StringValue* StringValue::create(const char* _value, size_t _len) {
     init(_value, _len, result);
     return result;
 }
+
+StringValue* StringValue::create(const std::string& _value, MemoryPool* _mp) {
+    return create(_value.data(), _value.size(), _mp);
+} 
 
 StringValue* StringValue::create(const char* _value, size_t _len, MemoryPool* _mp) {
     StringValue* result = (StringValue*) _mp->allocate(sizeof(StringValue));
@@ -230,6 +247,10 @@ StringValue* StringValue::create(char* _value, MemoryPool* _mp) {
 
 AnyValue* StringValue::makeCopy() {
    return StringValue::create(data(), size());
+}
+
+AnyValue* StringValue::makeCopy(MemoryPool* mp) {
+   return StringValue::create(data(), size(), mp);
 }
 
 size_t StringValue::size() const {
