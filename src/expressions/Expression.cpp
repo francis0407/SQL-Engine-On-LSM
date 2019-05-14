@@ -4,7 +4,7 @@
 using namespace simplesql::expressions;
 using namespace simplesql::datatypes;
 
-ExpressionBase::ExpressionBase(ExpressionType _type) : type(_type), dataType(Unresolved) {
+ExpressionBase::ExpressionBase(ExpressionType _type) : dataType(Unresolved), type(_type){
     resolveDataType();
 }
 ExpressionBase::~ExpressionBase(){}

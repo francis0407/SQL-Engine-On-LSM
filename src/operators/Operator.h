@@ -21,7 +21,8 @@ enum OperatorType {
     _Project,
     _Filter,
     _InnerJoin,
-    _Scan
+    _Scan,
+    _CreateTable
 };
 
 // Relational Operator Base Class

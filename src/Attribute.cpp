@@ -6,12 +6,12 @@ Attribute::Attribute() {
 
 }
 
-Attribute::Attribute(DataType _datatype, size_t _offset, std::string _name)
-    : dataType(_datatype), offset(_offset), name(_name) {
+Attribute::Attribute(DataType _datatype, std::string _name)
+    : dataType(_datatype), name(_name) {
 }
 
-Attribute::Attribute(DataType _datatype, size_t _offset, std::string _tableReference, std::string _name)
-    : dataType(_datatype), offset(_offset), name(_name), tableReference(_tableReference) {
+Attribute::Attribute(DataType _datatype, std::string _tableReference, std::string _name)
+    : dataType(_datatype), name(_name), tableReference(_tableReference) {
 }
 
 bool Attribute::equalTo(const Attribute& that) {
@@ -46,7 +46,7 @@ size_t AttributeSeq::bytes() {
 }
 
 Attribute* AttributeSeq::findAttribute(const Attribute& attr) {
-    for (int i = 0; i < attributes.size(); i++) {
+    for (size_t i = 0; i < attributes.size(); i++) {
         Attribute* iter = &attributes[i];
         if (iter->equalTo(attr))
             return iter;

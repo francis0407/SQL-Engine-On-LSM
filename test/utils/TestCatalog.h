@@ -29,17 +29,17 @@ class TestCatalog : public CatalogBase {
 public:
     TestCatalog() {
         vector<Attribute> a;
-        a.push_back(Attribute(Integer, 0, "A1"));
-        a.push_back(Attribute(Float, 4, "A2"));
-        a.push_back(Attribute(Boolean, 8, "A3"));
-        a.push_back(Attribute(String, 9, "A4"));
+        a.push_back(Attribute(Integer, "A1"));
+        a.push_back(Attribute(Float, "A2"));
+        a.push_back(Attribute(Boolean, "A3"));
+        a.push_back(Attribute(String, "A4"));
         catalog["A"] = a;
-
+ 
         vector<Attribute> b;
-        b.push_back(Attribute(Integer, 0, "B1"));
-        b.push_back(Attribute(Float, 4, "B2"));
-        b.push_back(Attribute(Boolean, 8, "B3"));
-        b.push_back(Attribute(String, 9, "B4"));
+        b.push_back(Attribute(Integer, "B1"));
+        b.push_back(Attribute(Float, "B2"));
+        b.push_back(Attribute(Boolean, "B3"));
+        b.push_back(Attribute(String, "B4"));
         catalog["B"] = b;
     }
     virtual bool findRelation(RelationReference& relation) override {

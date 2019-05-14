@@ -54,7 +54,7 @@ NextResult Project::next() {
     MemoryPool* mp = nextResult.mp;
     size_t listLen = projectList.size();
     AnyValue** results = (AnyValue**)mp->allocate(listLen * sizeof(AnyValue*));
-    for (int i = 0; i < listLen; i++)
+    for (size_t i = 0; i < listLen; i++)
         results[i] = projectList[i]->eval(nextResult.row, mp); 
         
     Row* newRow = Row::create(results, listLen, mp);

@@ -9,26 +9,31 @@ statement
     | deleteStatement   #deleteValueStatement
     | insertStatement   #insertValueStatement
     | selectStatement   #QueryStatement
+    | copyStatement     #copyFileStatement
     ;
 
 createStatement
-    : (CREATE TABLE tablenName=tableIdentifier '('identifier dataType (',' identifier dataType)* ')')
+    : CREATE TABLE tablenName=tableIdentifier '('identifier dataType (',' identifier dataType)* ')' indexClause? 
     ;
 
 indexClause
-    : (INDEX ON '('identifier (',' identifier)*')')
+    : INDEX ON '('identifier (',' identifier)*')'
     ;
 
 deleteStatement
-    : (DELETE FROM tablenName=tableIdentifier whereCluse?)
+    : DELETE FROM tablenName=tableIdentifier whereCluse?
     ;
 
 insertStatement
-    : (INSERT INTO tableName=tableIdentifier VALUES '('expression (',' expression)*')' (',('expression (',' expression)*')')* )
+    : INSERT INTO tableName=tableIdentifier VALUES '('expression (',' expression)*')' (',('expression (',' expression)*')')* 
     ;
 
+copyStatement
+    : COPY tableName=tableIdentifier FROM fileName=STRING DELIMITER delimiter=STRING CSV
+    ;
+    
 selectStatement
-    : (selectClause fromCluse whereCluse?)
+    : selectClause fromCluse whereCluse?
     ;
 
 selectClause
@@ -117,6 +122,9 @@ INTO  : 'INTO';
 VALUES: 'VALUES';
 DELETE: 'DELETE';
 CREATE: 'CREATE';
+COPY  : 'COPY';  
+DELIMITER : 'DELIMITER';
+CSV   : 'CSV';
 TABLE : 'TABLE';
 INDEX : 'INDEX';
 ON    : 'ON';

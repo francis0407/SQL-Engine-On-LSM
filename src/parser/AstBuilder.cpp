@@ -6,11 +6,14 @@
 #include "operators/Join.h"
 #include "operators/Project.h"
 #include "operators/Filter.h"
+#include "operators/CreateTable.h"
+
 #include "expressions/AttributeReference.h"
 #include "expressions/Arithmetic.h"
 #include "expressions/Comparison.h"
 #include "expressions/Literal.h"
 #include "expressions/Logic.h"
+
 #include "datatypes/ValueBase.h"
 #include "catalog/RelationReference.h"
 
@@ -21,6 +24,28 @@ using namespace simplesql::datatypes;
 using namespace simplesql::catalog;
 using namespace simplesql::parser;
 using std::string;
+
+Any AstBuilder::visitCreateStatement(SimpleSqlParser::CreateStatementContext *ctx) {
+    OperatorBase* opt = nullptr;
+    string tableName = ctx->tablenName->toString();
+    auto attrCtxes = ctx->identifier();
+    auto typeCtxes = ctx->dataType();
+    std::vector<Attribute*> attrs;
+    size_t num = attrCtxes.size();
+    for (size_t i = 0; i < num; i++) {
+        string attrName = attrCtxes[i]->toString();
+        DataType attrType = toDataType(typeCtxes[i]->toString());
+        Attribute* attr = new Attribute(attrType, attrName);
+        attrs.push_back(attr);
+    }
+    auto indexCtxes = ctx->indexClause()->identifier();
+    std::vector<string> indexes;
+    for (auto iter : indexCtxes) 
+        indexes.push_back(iter->toString());
+    opt = new CreateTable(tableName, attrs, indexes);
+    Any result = opt;
+    return result;
+}
 
 Any AstBuilder::visitSelectStatement(SimpleSqlParser::SelectStatementContext *ctx) {
     auto selectCtx = ctx->selectClause();

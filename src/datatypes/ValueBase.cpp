@@ -10,6 +10,14 @@ BooleanValue BooleanValue::prototype;
 FloatValue FloatValue::prototype;
 StringValue StringValue::prototype;
 
+DataType simplesql::datatypes::toDataType(const std::string& type) {
+    if (type == "INTEGER") return Integer;
+    if (type == "FLOAT") return Float;
+    if (type == "BOOLEAN") return Boolean;
+    if (type == "STRING") return String;
+    return Unresolved;
+}
+
 bool simplesql::datatypes::isNumber(DataType type) {
     return type == Integer || type == Float;
 }

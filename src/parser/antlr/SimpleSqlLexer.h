@@ -1,5 +1,5 @@
 
-// Generated from /home/francis/File/Code/SQL-Engine-On-LSM/antlr4/SimpleSql.g4 by ANTLR 4.7.2
+// Generated from /mnt/d/Program/Ubuntu/SQL-Engine-On-LSM/antlr4/SimpleSql.g4 by ANTLR 4.7.2
 
 #pragma once
 
@@ -15,11 +15,11 @@ public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, SELECT = 6, FROM = 7, 
     WHERE = 8, INSERT = 9, INTO = 10, VALUES = 11, DELETE = 12, CREATE = 13, 
-    TABLE = 14, INDEX = 15, ON = 16, AS = 17, OR = 18, AND = 19, NOT = 20, 
-    TRUE_ = 21, FALSE_ = 22, EQ = 23, NEQ = 24, NEQJ = 25, LT = 26, LTE = 27, 
-    GT = 28, GTE = 29, PLUS = 30, MINUS = 31, ASTERISK = 32, SLASH = 33, 
-    PERCENT = 34, STRING = 35, FLOAT_LITERAL = 36, INTEGER_LITERAL = 37, 
-    IDENTIFIER = 38, WS = 39
+    COPY = 14, DELIMITER = 15, CSV = 16, TABLE = 17, INDEX = 18, ON = 19, 
+    AS = 20, OR = 21, AND = 22, NOT = 23, TRUE_ = 24, FALSE_ = 25, EQ = 26, 
+    NEQ = 27, NEQJ = 28, LT = 29, LTE = 30, GT = 31, GTE = 32, PLUS = 33, 
+    MINUS = 34, ASTERISK = 35, SLASH = 36, PERCENT = 37, STRING = 38, FLOAT_LITERAL = 39, 
+    INTEGER_LITERAL = 40, IDENTIFIER = 41, WS = 42
   };
 
   SimpleSqlLexer(antlr4::CharStream *input);

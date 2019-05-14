@@ -31,17 +31,17 @@ class TestCatalog : public CatalogBase {
 public:
     TestCatalog() {
         vector<Attribute> a;
-        a.push_back(Attribute(Integer, 0, "A1"));
-        a.push_back(Attribute(Integer, 4, "A2"));
-        a.push_back(Attribute(String, 8, "A3"));
-        a.push_back(Attribute(Float, 16, "A4"));
+        a.push_back(Attribute(Integer, "A1"));
+        a.push_back(Attribute(Integer, "A2"));
+        a.push_back(Attribute(String, "A3"));
+        a.push_back(Attribute(Float, "A4"));
         catalog["A"] = a;
 
         vector<Attribute> b;
-        b.push_back(Attribute(Integer, 0, "B1"));
-        b.push_back(Attribute(Boolean, 4, "B2"));
-        b.push_back(Attribute(String, 5, "B3"));
-        b.push_back(Attribute(Float, 13, "B4"));
+        b.push_back(Attribute(Integer, "B1"));
+        b.push_back(Attribute(Boolean, "B2"));
+        b.push_back(Attribute(String, "B3"));
+        b.push_back(Attribute(Float, "B4"));
         catalog["B"] = b;
     }
     virtual bool findRelation(RelationReference& relation) override {

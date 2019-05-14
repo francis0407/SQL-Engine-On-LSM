@@ -13,6 +13,7 @@ using namespace simplesql::catalog;
 class Analyzer : public RuleExecutor {
 public:
     Analyzer(CatalogBase* _catalog);
+    virtual ~Analyzer();
     virtual OperatorBase* run(OperatorBase* opt) override;
 private:
     CatalogBase* catalog;

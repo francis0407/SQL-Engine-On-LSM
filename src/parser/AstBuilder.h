@@ -15,6 +15,8 @@ using namespace simplesql::parser::antlr;
 
 class AstBuilder : public SimpleSqlBaseVisitor {
 public:
+    virtual antlrcpp::Any visitCreateStatement(SimpleSqlParser::CreateStatementContext *ctx) override;
+
     virtual antlrcpp::Any visitSelectStatement(SimpleSqlParser::SelectStatementContext *ctx) override;
 
     virtual antlrcpp::Any visitFromCluse(SimpleSqlParser::FromCluseContext *ctx) override;

@@ -1,5 +1,5 @@
 
-// Generated from /home/francis/File/Code/SQL-Engine-On-LSM/antlr4/SimpleSql.g4 by ANTLR 4.7.2
+// Generated from /mnt/d/Program/Ubuntu/SQL-Engine-On-LSM/antlr4/SimpleSql.g4 by ANTLR 4.7.2
 
 #pragma once
 
@@ -30,6 +30,8 @@ public:
 
     virtual antlrcpp::Any visitQueryStatement(SimpleSqlParser::QueryStatementContext *context) = 0;
 
+    virtual antlrcpp::Any visitCopyFileStatement(SimpleSqlParser::CopyFileStatementContext *context) = 0;
+
     virtual antlrcpp::Any visitCreateStatement(SimpleSqlParser::CreateStatementContext *context) = 0;
 
     virtual antlrcpp::Any visitIndexClause(SimpleSqlParser::IndexClauseContext *context) = 0;
@@ -37,6 +39,8 @@ public:
     virtual antlrcpp::Any visitDeleteStatement(SimpleSqlParser::DeleteStatementContext *context) = 0;
 
     virtual antlrcpp::Any visitInsertStatement(SimpleSqlParser::InsertStatementContext *context) = 0;
+
+    virtual antlrcpp::Any visitCopyStatement(SimpleSqlParser::CopyStatementContext *context) = 0;
 
     virtual antlrcpp::Any visitSelectStatement(SimpleSqlParser::SelectStatementContext *context) = 0;
 

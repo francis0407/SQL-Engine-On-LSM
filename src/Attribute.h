@@ -12,8 +12,8 @@ using namespace simplesql::datatypes;
 
 class Attribute {
 public:
-    Attribute(DataType _datatype, size_t _offset, std::string _name);
-    Attribute(DataType _datatype, size_t _offset, std::string _tableReference, std::string _name);
+    Attribute(DataType _datatype, std::string _name);
+    Attribute(DataType _datatype, std::string _tableReference, std::string _name);
     Attribute();
     Attribute& operator= (const Attribute&);
     bool equalTo(const Attribute& that);

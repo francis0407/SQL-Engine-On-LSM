@@ -1,5 +1,5 @@
 
-// Generated from /home/francis/File/Code/SQL-Engine-On-LSM/antlr4/SimpleSql.g4 by ANTLR 4.7.2
+// Generated from /mnt/d/Program/Ubuntu/SQL-Engine-On-LSM/antlr4/SimpleSql.g4 by ANTLR 4.7.2
 
 #pragma once
 
@@ -15,21 +15,22 @@ public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, SELECT = 6, FROM = 7, 
     WHERE = 8, INSERT = 9, INTO = 10, VALUES = 11, DELETE = 12, CREATE = 13, 
-    TABLE = 14, INDEX = 15, ON = 16, AS = 17, OR = 18, AND = 19, NOT = 20, 
-    TRUE_ = 21, FALSE_ = 22, EQ = 23, NEQ = 24, NEQJ = 25, LT = 26, LTE = 27, 
-    GT = 28, GTE = 29, PLUS = 30, MINUS = 31, ASTERISK = 32, SLASH = 33, 
-    PERCENT = 34, STRING = 35, FLOAT_LITERAL = 36, INTEGER_LITERAL = 37, 
-    IDENTIFIER = 38, WS = 39
+    COPY = 14, DELIMITER = 15, CSV = 16, TABLE = 17, INDEX = 18, ON = 19, 
+    AS = 20, OR = 21, AND = 22, NOT = 23, TRUE_ = 24, FALSE_ = 25, EQ = 26, 
+    NEQ = 27, NEQJ = 28, LT = 29, LTE = 30, GT = 31, GTE = 32, PLUS = 33, 
+    MINUS = 34, ASTERISK = 35, SLASH = 36, PERCENT = 37, STRING = 38, FLOAT_LITERAL = 39, 
+    INTEGER_LITERAL = 40, IDENTIFIER = 41, WS = 42
   };
 
   enum {
     RuleSingleStatement = 0, RuleStatement = 1, RuleCreateStatement = 2, 
     RuleIndexClause = 3, RuleDeleteStatement = 4, RuleInsertStatement = 5, 
-    RuleSelectStatement = 6, RuleSelectClause = 7, RuleFromCluse = 8, RuleWhereCluse = 9, 
-    RuleExpression = 10, RuleBooleanExpression = 11, RuleValueExpression = 12, 
-    RulePrimaryExpression = 13, RuleConstant = 14, RuleDataType = 15, RuleColumnIdentifier = 16, 
-    RuleTableIdentifier = 17, RuleIdentifier = 18, RuleComparisonOperator = 19, 
-    RulePredicateOperator = 20, RuleBooleanValue = 21, RuleNumber = 22
+    RuleCopyStatement = 6, RuleSelectStatement = 7, RuleSelectClause = 8, 
+    RuleFromCluse = 9, RuleWhereCluse = 10, RuleExpression = 11, RuleBooleanExpression = 12, 
+    RuleValueExpression = 13, RulePrimaryExpression = 14, RuleConstant = 15, 
+    RuleDataType = 16, RuleColumnIdentifier = 17, RuleTableIdentifier = 18, 
+    RuleIdentifier = 19, RuleComparisonOperator = 20, RulePredicateOperator = 21, 
+    RuleBooleanValue = 22, RuleNumber = 23
   };
 
   SimpleSqlParser(antlr4::TokenStream *input);
@@ -48,6 +49,7 @@ public:
   class IndexClauseContext;
   class DeleteStatementContext;
   class InsertStatementContext;
+  class CopyStatementContext;
   class SelectStatementContext;
   class SelectClauseContext;
   class FromCluseContext;
@@ -129,6 +131,15 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
+  class  CopyFileStatementContext : public StatementContext {
+  public:
+    CopyFileStatementContext(StatementContext *ctx);
+
+    CopyStatementContext *copyStatement();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
   StatementContext* statement();
 
   class  CreateStatementContext : public antlr4::ParserRuleContext {
@@ -143,6 +154,7 @@ public:
     std::vector<DataTypeContext *> dataType();
     DataTypeContext* dataType(size_t i);
     TableIdentifierContext *tableIdentifier();
+    IndexClauseContext *indexClause();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -202,6 +214,28 @@ public:
   };
 
   InsertStatementContext* insertStatement();
+
+  class  CopyStatementContext : public antlr4::ParserRuleContext {
+  public:
+    SimpleSqlParser::TableIdentifierContext *tableName = nullptr;;
+    antlr4::Token *fileName = nullptr;;
+    antlr4::Token *delimiter = nullptr;;
+    CopyStatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *COPY();
+    antlr4::tree::TerminalNode *FROM();
+    antlr4::tree::TerminalNode *DELIMITER();
+    antlr4::tree::TerminalNode *CSV();
+    TableIdentifierContext *tableIdentifier();
+    std::vector<antlr4::tree::TerminalNode *> STRING();
+    antlr4::tree::TerminalNode* STRING(size_t i);
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  CopyStatementContext* copyStatement();
 
   class  SelectStatementContext : public antlr4::ParserRuleContext {
   public:

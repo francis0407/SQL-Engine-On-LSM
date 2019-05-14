@@ -48,7 +48,8 @@ link_libraries(
    "${PROJECT_SOURCE_DIR}/lib/libgtest.a"
    "${PROJECT_SOURCE_DIR}/lib/libgtest_main.a"
    "${PROJECT_SOURCE_DIR}/lib/libantlr4-runtime.a"
-   "${PROJECT_SOURCE_DIR}/lib/libantlr4-runtime.so" 
+   "${PROJECT_SOURCE_DIR}/lib/libantlr4-runtime.so"
+   "${PROJECT_SOURCE_DIR}/lib/libleveldb.a"
    pthread)
 
 add_executable(unit_test # 输出名为xxx的可执行文件

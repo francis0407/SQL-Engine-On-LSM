@@ -75,6 +75,7 @@ bool InnerJoin::nestedLoopOpen() {
         streamNext = right->next();
     else
         streamNext = left->next();
+    return true;
 }
 
 bool InnerJoin::nestedLoopClose() {

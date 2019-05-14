@@ -13,6 +13,10 @@ Analyzer::Analyzer(CatalogBase* _catalog) {
     );
 }
 
+Analyzer::~Analyzer() {
+    delete catalog;
+}
+
 OperatorBase* Analyzer::run(OperatorBase* opt) {
     return execute(opt);
 }

@@ -19,7 +19,7 @@ class QueryExecutor : public RuleExecutor {
 public:
     QueryExecutor(CatalogBase* catalog);
     QueryExecutor(SQLParser* _parser, Analyzer* _analyzer);
-    ~QueryExecutor();
+    virtual ~QueryExecutor();
     virtual OperatorBase* run(OperatorBase* opt) override;
 
     void executeSQL(const std::string sql, Relation& result); // TODO : return 

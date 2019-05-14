@@ -12,7 +12,7 @@ Comparison::Comparison(ExpressionBase* _left, ExpressionBase* _right, Expression
 }
 
 void Comparison::resolveDataType() {
-    if (!isNumber(left->dataType) || !isNumber(right->dataType) && left->dataType != right->dataType) {
+    if ((!isNumber(left->dataType) || !isNumber(right->dataType)) && left->dataType != right->dataType) {
         dataType = Unresolved;
         return;
     }
@@ -56,6 +56,7 @@ AnyValue* EqualTo::eval(Row* r, MemoryPool *mp) {
                 result->value = StringValue::compare(sl->data(), sl->size(), sr->data(), sr->size()) == 0;
             break;
         }
+        default: break;
     }
     return result;
 }
@@ -103,6 +104,7 @@ AnyValue* LessThan::eval(Row* r, MemoryPool *mp) {
                 result->value = StringValue::compare(sl->data(), sl->size(), sr->data(), sr->size()) < 0;
             break;
         }
+        default: break;
     }
     return result;
 }
@@ -150,6 +152,7 @@ AnyValue* LessThanOrEqual::eval(Row* r, MemoryPool *mp) {
                 result->value = StringValue::compare(sl->data(), sl->size(), sr->data(), sr->size()) <= 0;
             break;
         }
+        default: break;
     }
     return result;
 }
@@ -197,6 +200,7 @@ AnyValue* GreaterThan::eval(Row* r, MemoryPool *mp) {
                 result->value = StringValue::compare(sl->data(), sl->size(), sr->data(), sr->size()) > 0;
             break;
         }
+        default: break;
     }
     return result;
 }
@@ -244,6 +248,7 @@ AnyValue* GreaterThanOrEqual::eval(Row* r, MemoryPool *mp) {
                 result->value = StringValue::compare(sl->data(), sl->size(), sr->data(), sr->size()) >= 0;
             break;
         }
+        default: break;
     }
     return result;
 }
