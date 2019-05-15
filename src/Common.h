@@ -12,5 +12,6 @@ typedef unsigned char byte;
 
 #define MEMORYPOOL_BLOCK_SIZE 4096
 
+static bool isBigEndian = false;
 
 } // namespace simplesql

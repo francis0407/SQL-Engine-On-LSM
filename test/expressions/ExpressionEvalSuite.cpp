@@ -1,6 +1,5 @@
 #include "gtest/gtest.h"
 
-#include "parser/SQLParser.h"
 #include "expressions/Literal.h"
 #include "expressions/Logic.h"
 #include "expressions/Comparison.h"
@@ -8,7 +7,6 @@
 #include "expressions/AttributeReference.h"
 
 using namespace simplesql::expressions;
-using namespace simplesql::parser;
 using namespace simplesql;
 
 class ExpressionEvalSuite : public testing::Test {

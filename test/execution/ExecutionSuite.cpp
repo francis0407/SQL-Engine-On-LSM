@@ -18,8 +18,8 @@
 
 #include "MemoryPool.h"
 
-#include "test/utils/TestCatalog.h"
-#include "test/utils/TestScan.h"
+#include "test/util/TestCatalog.h" 
+#include "test/util/TestScan.h"
 
 using namespace simplesql;
 using namespace simplesql::expressions;

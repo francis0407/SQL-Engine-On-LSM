@@ -14,7 +14,7 @@
 
 
 同时我们需要支持二级索引，因为二级索引无法保证唯一，因此需要在后方添加PrimaryKey，这样的话通过扫描二级索引的前缀，就可以获得其对应的PrimaryKey，再构造RowKey获得数据：
-> Key: TablePrefix_TableID_IndexPrefix_IndexValue_PrimaryKey
+> Key: TablePrefix_TableID_IndexPrefix_IndexID_IndexValue_PrimaryKey
 >
 > Value: NULL
 
@@ -22,6 +22,7 @@
 
 需要再解释一下这几个Prefix，我认为这些Prefix用1个字节就足够了，因为除了IndexValue外，其他部分都是定长且对齐的，所有持久化的内容根据Prefix+４Byte +Prefix+ Value(1+4+1+x)的格式来编码，就可以保证同一个表在Key上是连续的，且不会受到别的表的影响（可以进行Scan）。
 
+另一个问题是IndexValue如果是变长的怎么处理，IndexValue不是最后的一个项，所以会出现String类型冲突问题，在Scan的时候会扫描到无用项，有几个处理的思路，一个是把PrimaryKey放到Value里，它就不会影响Key的偏序关系，另一个思路就是我给它截断成定长的String，然后每次扫到之后要再跳到PrimaryKey里做验证，两者都比较麻烦。
 ## 元数据存储
 
 元数据也用关系模型保存，这样就可以统一用高层的API访问，不需要为元数据另做编码(在设计上尽量不损失性能)。

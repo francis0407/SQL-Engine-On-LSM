@@ -18,46 +18,17 @@
 #include "expressions/Arithmetic.h"
 #include "expressions/AttributeReference.h"
 
+#include "test/util/TestCatalog.h"
+
 using namespace simplesql::expressions;
 using namespace simplesql::analyzer;
 using namespace simplesql::catalog;
 using namespace simplesql;
+using namespace simplesql::test;
 
 using std::string;
 using std::vector;
 using std::map;
-
-class TestCatalog : public CatalogBase {
-public:
-    TestCatalog() {
-        vector<Attribute> a;
-        a.push_back(Attribute(Integer, "A1"));
-        a.push_back(Attribute(Integer, "A2"));
-        a.push_back(Attribute(String, "A3"));
-        a.push_back(Attribute(Float, "A4"));
-        catalog["A"] = a;
-
-        vector<Attribute> b;
-        b.push_back(Attribute(Integer, "B1"));
-        b.push_back(Attribute(Boolean, "B2"));
-        b.push_back(Attribute(String, "B3"));
-        b.push_back(Attribute(Float, "B4"));
-        catalog["B"] = b;
-    }
-    virtual bool findRelation(RelationReference& relation) override {
-        auto r = catalog.find(relation.tableName);
-        if (r == catalog.end()) return false;
-        for (auto iter : r->second)
-            relation.attributes.append(iter);
-        if (relation.referenceName.empty())
-            relation.referenceName = relation.tableName;
-        relation.tableID = r->first[0];
-        relation.resolved = true;
-        return true;
-    }
-private:
-    map<string, vector<Attribute>> catalog;
-};
 
 class TestAnalyzer : public RuleExecutor {
 public:
