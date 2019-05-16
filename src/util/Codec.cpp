@@ -1,4 +1,6 @@
 
+#include <cstring>
+
 #include "util/Codec.h"
 #include "Common.h"
 
@@ -14,14 +16,14 @@ using namespace simplesql::util;
 void simplesql::util::encodeInt(int value, string& result) {
     unsigned int ui = *(unsigned int*)(&value);
     ui += (1 << 31);
-    if (!isBigEndian)
+    if (!ISBIGENDIAN)
         ui = REVERSE32(ui);
     result.append((char*)&ui, sizeof(int));
 }
 
 int simplesql::util::decodeInt(const string& input) {
     unsigned int ui = *(unsigned int *)input.data();
-    if (!isBigEndian)
+    if (!ISBIGENDIAN)
         ui = REVERSE32(ui);
     ui -= (1 << 31);
     int result = ui;
@@ -35,16 +37,16 @@ void simplesql::util::encodeFloat(float value, string& result) {
     } else {
         ui = ~ui;
     }
-    if (!isBigEndian)
+    if (!ISBIGENDIAN)
         ui = REVERSE32(ui);
     result.assign((char*)&ui, sizeof(float));
 }
 
 float simplesql::util::decodeFloat(const string& input) {
     unsigned int ui = *(unsigned int *)input.data();
-    if (!isBigEndian)
+    if (!ISBIGENDIAN)
         ui = REVERSE32(ui);
-    if (ui & (1 << 31) > 0) {
+    if ((ui & (1 << 31)) > 0) {
         ui &= ~(1 << 31);
     } else {
         ui = ~ui;
@@ -86,7 +88,7 @@ void simplesql::util::encodeAnyValue(AnyValue* value, string& result) {
     }
 }
 
-// Key: TablePrefix_TableID_RowPrefix_PrimaryKey  [1 + ４ + 1 + x bytes]
+// Key: TablePrefix_TableID_RowPrefix_PrimaryKey  [1 + 4 + 1 + x bytes]
 void simplesql::util::encodeRowKey(int tableID, AnyValue* pk, string& result) {
     string tID;
     encodeInt(tableID, tID);
@@ -141,7 +143,7 @@ void simplesql::util::encodeRowValue(Row* row, string& result) {
     }
 }
 
-void decodeRowValue(const string& input, const AttributeSeq& schema, Row* &result, MemoryPool* mp) {
+void simplesql::util::decodeRowValue(const string& input, const AttributeSeq& schema, Row* &result, MemoryPool* mp) {
     size_t offset = 0;
     const char* data = input.data();
     AnyValue** values = (AnyValue**)mp->allocate(sizeof(AnyValue*) * schema.attributes.size());
@@ -172,3 +174,35 @@ void decodeRowValue(const string& input, const AttributeSeq& schema, Row* &resul
     result = Row::create(values, schema.attributes.size(), mp);
 }
 
+void simplesql::util::decodeIndexValue(const string& input, DataType type, Row* &result, MemoryPool* mp) {
+    size_t offset = 0;
+    const char* data = input.data();
+    std::vector<AnyValue*> values;
+    for (size_t i = 0; offset <= input.size(); i++) {
+        switch (type) {
+            case Integer: {
+                values[i] = IntegerValue::create(*(int*)(data + offset), mp);
+                offset += sizeof(int);
+                break;
+            }
+            case Float: {
+                values[i] = FloatValue::create(*(float*)(data + offset), mp);
+                offset += sizeof(float);
+                break;
+            }
+            case Boolean: {
+                values[i] = BooleanValue::create(*(bool*)(data + offset), mp);
+                offset += sizeof(bool);
+                break;
+            }
+            case String: {
+                values[i] = StringValue::create(data + offset + sizeof(size_t), *(size_t*)(data + offset), mp);
+                offset += *(size_t*)(data + offset) + sizeof(size_t);
+                break;
+            }
+        }
+    }
+    AnyValue** buf = (AnyValue**)mp->allocate(sizeof(AnyValue*) * values.size());
+    memcpy(buf, values.data(), sizeof(AnyValue*) * values.size());
+    result = Row::create(buf, values.size(), mp);
+}

@@ -31,9 +31,11 @@ void encodeAnyValue(AnyValue* value, string& result);
 
 void encodeRowKey(int tableID, AnyValue* pk, string& result);
 void encodeIndexKey(int tableID, int indexID, AnyValue* index, string& result);
-// void encodeIndexKeyWithPK(int tableID, int indexID, AnyValue* index, AnyValue* pk, string& result);
+
 void encodeRowValue(Row* row, string& result);
 
 void decodeRowValue(const string& input, const AttributeSeq& schema, Row* &result, MemoryPool* mp);
-// void decodeRowKey(string& input, int& tableID, AnyValue*& )
+
+void decodeIndexValue(const string& input, DataType type, Row* &result, MemoryPool* mp);
+
 }} // namespace simplesql::util

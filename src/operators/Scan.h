@@ -32,4 +32,17 @@ public:
     ScanMethod method;
 };
 
+class SeqScan: public Scan {
+public:
+    SeqScan(RelationReference* _relation);
+    virtual ~SeqScan();
+
+    virtual bool open() override;
+    virtual NextResult next() override;
+    virtual bool close() override;
+    virtual bool equalTo(OperatorBase* that) const override;
+    
+    RelationReference* reference;
+    ScanMethod method;
+};
 }} // namespace simplesql::operators

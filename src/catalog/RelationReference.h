@@ -16,6 +16,7 @@ public:
         : tableName(_tableName), referenceName(_tableName) {}
     RelationReference(const string& _tableName, const string& _referenceName) 
         : tableName(_tableName), referenceName(_referenceName) {}
+
     string tableName; // real name
     string referenceName; // alias
     

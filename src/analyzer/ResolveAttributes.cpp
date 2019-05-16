@@ -8,6 +8,7 @@
 #include "operators/Filter.h"
 #include "operators/Project.h"
 #include "operators/Join.h"
+#include "operators/CreateTable.h"
 
 using namespace simplesql::analyzer;
  
@@ -93,6 +94,38 @@ OperatorBase* ResolveAttributes::apply(OperatorBase* opt) {
             join->resolved = true;
             join->outputs = join->left->outputs;
             join->outputs += join->right->outputs;
+            break;
+        }
+        case _CreateTable: {
+            CreateTable* ct = (CreateTable*)opt;
+            auto &attrs = ct->attrs;
+            auto &index = ct->index;
+            // resolve names
+            size_t num = attrs.size();
+            if (num == 0) throw AnalysisException("Unknown Exception: 0");
+            for (size_t i = 0; i < num; i++)
+                for (size_t j = i + 1; j < num; j++) 
+                    if (attrs[i]->name == attrs[j]->name)
+                        throw AnalysisException("Same Attribute Name");
+            // resolve types
+            for (size_t i = 0; i < num; i++)
+                if (attrs[i]->dataType == Unresolved)
+                    throw AnalysisException("Unknown DataType");
+            // resolve indexes
+            for (size_t i = 0; i < index.size(); i++) {
+                bool find = false;
+                for (size_t j = 0; j < num; j++) {
+                    if (index[i] == attrs[j]->name) {
+                        attrs[j]->hasIndex = true;
+                        find = true;
+                        break;
+                    }
+                }
+                if (!find) throw AnalysisException("Unknown Index Name");
+            }
+            break;
+        }
+        default: {
             break;
         }
     }

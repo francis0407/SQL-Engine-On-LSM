@@ -65,7 +65,7 @@ public:
     }
 };
 
-TEST_F(ExecutionSuite, Q1) {
+TEST_F(ExecutionSuite, SP) {
     // SELECT A1, A4 FROM A WHERE A3 = TRUE
     Relation result;
     OperatorBase* query = 
@@ -83,7 +83,7 @@ TEST_F(ExecutionSuite, Q1) {
     assertResult<2, 2>(result, answer);
 }
 
-TEST_F(ExecutionSuite, Q2) {
+TEST_F(ExecutionSuite, SPJ) {
     // natrual join 
 
     // SELECT A1, A4, B4  
@@ -109,7 +109,7 @@ TEST_F(ExecutionSuite, Q2) {
     assertResult<3, 3>(result, answer);
 }
 
-TEST_F(ExecutionSuite, Q3) {
+TEST_F(ExecutionSuite, SPJ2) {
     // SELECT A1, B1, A3
     // FROM   A, B
     // WHERE  A3 = B3
@@ -136,7 +136,7 @@ TEST_F(ExecutionSuite, Q3) {
     assertResult<5, 3>(result, answer);
 }
 
-TEST_F(ExecutionSuite, Q4) {
+TEST_F(ExecutionSuite, SelfJoin) {
     // Self join
     // SELECT A.A1, A.A4, C.A4
     // FROM   A, A AS C

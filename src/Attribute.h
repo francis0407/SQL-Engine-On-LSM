@@ -17,10 +17,12 @@ public:
     Attribute();
     Attribute& operator= (const Attribute&);
     bool equalTo(const Attribute& that);
-    
+    std::string encode();
+    void decode(const std::string& input);
     
     DataType dataType;
     size_t offset;
+    bool hasIndex;
     std::string name;
     std::string tableReference;
 };
@@ -34,6 +36,8 @@ public:
     Attribute* findAttribute(const Attribute& attr);
     AttributeSeq& operator= (const AttributeSeq& that);
     AttributeSeq& operator+= (const AttributeSeq& that); 
+    std::string encode();
+    void decode(const std::string& input);
 
     std::vector<Attribute> attributes;
 private:

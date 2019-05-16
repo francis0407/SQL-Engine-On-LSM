@@ -63,3 +63,26 @@ TEST_F(CodecSuite, ValueDecode) {
     ASSERT_EQ(decodeFloat(s1), -200.0f);
     s1.clear();
 }
+
+TEST_F(CodecSuite, RowEncodeDecode) {
+    AttributeSeq attrs;
+    attrs.append(Attribute(Integer, "A1"));
+    attrs.append(Attribute(String, "A2"));
+    attrs.append(Attribute(String, "A3"));
+    attrs.append(Attribute(Float, "A4"));
+    MemoryPool mp;
+    AnyValue* values[4];
+    values[0] = IntegerValue::create(4, &mp);
+    values[1] = StringValue::create(string("abcdefg"), &mp);
+    values[2] = StringValue::create(string("qq11231421421"), &mp);
+    values[3] = FloatValue::create(-100.0f, &mp);
+    Row* row = Row::create(values, 4, &mp);
+    string s;
+    encodeRowValue(row, s);
+    Row* r2;
+    decodeRowValue(s, attrs, r2, &mp);
+    ASSERT_TRUE(values[0]->equalToSemantically(r2->values[0]));
+    ASSERT_TRUE(values[1]->equalToSemantically(r2->values[1]));
+    ASSERT_TRUE(values[2]->equalToSemantically(r2->values[2]));
+    ASSERT_TRUE(values[3]->equalToSemantically(r2->values[3]));
+}
