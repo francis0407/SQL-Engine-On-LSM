@@ -29,7 +29,7 @@ insertStatement
     ;
 
 copyStatement
-    : COPY tableName=tableIdentifier FROM fileName=STRING DELIMITER delimiter=STRING CSV
+    : COPY tableName=tableIdentifier FROM fileName=STRING DELIMITER delimiter=STRING CSV HEADER?
     ;
     
 selectStatement
@@ -125,6 +125,7 @@ CREATE: 'CREATE';
 COPY  : 'COPY';  
 DELIMITER : 'DELIMITER';
 CSV   : 'CSV';
+HEADER: 'HEADER';
 TABLE : 'TABLE';
 INDEX : 'INDEX';
 ON    : 'ON';

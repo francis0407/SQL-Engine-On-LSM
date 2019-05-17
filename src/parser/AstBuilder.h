@@ -14,7 +14,9 @@ using namespace simplesql::parser::antlr;
 // so that we have to explicitily cast all expressions to ExpressionBase*
 
 class AstBuilder : public SimpleSqlBaseVisitor {
-public:
+public: 
+    virtual antlrcpp::Any visitCopyStatement(SimpleSqlParser::CopyStatementContext *ctx) override;
+ 
     virtual antlrcpp::Any visitCreateStatement(SimpleSqlParser::CreateStatementContext *ctx) override;
 
     virtual antlrcpp::Any visitSelectStatement(SimpleSqlParser::SelectStatementContext *ctx) override;
@@ -56,6 +58,8 @@ public:
     virtual antlrcpp::Any visitIntegerLiteral(SimpleSqlParser::IntegerLiteralContext *ctx) override;
 
     virtual antlrcpp::Any visitFloatLiteral(SimpleSqlParser::FloatLiteralContext *ctx) override;
+private:
+    std::string removeQuotation(const std::string& input);
 };
 
 }} // namespace simplesql::parser

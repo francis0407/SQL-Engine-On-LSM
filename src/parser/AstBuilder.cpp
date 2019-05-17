@@ -7,6 +7,7 @@
 #include "operators/Project.h"
 #include "operators/Filter.h"
 #include "operators/CreateTable.h"
+#include "operators/CopyFile.h"
 
 #include "expressions/AttributeReference.h"
 #include "expressions/Arithmetic.h"
@@ -24,6 +25,17 @@ using namespace simplesql::datatypes;
 using namespace simplesql::catalog;
 using namespace simplesql::parser;
 using std::string;
+
+Any AstBuilder::visitCopyStatement(SimpleSqlParser::CopyStatementContext *ctx) {
+    OperatorBase* opt = nullptr;
+    string tableName = ctx->tableName->toString();
+    string filePath = removeQuotation(ctx->fileName->getText());
+    string delimiter = removeQuotation(ctx->delimiter->getText());
+    bool header = ctx->HEADER() != nullptr;
+    opt = new CopyFile(tableName, filePath, delimiter, header);
+    Any result = opt;
+    return result;
+}
 
 Any AstBuilder::visitCreateStatement(SimpleSqlParser::CreateStatementContext *ctx) {
     OperatorBase* opt = nullptr;
@@ -199,8 +211,7 @@ Any AstBuilder::visitParenthesizedExpression(SimpleSqlParser::ParenthesizedExpre
 }
 
 Any AstBuilder::visitStringLiteral(SimpleSqlParser::StringLiteralContext *ctx) {
-    string stringWithQuotation = ctx->getText();
-    string value = stringWithQuotation.substr(1, stringWithQuotation.size() - 2);
+    string value = removeQuotation(ctx->getText());
     Any result = (ExpressionBase *)Literal::create(value);
     return result;
 }
@@ -249,9 +260,13 @@ Any AstBuilder::visitIntegerLiteral(SimpleSqlParser::IntegerLiteralContext *ctx)
 
 Any AstBuilder::visitFloatLiteral(SimpleSqlParser::FloatLiteralContext *ctx) {
     float value = std::stof(ctx->FLOAT_LITERAL()->getText());
-    if (ctx->MINUS() != nullptr)
+    if (ctx->MINUS() != nullptr) 
         value = -value;
     Any result = (ExpressionBase *)Literal::create(value);
 
     return result;
+}
+
+std::string AstBuilder::removeQuotation(const std::string& input) {
+    return input.substr(1, input.size() - 2);
 }

@@ -85,7 +85,34 @@ void simplesql::util::encodeAnyValue(AnyValue* value, string& result) {
         case String:
             encodeString(((StringValue*)value)->toString(), result);
             break;
+        default:
+            break;
     }
+}
+
+void simplesql::util::decodeAnyValue(const string& input, DataType type, AnyValue* &result, MemoryPool* mp) {
+    switch (type) {
+        case Integer:
+            result = IntegerValue::create(decodeInt(input), mp);
+            break;
+        case Float:
+            result = FloatValue::create(decodeFloat(input), mp);
+            break;
+        case Boolean:
+            result = BooleanValue::create(decodeBoolean(input), mp);
+            break;
+        case String:
+            result = StringValue::create(decodeString(input), mp);
+            break;
+        default:
+            break;
+    }
+}
+
+void simplesql::util::encodeTableKey(int tableID, string& result) {
+    string tID;
+    encodeInt(tableID, tID);
+    result = tablePrefix + tID + rowPrefix;
 }
 
 // Key: TablePrefix_TableID_RowPrefix_PrimaryKey  [1 + 4 + 1 + x bytes]
@@ -141,6 +168,20 @@ void simplesql::util::encodeRowValue(Row* row, string& result) {
             }
         }
     }
+}
+
+// Key: TablePrefix_TableID_RowPrefix_PrimaryKey  [1 + 4 + 1 + x bytes]
+bool simplesql::util::decodeRowKey(const string& input, DataType pkType, int& tableID, AnyValue* &pk, MemoryPool* mp) {
+    size_t offset = 0;
+    const char* data = input.data();
+    if (*data != tablePrefix) return false;
+    offset += sizeof(char);
+    tableID = *(int*)(data + offset);
+    offset += sizeof(int);
+    if (*(data + offset) != rowPrefix) return false;
+    offset += sizeof(char);
+    decodeAnyValue(string(data + offset, input.size() - offset), pkType, pk, mp);
+    return true;
 }
 
 void simplesql::util::decodeRowValue(const string& input, const AttributeSeq& schema, Row* &result, MemoryPool* mp) {

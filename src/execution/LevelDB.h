@@ -16,6 +16,7 @@ public:
     static leveldb::DB* getDB();
     static bool putRow(int tableID, AnyValue* pk, Row* row);
     static bool getRow(int tableID, AnyValue* pk, const AttributeSeq& schema, Row*& result, MemoryPool* mp);
+    static leveldb::Iterator* scanRow(int tableID);
 private:
     static leveldb::DB* initDB(leveldb::DB* db);
 };

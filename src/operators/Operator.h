@@ -22,7 +22,8 @@ enum OperatorType {
     _Filter,
     _InnerJoin,
     _Scan,
-    _CreateTable
+    _CreateTable,
+    _CopyFile
 };
 
 // Relational Operator Base Class

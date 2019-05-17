@@ -1,6 +1,7 @@
 
 #include "operators/Scan.h"
 #include "catalog/RelationReference.h"
+#include "execution/LevelDB.h"
 
 using namespace simplesql::operators;
 using namespace simplesql::expressions;
@@ -22,6 +23,7 @@ bool Scan::equalTo(OperatorBase* that) const {
     Scan* _that = (Scan*)that;
     if (that == nullptr) return false;
     if (that->type != _Scan) return false;
+    if (_that->method != method) return false;
     return reference->referenceName == _that->reference->referenceName
         && reference->tableName == _that->reference->tableName;
 }

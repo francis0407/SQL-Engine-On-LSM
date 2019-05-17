@@ -17,7 +17,10 @@ typedef unsigned char byte;
 #define ISBIGENDIAN (false)
 
 #define GLOBAL_SETTING_TABLE_NAME "GLOBALSETTING"
+#define GLOBAL_SETTING_TABLE_ID 0
+
 #define SCHEMA_TABLE_NAME "SCHEMATABLE"
+#define SCHEMA_TABLE_ID 1
 enum GlobalSettingID {
     TableCount,
     

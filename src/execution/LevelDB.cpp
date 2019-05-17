@@ -87,3 +87,12 @@ bool LevelDB::getRow(int tableID, AnyValue* pk, const AttributeSeq& schema, Row*
     }
     return true;
 }
+
+leveldb::Iterator* LevelDB::scanRow(int tableID) {
+    leveldb::DB* db = getDB();
+    auto iter = db->NewIterator(leveldb::ReadOptions());
+    string tableKey;
+    encodeTableKey(tableID, tableKey);
+    iter->Seek(tableKey);
+    return iter;
+}

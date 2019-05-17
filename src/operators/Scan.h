@@ -40,9 +40,8 @@ public:
     virtual bool open() override;
     virtual NextResult next() override;
     virtual bool close() override;
-    virtual bool equalTo(OperatorBase* that) const override;
-    
-    RelationReference* reference;
-    ScanMethod method;
+private:
+    MemoryPool* mp;
+    leveldb::Iterator* iter;
 };
 }} // namespace simplesql::operators
