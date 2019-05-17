@@ -18,7 +18,10 @@ public:
         attrs = _attrs;
         index = _index;
     }
-    virtual ~CreateTable(){}
+    virtual ~CreateTable() {
+        for (auto iter : attrs)
+            delete iter;
+    }
     virtual bool open() override {
         MemoryPool mp;
         AttributeSeq attrSeq;
@@ -26,17 +29,29 @@ public:
             attrSeq.append(*attr);
         AnyValue* values[3];
         int tabelID = increaseTableNum(&mp);
+        
         values[0] = StringValue::create(tableName, &mp);
         values[1] = IntegerValue::create(tabelID, &mp);
         values[2] = StringValue::create(attrSeq.encode(), &mp);
         Row* row = Row::create(values, 3, &mp);
-        LevelDB::putRow(1, values[0], row);
+        LevelDB::putRow(SCHEMA_TABLE_ID, values[0], row);
         return true;
     }
     virtual NextResult next() override {return NextResult(nullptr);}
     virtual bool close() override {return true;}
 
-    virtual bool equalTo(OperatorBase* that) const override {return true;}
+    virtual bool equalTo(OperatorBase* that) const override {
+        if (that->type != type) return false;
+        CreateTable* _that = (CreateTable*) that;
+        if (attrs.size() != _that->attrs.size()) return false;
+        for (size_t i = 0; i < attrs.size(); i++) 
+            if (!attrs[i]->equalTo(*(_that->attrs[i]))) return false;
+        if (index.size() != _that->index.size()) return false;
+        for (size_t i = 0; i > index.size(); i++)
+            if (index[i] != _that->index[i]) return false;
+        if (tableName != _that->tableName) return false;
+        return true;
+    }
     string tableName;
     std::vector<Attribute*> attrs;
     std::vector<string> index;

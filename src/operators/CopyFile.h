@@ -20,6 +20,7 @@ public:
     virtual ~CopyFile() {}
     
     virtual bool open() override {
+        
         return true;
     }
 
@@ -37,6 +38,8 @@ public:
     string filePath;
     string delimiter;
     bool hasHeader;
+
+    RelationReference ref;
 };
 
 }} // namespace simplesql::operators

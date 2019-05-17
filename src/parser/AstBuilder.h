@@ -4,17 +4,54 @@
 #pragma once
 
 #include "parser/antlr/SimpleSqlBaseVisitor.h"
+#include "operators/Operator.h"
 
 namespace simplesql {
 namespace parser {
 
 using namespace simplesql::parser::antlr;
-
+using namespace simplesql::operators;
 // antlrcpp::Any cannot cast the derived class to its base class,
 // so that we have to explicitily cast all expressions to ExpressionBase*
 
 class AstBuilder : public SimpleSqlBaseVisitor {
 public: 
+    virtual antlrcpp::Any visitSingleStatement(SimpleSqlParser::SingleStatementContext *ctx) override {
+        OperatorBase* opt = ctx->statement()->accept(this);
+        antlrcpp::Any result = opt;
+        return result;
+    }
+
+    virtual antlrcpp::Any visitCreateTableStatement(SimpleSqlParser::CreateTableStatementContext *ctx) override {
+        OperatorBase* opt = ctx->createStatement()->accept(this);
+        antlrcpp::Any result = opt;
+        return result;
+    }
+
+    virtual antlrcpp::Any visitDeleteValueStatement(SimpleSqlParser::DeleteValueStatementContext *ctx) override {
+        OperatorBase* opt = ctx->deleteStatement()->accept(this);
+        antlrcpp::Any result = opt;
+        return result;
+    }
+
+    virtual antlrcpp::Any visitInsertValueStatement(SimpleSqlParser::InsertValueStatementContext *ctx) override {
+        OperatorBase* opt = ctx->insertStatement()->accept(this);
+        antlrcpp::Any result = opt;
+        return result;
+    }
+
+    virtual antlrcpp::Any visitQueryStatement(SimpleSqlParser::QueryStatementContext *ctx) override {
+        OperatorBase* opt = ctx->selectStatement()->accept(this);
+        antlrcpp::Any result = opt;
+        return result;
+    }
+
+    virtual antlrcpp::Any visitCopyFileStatement(SimpleSqlParser::CopyFileStatementContext *ctx) override {
+        OperatorBase* opt = ctx->copyStatement()->accept(this);
+        antlrcpp::Any result = opt;
+        return result;
+    }
+
     virtual antlrcpp::Any visitCopyStatement(SimpleSqlParser::CopyStatementContext *ctx) override;
  
     virtual antlrcpp::Any visitCreateStatement(SimpleSqlParser::CreateStatementContext *ctx) override;

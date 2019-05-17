@@ -31,12 +31,12 @@ using namespace std;
 
 
 
-class ExecutionSuite : public testing::Test {
+class QueryExecutorSuite : public testing::Test {
 public:
-    ExecutionSuite() {
+    QueryExecutorSuite() {
         qe = new QueryExecutor(new TestCatalog());
     }
-    ~ExecutionSuite() {
+    ~QueryExecutorSuite() {
         delete qe;
     }
     QueryExecutor* qe;
@@ -65,7 +65,7 @@ public:
     }
 };
 
-TEST_F(ExecutionSuite, SP) {
+TEST_F(QueryExecutorSuite, SP) {
     // SELECT A1, A4 FROM A WHERE A3 = TRUE
     Relation result;
     OperatorBase* query = 
@@ -83,7 +83,7 @@ TEST_F(ExecutionSuite, SP) {
     assertResult<2, 2>(result, answer);
 }
 
-TEST_F(ExecutionSuite, SPJ) {
+TEST_F(QueryExecutorSuite, SPJ) {
     // natrual join 
 
     // SELECT A1, A4, B4  
@@ -109,7 +109,7 @@ TEST_F(ExecutionSuite, SPJ) {
     assertResult<3, 3>(result, answer);
 }
 
-TEST_F(ExecutionSuite, SPJ2) {
+TEST_F(QueryExecutorSuite, SPJ2) {
     // SELECT A1, B1, A3
     // FROM   A, B
     // WHERE  A3 = B3
@@ -136,13 +136,13 @@ TEST_F(ExecutionSuite, SPJ2) {
     assertResult<5, 3>(result, answer);
 }
 
-TEST_F(ExecutionSuite, SelfJoin) {
+TEST_F(QueryExecutorSuite, SelfJoin) {
     // Self join
     // SELECT A.A1, A.A4, C.A4
     // FROM   A, A AS C
     // WHERE  A.A1 = C.A1
     // AND    A.A3 = TRUE
-        Relation result;
+    Relation result;
     OperatorBase* query =
         new Project(
             buildExprList(3, new AttributeReference("A", "A1"), new AttributeReference("A","A4"), new AttributeReference("C", "A4")),

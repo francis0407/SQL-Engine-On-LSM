@@ -7,7 +7,7 @@
 
 ## 编码规则
 
-对于每一个table分配一个唯一的TableID（int３２),每一行编码格式如下： 
+对于每一个table分配一个唯一的TableID（int32 ),每一行编码格式如下： 
 > Key: TablePrefix_TableID_RowPrefix_PrimaryKey  [1 + ４ + 1 + x bytes]
 >
 > Value: [Col1, Col2, Col3, ...]

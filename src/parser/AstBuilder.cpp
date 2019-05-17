@@ -39,21 +39,23 @@ Any AstBuilder::visitCopyStatement(SimpleSqlParser::CopyStatementContext *ctx) {
 
 Any AstBuilder::visitCreateStatement(SimpleSqlParser::CreateStatementContext *ctx) {
     OperatorBase* opt = nullptr;
-    string tableName = ctx->tablenName->toString();
+    string tableName = ctx->tablenName->getText();
     auto attrCtxes = ctx->identifier();
     auto typeCtxes = ctx->dataType();
     std::vector<Attribute*> attrs;
     size_t num = attrCtxes.size();
     for (size_t i = 0; i < num; i++) {
-        string attrName = attrCtxes[i]->toString();
-        DataType attrType = toDataType(typeCtxes[i]->toString());
+        string attrName = attrCtxes[i]->getText();
+        DataType attrType = toDataType(typeCtxes[i]->getText());
         Attribute* attr = new Attribute(attrType, attrName);
         attrs.push_back(attr);
     }
-    auto indexCtxes = ctx->indexClause()->identifier();
     std::vector<string> indexes;
-    for (auto iter : indexCtxes) 
-        indexes.push_back(iter->toString());
+    if (ctx->indexClause() != nullptr) {
+        auto indexCtxes = ctx->indexClause()->identifier();
+        for (auto iter : indexCtxes) 
+            indexes.push_back(iter->getText());
+    }
     opt = new CreateTable(tableName, attrs, indexes);
     Any result = opt;
     return result;

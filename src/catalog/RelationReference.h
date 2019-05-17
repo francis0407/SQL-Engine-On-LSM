@@ -12,6 +12,7 @@ using std::string;
 
 class RelationReference {
 public:
+    RelationReference(){}
     RelationReference(const string& _tableName) 
         : tableName(_tableName), referenceName(_tableName) {}
     RelationReference(const string& _tableName, const string& _referenceName) 

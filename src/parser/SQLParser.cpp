@@ -54,5 +54,18 @@ OperatorBase* SQLParser::parseSelectQuery(const string& sql) {
 }
 
 OperatorBase* SQLParser::parseStatement(const string& sql) {
-    return parseSelectQuery(sql);
+    try {
+        ANTLRInputStream instream(sql);
+        SimpleSqlLexer lexer(&instream);
+        CommonTokenStream tokens(&lexer);
+        SimpleSqlParser parser(&tokens);
+
+        auto ctx = parser.singleStatement();
+        
+        OperatorBase* opt = (visitor.visitSingleStatement(ctx)).as<OperatorBase*>();
+        return opt;
+    } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
+        throw ParseException();
+    }
 }
