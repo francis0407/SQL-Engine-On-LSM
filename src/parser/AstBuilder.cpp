@@ -106,7 +106,7 @@ Any AstBuilder::visitFromCluse(SimpleSqlParser::FromCluseContext *ctx) {
     std::vector<Scan* > scans;
     for (size_t i = 0; i < num; i++) {
         RelationReference* ref = tables[i]->accept(this);
-        scans.push_back(new Scan(ref));
+        scans.push_back(new SeqScan(ref));
     }
      
     // fold-left the tables with join

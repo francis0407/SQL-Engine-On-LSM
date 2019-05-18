@@ -18,7 +18,7 @@ public:
     Attribute& operator= (const Attribute&);
     bool equalTo(const Attribute& that);
     std::string encode();
-    void decode(const std::string& input);
+    size_t decode(const std::string& input);
     
     DataType dataType;
     size_t offset;

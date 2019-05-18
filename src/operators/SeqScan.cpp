@@ -27,14 +27,17 @@ bool SeqScan::open() {
 }
 
 NextResult SeqScan::next() {
-    SafeRelease(mp);
+    if (mp != nullptr) {
+        delete mp;
+        mp = nullptr;
+    }
     mp = new MemoryPool();
 
     if (!iter->Valid()) return NextResult(nullptr);
     string key = iter->key().ToString();
     int tableID;
     AnyValue* pk;
-    if (decodeRowKey(key, reference->attributes.attributes[0].dataType, tableID, pk, mp)) return NextResult(nullptr);
+    if (!decodeRowKey(key, reference->attributes.attributes[0].dataType, tableID, pk, mp)) return NextResult(nullptr);
     if (tableID != reference->tableID) return NextResult(nullptr);
     Row* row;
     decodeRowValue(iter->value().ToString(), reference->attributes, row, mp);

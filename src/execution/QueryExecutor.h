@@ -22,14 +22,20 @@ public:
     virtual ~QueryExecutor();
     virtual OperatorBase* run(OperatorBase* opt) override;
 
-    void executeSQL(const std::string sql, Relation& result); // TODO : return 
-    void executeTree(OperatorBase* opt, Relation& result);
+    bool executeSQL(const std::string sql, Relation& result); // TODO : return 
+    bool executeTree(OperatorBase* opt, Relation& result);
     SQLParser* parser;
     Analyzer* analyzer;
+    CatalogBase* catalog;
 private:
     void initRules();
     bool prepareForExecution();
     
+};
+
+class BindWithLevelDB: public RuleBase {
+public:
+    virtual OperatorBase* apply(OperatorBase* opt) override;
 };
 
 class ResolveAttributeOffset : public RuleBase {

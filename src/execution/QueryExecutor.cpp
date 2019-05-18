@@ -1,15 +1,17 @@
+#include <iostream>
 
 #include "execution/QueryExecutor.h"
 #include "parser/ParseException.h"
 #include "analyzer/AnalysisException.h"
-
+#include "execution/ExecutionException.h"
 using namespace simplesql::execution;
 using namespace simplesql;
 
 
-QueryExecutor::QueryExecutor(CatalogBase* catalog) : RuleExecutor() {
+QueryExecutor::QueryExecutor(CatalogBase* _catalog) : RuleExecutor() {
+    catalog = _catalog;
     parser = new SQLParser();
-    analyzer = new Analyzer(catalog);
+    analyzer = new Analyzer(_catalog);
     initRules();
 }
 
@@ -36,7 +38,7 @@ OperatorBase* QueryExecutor::run(OperatorBase* opt) {
     return execute(opt);
 }
 
-void QueryExecutor::executeTree(OperatorBase* opt, Relation& result) {
+bool QueryExecutor::executeTree(OperatorBase* opt, Relation& result) {
     try {
         opt = analyzer->run(opt);
         opt = run(opt);
@@ -49,14 +51,18 @@ void QueryExecutor::executeTree(OperatorBase* opt, Relation& result) {
         }
         opt->close();
     } catch (ParseException& pe) {
-
+        std::cout << "ParserException: " << pe.msg;
     } catch (AnalysisException& ae) {
-
+        std::cout << "AnalysisException: " << ae.msg;
+    } catch (ExecutionException& ee) {
+        std::cout << "ExecutionException: " << ee.msg;
     } catch (std::exception& e) {
+        std::cout << "UnknownException: " << e.what();
     }
+    return true;
 }
 
-void QueryExecutor::executeSQL(const std::string sql, Relation& result) {
+bool QueryExecutor::executeSQL(const std::string sql, Relation& result) {
     try {
         OperatorBase* opt = parser->parseStatement(sql);
         opt = analyzer->run(opt);
@@ -72,12 +78,15 @@ void QueryExecutor::executeSQL(const std::string sql, Relation& result) {
         }
         opt->close();
     } catch (ParseException& pe) {
-
+        std::cout << "ParserException: " << pe.msg;
     } catch (AnalysisException& ae) {
-
+        std::cout << "AnalysisException: " << ae.msg;
+    } catch (ExecutionException& ee) {
+        std::cout << "ExecutionException: " << ee.msg;
     } catch (std::exception& e) {
-
+        std::cout << "UnknownException: " << e.what();
     }
+    return true;
 }
 
 

@@ -83,7 +83,7 @@ void simplesql::util::encodeAnyValue(AnyValue* value, string& result) {
             encodeBoolean(((BooleanValue*)value)->value, result);
             break;
         case String:
-            encodeString(((StringValue*)value)->toString(), result);
+            encodeString(string(((StringValue*)value)->data(), ((StringValue*)value)->size()), result);
             break;
         default:
             break;
@@ -176,7 +176,7 @@ bool simplesql::util::decodeRowKey(const string& input, DataType pkType, int& ta
     const char* data = input.data();
     if (*data != tablePrefix) return false;
     offset += sizeof(char);
-    tableID = *(int*)(data + offset);
+    tableID = decodeInt(string(data + offset, sizeof(int)));
     offset += sizeof(int);
     if (*(data + offset) != rowPrefix) return false;
     offset += sizeof(char);

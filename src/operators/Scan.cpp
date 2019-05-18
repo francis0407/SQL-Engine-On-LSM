@@ -7,7 +7,7 @@ using namespace simplesql::operators;
 using namespace simplesql::expressions;
 using namespace simplesql::catalog;
 
-Scan::Scan(RelationReference* _reference) : OperatorBase(_Scan), method(SeqScan) {
+Scan::Scan(RelationReference* _reference) : OperatorBase(_Scan), method(_SeqScan) {
     reference = _reference;
 
     children[0] = nullptr;

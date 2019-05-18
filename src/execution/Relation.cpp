@@ -1,4 +1,4 @@
-
+#include "iostream"
 #include "execution/Relation.h"
 
 using namespace simplesql::execution;
@@ -20,6 +20,17 @@ Relation::~Relation() {
 void Relation::append(Row* row) {
     columns = row->len;
     rows.push_back(row->makeCopy(mp));
+}
+
+void Relation::show() {
+    for (size_t i = 0; i < rows.size(); i++) {
+        for (size_t j = 0; j < columns; j++) {
+            if (j != 0) 
+                std::cout << " | ";
+            std::cout << rows[i]->values[j]->toString();
+        }
+        std::cout << std::endl;
+    }
 }
 // void Relation::append(Row* row, const AttributeSeq& schema) {
 //     rows.push_back(std::vector<AnyValue*>());

@@ -14,6 +14,7 @@ class Relation {
 public:
     Relation();
     ~Relation();
+    void show();
     void append(Row* row);
     std::vector<Row*> rows;
     int columns = 0;

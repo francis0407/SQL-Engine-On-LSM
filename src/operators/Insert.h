@@ -32,7 +32,7 @@ public:
         AnyValue** buf = (AnyValue**) mp->allocate(sizeof(AnyValue*) * ref.attributes.attributes.size());
         for (auto iter : values) {
             for (size_t i = 0; i < iter.size(); i++)
-                buf[i] = ((Literal*)buf[i])->value;
+                buf[i] = ((Literal*)iter[i])->value;
             Row* oldRow;
             bool needRemoveIndex = LevelDB::getRow(ref.tableID, buf[0], ref.attributes, oldRow, mp);
             for (size_t i = 1; i < iter.size(); i++) {

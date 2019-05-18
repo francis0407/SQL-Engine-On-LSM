@@ -14,7 +14,7 @@ Analyzer::Analyzer(CatalogBase* _catalog) {
 }
 
 Analyzer::~Analyzer() {
-    // delete catalog;
+    delete catalog;
 }
 
 OperatorBase* Analyzer::run(OperatorBase* opt) {

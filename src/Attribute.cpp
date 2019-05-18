@@ -2,16 +2,16 @@
 
 using namespace simplesql;
 
-Attribute::Attribute() {
+Attribute::Attribute(): hasIndex(false) {
 
 }
 
 Attribute::Attribute(DataType _datatype, std::string _name)
-    : dataType(_datatype), name(_name) {
+    : dataType(_datatype), name(_name), hasIndex(false) {
 }
 
 Attribute::Attribute(DataType _datatype, std::string _tableReference, std::string _name)
-    : dataType(_datatype), name(_name), tableReference(_tableReference) {
+    : dataType(_datatype), name(_name), hasIndex(false), tableReference(_tableReference) {
 }
 
 bool Attribute::equalTo(const Attribute& that) {
@@ -38,7 +38,7 @@ std::string Attribute::encode() {
     return result;
 }
  
-void Attribute::decode(const std::string& input) {
+size_t Attribute::decode(const std::string& input) {
     const char* data = input.data();
     size_t offset = 0;
     size_t nameLen = *(size_t*)data;
@@ -48,6 +48,7 @@ void Attribute::decode(const std::string& input) {
     dataType = *(DataType*)(data + offset);
     offset += sizeof(DataType);
     hasIndex = *(bool*)(data + offset);
+    return offset + sizeof(bool);
 }
 
 AttributeSeq::AttributeSeq() : _bytes(0) {
@@ -110,7 +111,7 @@ void AttributeSeq::decode(const std::string& input) {
     offset += sizeof(size_t);
     for (size_t i = 0; i < attrNum; i++) {
         Attribute attr;
-        attr.decode(std::string(data + offset, inputSize - offset));
+        offset += attr.decode(std::string(data + offset, inputSize - offset));
         this->append(attr);
     }
     if (attrNum > 0) 

@@ -25,7 +25,7 @@ deleteStatement
     ;
 
 insertStatement
-    : INSERT INTO tableName=tableIdentifier VALUES expressionStruct ',' expressionStruct* 
+    : INSERT INTO tableName=tableIdentifier VALUES expressionStruct (',' expressionStruct)* 
     ;
 
 copyStatement

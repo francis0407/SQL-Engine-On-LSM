@@ -64,7 +64,7 @@ private:
         schema.append(Attribute(String, string("Value")));
         LevelDB::getRow(0, keyNum, schema, row, mp);
         StringValue* value = (StringValue*)row->values[1];
-        int num = std::stoi(value->toString());
+        int num = std::stoi(string(value->data(), value->size()));
         StringValue* newValue = StringValue::create(std::to_string(num + 1), mp);
         row->values[1] = newValue;
         LevelDB::putRow(0, keyNum, row);

@@ -28,7 +28,7 @@ namespace test {
 class TestScan : public Scan {
 public:
     TestScan(RelationReference* _relation, bool isA): Scan(_relation) {
-        method = ExtendScan;
+        method = _ExtendScan;
         if (isA) {
             data.push_back(
                 std::tuple<int, float, bool, std::string>(1, 1.1f, true, "a1")
@@ -85,6 +85,7 @@ public:
             delete mp;
             mp = nullptr;
         }
+        return true;
     }
 
 private:

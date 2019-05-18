@@ -16,6 +16,7 @@ Literal* Literal::copyAsLiteral(AnyValue* _value) {
 
 Literal::Literal(AnyValue* _value) : LeafExpression(_Literal) {
     value = _value;
+    dataType = value->valueType;
 }
 
 Literal::~Literal() {

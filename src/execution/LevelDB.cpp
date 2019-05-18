@@ -8,24 +8,29 @@ using namespace simplesql::util;
 using namespace simplesql;
 using std::string;
 
+string LevelDB::dbName = "simplesqlDB";
+
 leveldb::DB* LevelDB::getDB() {
     static leveldb::DB* db = nullptr;
     if (db == nullptr) {
         leveldb::Options options;
         options.create_if_missing = false;
-        leveldb::Status status = leveldb::DB::Open(options, "simplesqlDB", &db);
-        if (status.IsNotFound()) 
+        leveldb::Status status = leveldb::DB::Open(options, dbName, &db);
+        if (!status.ok()) 
             db = initDB(db);
-        else
-            assert(status.ok());
     }
     return db;
 }
 
-leveldb::DB* LevelDB::initDB(leveldb::DB* db) {
+leveldb::DB* LevelDB::closeDB() {
+    leveldb::DB* db = getDB();
+    delete db; 
+}
+
+leveldb::DB* LevelDB::initDB(leveldb::DB* &db) {
     leveldb::Options options;
     options.create_if_missing = true;
-    leveldb::Status status = leveldb::DB::Open(options, "simplesqlDB", &db);
+    leveldb::Status status = leveldb::DB::Open(options, dbName, &db);
     assert(status.ok());
     // Init Table 0
     // Schema [Key Int, Value String]

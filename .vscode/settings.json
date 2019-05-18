@@ -51,6 +51,9 @@
         "typeinfo": "cpp",
         "utility": "cpp",
         "cstdarg": "cpp",
-        "cstring": "cpp"
+        "cstring": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "slist": "cpp"
     }
 }

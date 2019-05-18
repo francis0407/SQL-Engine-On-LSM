@@ -12,10 +12,10 @@ using std::string;
 using namespace simplesql::catalog;
 
 enum ScanMethod {
-    SeqScan,
-    IndexScan,
-    FileScan,
-    ExtendScan
+    _SeqScan,
+    _IndexScan,
+    _FileScan,
+    _ExtendScan
 };
 
 class Scan: public OperatorBase {

@@ -19,9 +19,17 @@ public:
         schema.append(Attribute(Integer, string("TableID")));
         schema.append(Attribute(String, string("Schema")));
     
+    } 
+    LevelDBCatalog(const string& dbName) {
+        LevelDB::dbName = dbName;
+        LevelDB::getDB();
+
+        schema.append(Attribute(String, string("TableName")));
+        schema.append(Attribute(Integer, string("TableID")));
+        schema.append(Attribute(String, string("Schema")));
     }
     virtual ~LevelDBCatalog() {
-
+        LevelDB::closeDB();
     }
     virtual bool findRelation(RelationReference& relation) override {
         MemoryPool mp;
@@ -29,7 +37,7 @@ public:
         StringValue* tableName = StringValue::create(relation.tableName, &mp);
         if (!LevelDB::getRow(SCHEMA_TABLE_ID, tableName, schema, row, &mp))
             return false;
-        string schemaString = ((StringValue*)row->values[2])->toString();
+        string schemaString = string(((StringValue*)row->values[2])->data(), ((StringValue*)row->values[2])->size());
         relation.attributes.decode(schemaString);
         relation.tableID = ((IntegerValue*)row->values[1])->value;
         if (relation.referenceName.empty())
