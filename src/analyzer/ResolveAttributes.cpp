@@ -9,6 +9,7 @@
 #include "operators/Project.h"
 #include "operators/Join.h"
 #include "operators/CreateTable.h"
+#include "operators/Insert.h"
 
 using namespace simplesql::analyzer;
  
@@ -122,6 +123,22 @@ OperatorBase* ResolveAttributes::apply(OperatorBase* opt) {
                     }
                 }
                 if (!find) throw AnalysisException("Unknown Index Name");
+            }
+            break;
+        }
+        case _Insert: {
+            Insert* ins = (Insert*) opt;
+            // check row length & value type
+            AttributeSeq &schema = ins->ref.attributes;
+            for (auto iter = ins->values.begin(); iter != ins->values.end(); iter++) {
+                if (iter->size() != schema.attributes.size())
+                    throw AnalysisException("Incompelete Value");
+                for (size_t i = 0; i < iter->size(); i++) {
+                    if (iter->at(i)->type != _Literal)
+                        throw AnalysisException("Insert statement only support literal value");
+                    if (iter->at(i)->dataType != schema.attributes[i].dataType)
+                        throw AnalysisException("DataType Error");
+                }
             }
             break;
         }

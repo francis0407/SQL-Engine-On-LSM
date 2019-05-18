@@ -51,7 +51,8 @@ public:
         antlrcpp::Any result = opt;
         return result;
     }
-
+    virtual antlrcpp::Any visitInsertStatement(SimpleSqlParser::InsertStatementContext *ctx) override;
+    
     virtual antlrcpp::Any visitCopyStatement(SimpleSqlParser::CopyStatementContext *ctx) override;
  
     virtual antlrcpp::Any visitCreateStatement(SimpleSqlParser::CreateStatementContext *ctx) override;
@@ -59,6 +60,8 @@ public:
     virtual antlrcpp::Any visitSelectStatement(SimpleSqlParser::SelectStatementContext *ctx) override;
 
     virtual antlrcpp::Any visitFromCluse(SimpleSqlParser::FromCluseContext *ctx) override;
+
+    virtual antlrcpp::Any visitExpressionStruct(SimpleSqlParser::ExpressionStructContext *ctx) override;
 
     virtual antlrcpp::Any visitExpression(SimpleSqlParser::ExpressionContext *ctx) override;
 

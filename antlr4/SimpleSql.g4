@@ -25,7 +25,7 @@ deleteStatement
     ;
 
 insertStatement
-    : INSERT INTO tableName=tableIdentifier VALUES '('expression (',' expression)*')' (',('expression (',' expression)*')')* 
+    : INSERT INTO tableName=tableIdentifier VALUES expressionStruct ',' expressionStruct* 
     ;
 
 copyStatement
@@ -46,6 +46,10 @@ fromCluse
 
 whereCluse
     : WHERE expression
+    ;
+
+expressionStruct
+    : '('expression (',' expression)*')'
     ;
 
 expression

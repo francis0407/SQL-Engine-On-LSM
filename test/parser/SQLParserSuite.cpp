@@ -11,6 +11,7 @@
 #include "operators/Join.h"
 #include "operators/Scan.h"
 #include "operators/CreateTable.h"
+#include "operators/Insert.h"
 
 #include "expressions/Literal.h"
 #include "expressions/Logic.h"
@@ -149,4 +150,25 @@ TEST_F(SQLParserSuite, CreateTable) {
             new CreateTable(string("T1"), attrs, index)
         );
     }
+}
+
+TEST_F(SQLParserSuite, Insert) {
+    std::vector<std::vector<ExpressionBase*> > values;
+    std::vector<ExpressionBase*> v1, v2, v3;
+    v1.push_back(Literal::create(1));
+    v1.push_back(Literal::create(string("aaa")));
+    v1.push_back(Literal::create(1.0f));
+    values.push_back(v1);
+    v2.push_back(Literal::create(2));
+    v2.push_back(Literal::create(string("bbb")));
+    v2.push_back(Literal::create(2.0f));
+    values.push_back(v2);
+    v3.push_back(Literal::create(3));
+    v3.push_back(Literal::create(string("ccc")));
+    v3.push_back(Literal::create(3.0f));
+    values.push_back(v3);
+    assertQuery(
+        "INSERT INTO T1 VALUES (1, 'aaa', 1.0), (2, 'bbb', 2.0), (3, 'ccc', 3.0)",
+        new Insert(string("T1"), values)
+    );
 }

@@ -13,13 +13,13 @@ namespace simplesql { namespace parser { namespace antlr {
 class  SimpleSqlLexer : public antlr4::Lexer {
 public:
   enum {
-    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, SELECT = 6, FROM = 7, 
-    WHERE = 8, INSERT = 9, INTO = 10, VALUES = 11, DELETE = 12, CREATE = 13, 
-    COPY = 14, DELIMITER = 15, CSV = 16, HEADER = 17, TABLE = 18, INDEX = 19, 
-    ON = 20, AS = 21, OR = 22, AND = 23, NOT = 24, TRUE_ = 25, FALSE_ = 26, 
-    EQ = 27, NEQ = 28, NEQJ = 29, LT = 30, LTE = 31, GT = 32, GTE = 33, 
-    PLUS = 34, MINUS = 35, ASTERISK = 36, SLASH = 37, PERCENT = 38, STRING = 39, 
-    FLOAT_LITERAL = 40, INTEGER_LITERAL = 41, IDENTIFIER = 42, WS = 43
+    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, SELECT = 5, FROM = 6, WHERE = 7, 
+    INSERT = 8, INTO = 9, VALUES = 10, DELETE = 11, CREATE = 12, COPY = 13, 
+    DELIMITER = 14, CSV = 15, HEADER = 16, TABLE = 17, INDEX = 18, ON = 19, 
+    AS = 20, OR = 21, AND = 22, NOT = 23, TRUE_ = 24, FALSE_ = 25, EQ = 26, 
+    NEQ = 27, NEQJ = 28, LT = 29, LTE = 30, GT = 31, GTE = 32, PLUS = 33, 
+    MINUS = 34, ASTERISK = 35, SLASH = 36, PERCENT = 37, STRING = 38, FLOAT_LITERAL = 39, 
+    INTEGER_LITERAL = 40, IDENTIFIER = 41, WS = 42
   };
 
   SimpleSqlLexer(antlr4::CharStream *input);

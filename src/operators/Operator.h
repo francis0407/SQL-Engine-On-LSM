@@ -23,7 +23,8 @@ enum OperatorType {
     _InnerJoin,
     _Scan,
     _CreateTable,
-    _CopyFile
+    _CopyFile,
+    _Insert
 };
 
 // Relational Operator Base Class
@@ -42,7 +43,7 @@ public:
     bool isUnaryOperator() const;
     bool isLeafOperator() const;
 
-    long long fashHash() const;
+    long long fastHash() const;
 
     const OperatorType type; // Needs to be initialized in the constructor
 

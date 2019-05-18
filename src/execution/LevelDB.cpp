@@ -96,3 +96,67 @@ leveldb::Iterator* LevelDB::scanRow(int tableID) {
     iter->Seek(tableKey);
     return iter;
 }
+
+bool LevelDB::updateIndex(int tableID, int indexID, AnyValue* indexValue, AnyValue* pk) {
+    leveldb::DB* db = getDB();
+    string indexKey, indexPk;
+    MemoryPool mp;
+    encodeIndexKey(tableID, indexID, indexValue, indexKey);
+    auto s = db->Get(leveldb::ReadOptions(), indexKey, &indexPk);
+    if (s.ok()) {
+        // add new pk
+        Row* row;
+        decodeIndexValue(indexPk, pk->valueType, row, &mp);
+        // if the index is existed, no need to update
+        for (size_t i = 0; i < row->len; i++) 
+            if (pk->equalToSemantically(row->values[i])) return true;
+        AnyValue** newIndexRow = (AnyValue**) mp.allocate((row->len + 1) * sizeof(AnyValue*));
+        memcpy(newIndexRow, row->values, row->len * sizeof(AnyValue*));
+        newIndexRow[row->len] = pk;
+        Row* newRow = Row::create(newIndexRow, row->len + 1, &mp);
+        indexPk.clear();
+        encodeRowValue(newRow, indexPk);
+        auto s2 = db->Put(leveldb::WriteOptions(), indexKey, indexPk);
+        return s2.ok();
+    } else if (s.IsNotFound()) {
+        // add new index
+        Row* newRow = Row::create(&pk, 1, &mp);
+        indexPk.clear();
+        encodeRowValue(newRow, indexPk);
+        auto s2 = db->Put(leveldb::WriteOptions(), indexKey, indexPk);
+        return s2.ok();
+    }
+    return false;
+}
+
+bool LevelDB::removeIndex(int tableID, int indexID, AnyValue* indexValue, AnyValue* pk) {
+    leveldb::DB* db = getDB();
+    string indexKey, indexPk;
+    MemoryPool mp;
+    encodeIndexKey(tableID, indexID, indexValue, indexKey);
+    auto s = db->Get(leveldb::ReadOptions(), indexKey, &indexPk);
+    if (s.ok()) {
+        // add new pk
+        Row* row;
+        decodeIndexValue(indexPk, pk->valueType, row, &mp);
+        for (size_t i = 0; i < row->len; i++) {
+            if (row->values[i]->equalToSemantically(pk)) {
+                for (size_t j = i; j < row->len - 1; j++)
+                    row->values[j] = row->values[j + 1];
+                row->len--;
+                break;
+            }
+        }
+        if (row->len == 0) {
+            // delete index
+            auto s2 = db->Delete(leveldb::WriteOptions(), indexKey);
+            return s2.ok();
+        } else {
+            string indexPk;
+            encodeRowValue(row, indexPk);
+            auto s2 = db->Put(leveldb::WriteOptions(), indexKey, indexPk);
+            return s2.ok();
+        }
+    }
+    return false;
+}

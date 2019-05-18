@@ -77,6 +77,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitExpressionStruct(SimpleSqlParser::ExpressionStructContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitExpression(SimpleSqlParser::ExpressionContext *ctx) override {
     return visitChildren(ctx);
   }

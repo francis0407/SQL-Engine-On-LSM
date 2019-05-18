@@ -3,6 +3,8 @@
 #include "analyzer/AnalysisException.h"
 #include "operators/Scan.h"
 #include "operators/CreateTable.h"
+#include "operators/CopyFile.h"
+#include "operators/Insert.h"
 
 using namespace simplesql::analyzer;
 
@@ -20,6 +22,21 @@ OperatorBase* ResolveRelations::apply(OperatorBase* opt) {
             RelationReference ref(ct->tableName);
             if (catalog->findRelation(ref))
                 throw AnalysisException(ct->tableName + " is existed.");
+            break;
+        }
+        case _CopyFile: {
+            CopyFile* cp = (CopyFile*) opt;
+            if (!catalog->findRelation(cp->ref))
+                throw AnalysisException(string("Cannot resolve relation: ") + cp->ref.referenceName);
+            break;
+        }
+        case _Insert: {
+            Insert* ins = (Insert*) opt;
+            if (!catalog->findRelation(ins->ref))
+                throw AnalysisException(string("Cannot resolve relation: ") + ins->ref.referenceName);
+            break;
+        }
+        default: {
             break;
         }
     }

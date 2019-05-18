@@ -5,7 +5,7 @@ using namespace simplesql::operators;
 
 
 bool OperatorBase::isLeafOperator() const {
-    return type == _Scan || type == _CreateTable;
+    return type == _Scan || type == _CreateTable || type == _CopyFile;
 }
 
 bool OperatorBase::isUnaryOperator() const {
@@ -16,7 +16,7 @@ bool OperatorBase::isBinaryOperator() const {
     return type == _InnerJoin;
 }
 
-long long OperatorBase::fashHash() const {
+long long OperatorBase::fastHash() const {
     long long result = 0;
     return result; // TODO
 }

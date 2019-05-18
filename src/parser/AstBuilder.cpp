@@ -8,6 +8,7 @@
 #include "operators/Filter.h"
 #include "operators/CreateTable.h"
 #include "operators/CopyFile.h"
+#include "operators/Insert.h"
 
 #include "expressions/AttributeReference.h"
 #include "expressions/Arithmetic.h"
@@ -26,9 +27,20 @@ using namespace simplesql::catalog;
 using namespace simplesql::parser;
 using std::string;
 
+Any AstBuilder::visitInsertStatement(SimpleSqlParser::InsertStatementContext *ctx) {
+    auto rowsCtx = ctx->expressionStruct();
+    std::vector<std::vector<ExpressionBase*>> rows;
+    for (auto rowCtx : rowsCtx) 
+        rows.push_back(rowCtx->accept(this));
+    string tableName = ctx->tableName->getText();
+    OperatorBase* opt = new Insert(tableName, rows);
+    Any result = opt;
+    return result;
+}
+
 Any AstBuilder::visitCopyStatement(SimpleSqlParser::CopyStatementContext *ctx) {
     OperatorBase* opt = nullptr;
-    string tableName = ctx->tableName->toString();
+    string tableName = ctx->tableName->getText();
     string filePath = removeQuotation(ctx->fileName->getText());
     string delimiter = removeQuotation(ctx->delimiter->getText());
     bool header = ctx->HEADER() != nullptr;
@@ -186,6 +198,16 @@ Any AstBuilder::visitArithmeticBinary(SimpleSqlParser::ArithmeticBinaryContext *
     Any result = value;
     return result;
 }
+
+Any AstBuilder::visitExpressionStruct(SimpleSqlParser::ExpressionStructContext *ctx) {
+    auto exprCtx = ctx->expression();
+    std::vector<ExpressionBase*> exprs;
+    for (auto iter : exprCtx) 
+        exprs.push_back(iter->accept(this));
+    Any result = exprs;
+    return result;
+}
+
 
 Any AstBuilder::visitExpression(SimpleSqlParser::ExpressionContext *ctx) {
     return ctx->booleanExpression()->accept(this);  

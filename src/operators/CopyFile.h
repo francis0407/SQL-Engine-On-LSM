@@ -5,8 +5,12 @@
 #include "operators/Operator.h"
 #include "execution/LevelDB.h"
 #include "execution/ExecutionException.h"
+#include "catalog/RelationReference.h"
+
 using namespace simplesql;
 using namespace simplesql::execution;
+using namespace simplesql::catalog;
+
 using std::string;
 namespace simplesql {
 namespace operators {

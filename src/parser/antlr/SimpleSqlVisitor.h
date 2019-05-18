@@ -50,6 +50,8 @@ public:
 
     virtual antlrcpp::Any visitWhereCluse(SimpleSqlParser::WhereCluseContext *context) = 0;
 
+    virtual antlrcpp::Any visitExpressionStruct(SimpleSqlParser::ExpressionStructContext *context) = 0;
+
     virtual antlrcpp::Any visitExpression(SimpleSqlParser::ExpressionContext *context) = 0;
 
     virtual antlrcpp::Any visitLogicalNot(SimpleSqlParser::LogicalNotContext *context) = 0;

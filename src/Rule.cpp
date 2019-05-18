@@ -56,9 +56,9 @@ OperatorBase* RuleExecutor::execute(OperatorBase* opt) {
         for (auto rule : batch->rules) {
             // rules
             for (int iter = 0; iter < batch->maxIterations; iter++) {
-                long long oldHash = opt->fashHash();
+                long long oldHash = opt->fastHash();
                 opt = rule->recursivelyApply(opt);
-                long long newHash = opt->fashHash();
+                long long newHash = opt->fastHash();
                 if (oldHash == newHash) 
                     break;
             }
