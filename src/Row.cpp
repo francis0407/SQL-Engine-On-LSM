@@ -92,3 +92,6 @@ Row* Row::makeCopy(MemoryPool* mp) {
         row->values[i] = values[i]->makeCopy(mp);
     return row;
 }
+// this 0x8a3701
+// this->values 0x7fffffffd2a0
+// this->values[0] 0x8a36cb

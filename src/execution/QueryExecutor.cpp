@@ -50,14 +50,15 @@ bool QueryExecutor::executeTree(OperatorBase* opt, Relation& result) {
             result.append(nextResult.row);
         }
         opt->close();
+        result.schema = opt->outputs;
     } catch (ParseException& pe) {
-        std::cout << "ParserException: " << pe.msg;
+        std::cout << "ParserException: " << pe.msg << std::endl;
     } catch (AnalysisException& ae) {
-        std::cout << "AnalysisException: " << ae.msg;
+        std::cout << "AnalysisException: " << ae.msg << std::endl;
     } catch (ExecutionException& ee) {
-        std::cout << "ExecutionException: " << ee.msg;
+        std::cout << "ExecutionException: " << ee.msg << std::endl;
     } catch (std::exception& e) {
-        std::cout << "UnknownException: " << e.what();
+        std::cout << "UnknownException: " << e.what() << std::endl;
     }
     return true;
 }
@@ -67,7 +68,6 @@ bool QueryExecutor::executeSQL(const std::string sql, Relation& result) {
         OperatorBase* opt = parser->parseStatement(sql);
         opt = analyzer->run(opt);
         opt = run(opt);
-        
         // execute operator tree
         opt->open();
         while(true) {
@@ -77,14 +77,15 @@ bool QueryExecutor::executeSQL(const std::string sql, Relation& result) {
             result.append(nextResult.row);
         }
         opt->close();
+        result.schema = opt->outputs;
     } catch (ParseException& pe) {
-        std::cout << "ParserException: " << pe.msg;
+        std::cout << "ParserException: " << pe.msg << std::endl;
     } catch (AnalysisException& ae) {
-        std::cout << "AnalysisException: " << ae.msg;
+        std::cout << "AnalysisException: " << ae.msg << std::endl;
     } catch (ExecutionException& ee) {
-        std::cout << "ExecutionException: " << ee.msg;
+        std::cout << "ExecutionException: " << ee.msg << std::endl;
     } catch (std::exception& e) {
-        std::cout << "UnknownException: " << e.what();
+        std::cout << "UnknownException: " << e.what() << std::endl;
     }
     return true;
 }

@@ -17,28 +17,54 @@ public:
         tableName = _tableName;
         attrs = _attrs;
         index = _index;
+        mp = nullptr;
+        resultFlag = false;
+        outputs.clean();
+        outputs.append(Attribute(String, string("INFO")));
     }
+
     virtual ~CreateTable() {
         for (auto iter : attrs)
             delete iter;
+        if (mp != nullptr)
+            delete mp;
     }
+    
     virtual bool open() override {
-        MemoryPool mp;
+        mp = new MemoryPool();
         AttributeSeq attrSeq;
         for (auto attr : attrs) 
             attrSeq.append(*attr);
         AnyValue* values[3];
-        int tabelID = increaseTableNum(&mp);
+        int tabelID = increaseTableNum(mp);
         
-        values[0] = StringValue::create(tableName, &mp);
-        values[1] = IntegerValue::create(tabelID, &mp);
-        values[2] = StringValue::create(attrSeq.encode(), &mp);
-        Row* row = Row::create(values, 3, &mp);
+        values[0] = StringValue::create(tableName, mp);
+        values[1] = IntegerValue::create(tabelID, mp);
+        values[2] = StringValue::create(attrSeq.encode(), mp);
+        Row* row = Row::create(values, 3, mp);
         LevelDB::putRow(SCHEMA_TABLE_ID, values[0], row);
+        resultFlag = true;
         return true;
     }
-    virtual NextResult next() override {return NextResult(nullptr);}
-    virtual bool close() override {return true;}
+
+    virtual NextResult next() override {
+        if (resultFlag) {
+            resultFlag = false;
+            StringValue* result = StringValue::create(string("SUCCESS!"), mp);
+            Row* row = Row::create((AnyValue**)&result, 1, mp);
+            return NextResult(row, mp);
+        } else {
+            return NextResult(nullptr);
+        }
+    }
+
+    virtual bool close() override {
+        if (mp != nullptr) {
+            delete mp;
+            mp = nullptr;
+        }
+        return true;
+    }
 
     virtual bool equalTo(OperatorBase* that) const override {
         if (that->type != type) return false;
@@ -56,6 +82,8 @@ public:
     std::vector<Attribute*> attrs;
     std::vector<string> index;
 private:
+    bool resultFlag;
+    MemoryPool* mp;
     int increaseTableNum(MemoryPool* mp) {
         IntegerValue* keyNum = IntegerValue::create(GlobalSettingID::TableCount, mp);
         Row* row;

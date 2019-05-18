@@ -25,10 +25,16 @@ public:
         : OperatorBase(_Insert), tableName(_tableName) {
         values = _rows;
         ref.tableName = _tableName;
+        mp = nullptr;
+        resultFlag = false;
+        updatedCount = values.size();
+        outputs.clean();
+        outputs.append(Attribute(String, string("INFO")));
+        
     }
     
     virtual bool open() override {
-        MemoryPool* mp = new MemoryPool();
+        mp = new MemoryPool();
         AnyValue** buf = (AnyValue**) mp->allocate(sizeof(AnyValue*) * ref.attributes.attributes.size());
         for (auto iter : values) {
             for (size_t i = 0; i < iter.size(); i++)
@@ -53,14 +59,27 @@ public:
                 mp = new MemoryPool();
             }
         }
+        resultFlag = true;
         return true;
     }
 
     virtual NextResult next() override {
-        return NextResult(nullptr);
+        if (resultFlag) {
+            resultFlag = false;
+            StringValue* result = StringValue::create(
+                string("INSERT ") + std::to_string(updatedCount) + string(" ROWS!"), mp);
+            Row* row = Row::create((AnyValue**)&result, 1, mp);
+            return NextResult(row, mp);
+        } else {
+            return NextResult(nullptr);
+        }
     }
 
     virtual bool close() override {
+        if (mp != nullptr) {
+            delete mp;
+            mp = nullptr;
+        }
         return true;
     }
 
@@ -82,6 +101,10 @@ public:
     RelationReference ref;
 
     std::vector<std::vector<ExpressionBase*> > values;
+private:
+    MemoryPool* mp;
+    bool resultFlag;
+    size_t updatedCount;
 };
 
 }} // namespace simplesql::operators

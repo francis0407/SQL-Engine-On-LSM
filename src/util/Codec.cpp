@@ -222,22 +222,22 @@ void simplesql::util::decodeIndexValue(const string& input, DataType type, Row* 
     for (size_t i = 0; offset <= input.size(); i++) {
         switch (type) {
             case Integer: {
-                values[i] = IntegerValue::create(*(int*)(data + offset), mp);
+                values.push_back(IntegerValue::create(*(int*)(data + offset), mp));
                 offset += sizeof(int);
                 break;
             }
             case Float: {
-                values[i] = FloatValue::create(*(float*)(data + offset), mp);
+                values.push_back(FloatValue::create(*(float*)(data + offset), mp));
                 offset += sizeof(float);
                 break;
             }
             case Boolean: {
-                values[i] = BooleanValue::create(*(bool*)(data + offset), mp);
+                values.push_back(BooleanValue::create(*(bool*)(data + offset), mp));
                 offset += sizeof(bool);
                 break;
             }
             case String: {
-                values[i] = StringValue::create(data + offset + sizeof(size_t), *(size_t*)(data + offset), mp);
+                values.push_back(StringValue::create(data + offset + sizeof(size_t), *(size_t*)(data + offset), mp));
                 offset += *(size_t*)(data + offset) + sizeof(size_t);
                 break;
             }

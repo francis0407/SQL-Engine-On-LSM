@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstring>
 #include <string>
 #include <iostream>
 
@@ -20,46 +21,64 @@ class CopyFile : public OperatorBase {
 public:
     CopyFile(string _tableName, string _filePath, string _delimiter, bool _hasHeader) 
         : OperatorBase(_CopyFile), tableName(_tableName), filePath(_filePath), delimiter(_delimiter), hasHeader(_hasHeader) {
-        
+        mp = nullptr;
     }
-    virtual ~CopyFile() {}
+    virtual ~CopyFile() {
+        if (mp != nullptr) 
+            delete mp;
+    }
     
     virtual bool open() override {
+        mp = new MemoryPool();
         size_t num = ref.attributes.attributes.size();
         std::ifstream fp(filePath.data);
-        char* str;  
-        while(fp.getline(str,1024)){
+        char str[1024];  
+        while (fp.getline(str, 1024)) {
             char* tmpStr = strtok(str, delimiter.data);
             std::vector<string> res;
-            while(tmpStr != NULL) {
+            while (tmpStr != nullptr) {
                 res.push_back(string(tmpStr));
-                tmpStr = strtok(NULL,delimiter.data);
+                tmpStr = strtok(nullptr, delimiter.data);
             }
-            MemoryPool* mp = new MemoryPool();
-            AnyValue** buf = (AnyValue**) mp->allocate(sizeof(AnyValue*) * ref.attributes.attributes.size());
-            AnyValue* values[num];
-            for(int i = 0 ;i< res.size();i++) {
+            AnyValue** values = (AnyValue**) mp->allocate(sizeof(AnyValue*) * num);
+            for (size_t i = 0; i < res.size(); i++) {
                 DataType attribute = ref.attributes.attributes[i].dataType;
-                switch (attribute)
-                {
-                case Boolean :
-                    values[i] = BooleanValue::create(res[i]=="TRUE"?true:false,mp);
-                    break;
-                case String :
-                    values[i] = StringValue::create(res[i],mp);
-                    break;
-                case Integer:
-                    values[i] = IntegerValue::create(std::stoi(res[i]),mp);
-                    break;
-                case Float :
-                    values[i] = FloatValue::create(std::stof(res[i]),mp);
-                    break;
-                default:
-                    break;
+                switch (attribute) {
+                    case Boolean:
+                        values[i] = BooleanValue::create(res[i] == "TRUE" ? true : false, mp);
+                        break;
+                    case String:
+                        values[i] = StringValue::create(res[i], mp);
+                        break;
+                    case Integer:
+                        values[i] = IntegerValue::create(std::stoi(res[i]), mp);
+                        break;
+                    case Float:
+                        values[i] = FloatValue::create(std::stof(res[i]), mp);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            Row* oldRow;
+            bool needRemoveIndex = LevelDB::getRow(ref.tableID, values[0], ref.attributes, oldRow, mp);
+            for (size_t i = 1; i < num; i++) {
+                if (ref.attributes.attributes[i].hasIndex) {
+                    // update index
+                    if (needRemoveIndex) {
+                        if (!values[i]->equalToSemantically(oldRow->values[i])) 
+                            LevelDB::removeIndex(ref.tableID, i, oldRow->values[i], values[0]);
+                        // if buf[i] == values[i], no need to update the index.
+                    } else  
+                        LevelDB::updateIndex(ref.tableID, i, values[i], values[0]);
                 }
             }
             Row* row = Row::create(values, num, mp);
-            LevelDB::putRow(SCHEMA_TABLE_ID, values[0], row);
+            LevelDB::putRow(ref.tableID, values[0], row);
+            if (mp->memoryUsage() > 1024 * 1024) { // refresh memory pool
+                delete mp;
+                mp = new MemoryPool();
+            }
         }
         return true;
     }
@@ -80,6 +99,8 @@ public:
     bool hasHeader;
 
     RelationReference ref;
+private:
+    MemoryPool* mp;
 };
 
 }} // namespace simplesql::operators

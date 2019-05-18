@@ -23,6 +23,12 @@ void Relation::append(Row* row) {
 }
 
 void Relation::show() {
+    for (size_t i = 0; i < columns; i++) {
+        if (i != 0)
+            std::cout << " | ";
+        std::cout << schema.attributes[i].name;
+    }
+    std::cout << std::endl;
     for (size_t i = 0; i < rows.size(); i++) {
         for (size_t j = 0; j < columns; j++) {
             if (j != 0) 

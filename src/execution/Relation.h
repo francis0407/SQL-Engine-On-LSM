@@ -17,6 +17,7 @@ public:
     void show();
     void append(Row* row);
     std::vector<Row*> rows;
+    AttributeSeq schema;
     int columns = 0;
 private:
     MemoryPool* mp;
