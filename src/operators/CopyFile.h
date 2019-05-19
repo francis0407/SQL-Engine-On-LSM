@@ -3,6 +3,7 @@
 #include <cstring>
 #include <string>
 #include <iostream>
+#include <fstream>
 
 #include "operators/Operator.h"
 #include "execution/LevelDB.h"
@@ -22,6 +23,9 @@ public:
     CopyFile(string _tableName, string _filePath, string _delimiter, bool _hasHeader) 
         : OperatorBase(_CopyFile), tableName(_tableName), filePath(_filePath), delimiter(_delimiter), hasHeader(_hasHeader) {
         mp = nullptr;
+        ref.tableName = _tableName;
+        outputs.clean();
+        outputs.append(Attribute(String, string("INFO")));
     }
     virtual ~CopyFile() {
         if (mp != nullptr) 
@@ -31,14 +35,23 @@ public:
     virtual bool open() override {
         mp = new MemoryPool();
         size_t num = ref.attributes.attributes.size();
-        std::ifstream fp(filePath.data);
-        char str[1024];  
+        std::ifstream fp;
+        fp.open(filePath);
+        if (!fp.is_open()) throw ExecutionException("File " + filePath + " not found");
+        char str[1024];
+        bool header = hasHeader;
+        rowCount = 0;  
+        resultFlag = true;
         while (fp.getline(str, 1024)) {
-            char* tmpStr = strtok(str, delimiter.data);
+            char* tmpStr = strtok(str, delimiter.data());
             std::vector<string> res;
             while (tmpStr != nullptr) {
                 res.push_back(string(tmpStr));
-                tmpStr = strtok(nullptr, delimiter.data);
+                tmpStr = strtok(nullptr, delimiter.data());
+            }
+            if (header) {
+                header = false;
+                continue;
             }
             AnyValue** values = (AnyValue**) mp->allocate(sizeof(AnyValue*) * num);
             for (size_t i = 0; i < res.size(); i++) {
@@ -75,6 +88,7 @@ public:
             }
             Row* row = Row::create(values, num, mp);
             LevelDB::putRow(ref.tableID, values[0], row);
+            rowCount ++;
             if (mp->memoryUsage() > 1024 * 1024) { // refresh memory pool
                 delete mp;
                 mp = new MemoryPool();
@@ -84,10 +98,20 @@ public:
     }
 
     virtual NextResult next() override {
-        return NextResult(nullptr);
+        if (resultFlag) {
+            resultFlag = false;
+            StringValue* result = StringValue::create(
+                string("COPY ") + std::to_string(rowCount) + string(" ROWS!"), mp);
+            Row* row = Row::copyFrom((AnyValue**)&result, 1, mp);
+            return NextResult(row, mp);
+        } else {
+            return NextResult(nullptr);
+        }
     }
 
     virtual bool close() override {
+        delete mp;
+        mp = nullptr;
         return true;
     }
 
@@ -101,6 +125,8 @@ public:
     RelationReference ref;
 private:
     MemoryPool* mp;
+    size_t rowCount = 0;
+    bool resultFlag;
 };
 
 }} // namespace simplesql::operators

@@ -1,15 +1,25 @@
 grammar SimpleSql;
 
 singleStatement
-    : statement EOF
+    : statement ';' EOF
     ;
 
 statement
-    : createStatement   #createTableStatement
-    | deleteStatement   #deleteValueStatement
-    | insertStatement   #insertValueStatement
-    | selectStatement   #QueryStatement
-    | copyStatement     #copyFileStatement
+    : showSchema         #showSchemaStatement  
+    | showTable          #showTableStatement  
+    | createStatement    #createTableStatement
+    | deleteStatement    #deleteValueStatement
+    | insertStatement    #insertValueStatement
+    | selectStatement    #QueryStatement
+    | copyStatement      #copyFileStatement
+    ;
+
+showSchema
+    : SHOW SCHEMA FROM tableName=tableIdentifier
+    ;
+
+showTable
+    : SHOW TABLES
     ;
 
 createStatement
@@ -131,6 +141,9 @@ DELIMITER : 'DELIMITER';
 CSV   : 'CSV';
 HEADER: 'HEADER';
 TABLE : 'TABLE';
+TABLES: 'TABLES';
+SHOW  : 'SHOW';
+SCHEMA: 'SCHEMA';
 INDEX : 'INDEX';
 ON    : 'ON';
 AS    : 'AS';

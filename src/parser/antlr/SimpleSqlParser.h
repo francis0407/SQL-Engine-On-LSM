@@ -13,24 +13,25 @@ namespace simplesql { namespace parser { namespace antlr {
 class  SimpleSqlParser : public antlr4::Parser {
 public:
   enum {
-    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, SELECT = 5, FROM = 6, WHERE = 7, 
-    INSERT = 8, INTO = 9, VALUES = 10, DELETE = 11, CREATE = 12, COPY = 13, 
-    DELIMITER = 14, CSV = 15, HEADER = 16, TABLE = 17, INDEX = 18, ON = 19, 
-    AS = 20, OR = 21, AND = 22, NOT = 23, TRUE_ = 24, FALSE_ = 25, EQ = 26, 
-    NEQ = 27, NEQJ = 28, LT = 29, LTE = 30, GT = 31, GTE = 32, PLUS = 33, 
-    MINUS = 34, ASTERISK = 35, SLASH = 36, PERCENT = 37, STRING = 38, FLOAT_LITERAL = 39, 
-    INTEGER_LITERAL = 40, IDENTIFIER = 41, WS = 42
+    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, SELECT = 6, FROM = 7, 
+    WHERE = 8, INSERT = 9, INTO = 10, VALUES = 11, DELETE = 12, CREATE = 13, 
+    COPY = 14, DELIMITER = 15, CSV = 16, HEADER = 17, TABLE = 18, TABLES = 19, 
+    SHOW = 20, SCHEMA = 21, INDEX = 22, ON = 23, AS = 24, OR = 25, AND = 26, 
+    NOT = 27, TRUE_ = 28, FALSE_ = 29, EQ = 30, NEQ = 31, NEQJ = 32, LT = 33, 
+    LTE = 34, GT = 35, GTE = 36, PLUS = 37, MINUS = 38, ASTERISK = 39, SLASH = 40, 
+    PERCENT = 41, STRING = 42, FLOAT_LITERAL = 43, INTEGER_LITERAL = 44, 
+    IDENTIFIER = 45, WS = 46
   };
 
   enum {
-    RuleSingleStatement = 0, RuleStatement = 1, RuleCreateStatement = 2, 
-    RuleIndexClause = 3, RuleDeleteStatement = 4, RuleInsertStatement = 5, 
-    RuleCopyStatement = 6, RuleSelectStatement = 7, RuleSelectClause = 8, 
-    RuleFromCluse = 9, RuleWhereCluse = 10, RuleExpressionStruct = 11, RuleExpression = 12, 
-    RuleBooleanExpression = 13, RuleValueExpression = 14, RulePrimaryExpression = 15, 
-    RuleConstant = 16, RuleDataType = 17, RuleColumnIdentifier = 18, RuleTableIdentifier = 19, 
-    RuleIdentifier = 20, RuleComparisonOperator = 21, RulePredicateOperator = 22, 
-    RuleBooleanValue = 23, RuleNumber = 24
+    RuleSingleStatement = 0, RuleStatement = 1, RuleShowSchema = 2, RuleShowTable = 3, 
+    RuleCreateStatement = 4, RuleIndexClause = 5, RuleDeleteStatement = 6, 
+    RuleInsertStatement = 7, RuleCopyStatement = 8, RuleSelectStatement = 9, 
+    RuleSelectClause = 10, RuleFromCluse = 11, RuleWhereCluse = 12, RuleExpressionStruct = 13, 
+    RuleExpression = 14, RuleBooleanExpression = 15, RuleValueExpression = 16, 
+    RulePrimaryExpression = 17, RuleConstant = 18, RuleDataType = 19, RuleColumnIdentifier = 20, 
+    RuleTableIdentifier = 21, RuleIdentifier = 22, RuleComparisonOperator = 23, 
+    RulePredicateOperator = 24, RuleBooleanValue = 25, RuleNumber = 26
   };
 
   SimpleSqlParser(antlr4::TokenStream *input);
@@ -45,6 +46,8 @@ public:
 
   class SingleStatementContext;
   class StatementContext;
+  class ShowSchemaContext;
+  class ShowTableContext;
   class CreateStatementContext;
   class IndexClauseContext;
   class DeleteStatementContext;
@@ -114,6 +117,15 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
+  class  ShowSchemaStatementContext : public StatementContext {
+  public:
+    ShowSchemaStatementContext(StatementContext *ctx);
+
+    ShowSchemaContext *showSchema();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
   class  CreateTableStatementContext : public StatementContext {
   public:
     CreateTableStatementContext(StatementContext *ctx);
@@ -132,6 +144,15 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
+  class  ShowTableStatementContext : public StatementContext {
+  public:
+    ShowTableStatementContext(StatementContext *ctx);
+
+    ShowTableContext *showTable();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
   class  CopyFileStatementContext : public StatementContext {
   public:
     CopyFileStatementContext(StatementContext *ctx);
@@ -142,6 +163,37 @@ public:
   };
 
   StatementContext* statement();
+
+  class  ShowSchemaContext : public antlr4::ParserRuleContext {
+  public:
+    SimpleSqlParser::TableIdentifierContext *tableName = nullptr;;
+    ShowSchemaContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *SHOW();
+    antlr4::tree::TerminalNode *SCHEMA();
+    antlr4::tree::TerminalNode *FROM();
+    TableIdentifierContext *tableIdentifier();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ShowSchemaContext* showSchema();
+
+  class  ShowTableContext : public antlr4::ParserRuleContext {
+  public:
+    ShowTableContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *SHOW();
+    antlr4::tree::TerminalNode *TABLES();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ShowTableContext* showTable();
 
   class  CreateStatementContext : public antlr4::ParserRuleContext {
   public:

@@ -22,6 +22,10 @@ public:
    */
     virtual antlrcpp::Any visitSingleStatement(SimpleSqlParser::SingleStatementContext *context) = 0;
 
+    virtual antlrcpp::Any visitShowSchemaStatement(SimpleSqlParser::ShowSchemaStatementContext *context) = 0;
+
+    virtual antlrcpp::Any visitShowTableStatement(SimpleSqlParser::ShowTableStatementContext *context) = 0;
+
     virtual antlrcpp::Any visitCreateTableStatement(SimpleSqlParser::CreateTableStatementContext *context) = 0;
 
     virtual antlrcpp::Any visitDeleteValueStatement(SimpleSqlParser::DeleteValueStatementContext *context) = 0;
@@ -31,6 +35,10 @@ public:
     virtual antlrcpp::Any visitQueryStatement(SimpleSqlParser::QueryStatementContext *context) = 0;
 
     virtual antlrcpp::Any visitCopyFileStatement(SimpleSqlParser::CopyFileStatementContext *context) = 0;
+
+    virtual antlrcpp::Any visitShowSchema(SimpleSqlParser::ShowSchemaContext *context) = 0;
+
+    virtual antlrcpp::Any visitShowTable(SimpleSqlParser::ShowTableContext *context) = 0;
 
     virtual antlrcpp::Any visitCreateStatement(SimpleSqlParser::CreateStatementContext *context) = 0;
 

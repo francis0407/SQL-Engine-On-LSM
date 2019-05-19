@@ -5,7 +5,7 @@ using namespace simplesql::operators;
 
 
 bool OperatorBase::isLeafOperator() const {
-    return type == _Scan || type == _CreateTable || type == _CopyFile || type == _Insert;
+    return type == _Scan || type == _CreateTable || type == _CopyFile || type == _Insert || type == _ShowSchema;
 }
 
 bool OperatorBase::isUnaryOperator() const {

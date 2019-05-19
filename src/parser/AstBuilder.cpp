@@ -9,6 +9,7 @@
 #include "operators/CreateTable.h"
 #include "operators/CopyFile.h"
 #include "operators/Insert.h"
+#include "operators/ShowSchema.h"
 
 #include "expressions/AttributeReference.h"
 #include "expressions/Arithmetic.h"
@@ -27,6 +28,25 @@ using namespace simplesql::catalog;
 using namespace simplesql::parser;
 using std::string;
 
+Any AstBuilder::visitShowSchema(SimpleSqlParser::ShowSchemaContext *ctx) {
+    string tableName = ctx->tableName->getText();
+    OperatorBase* opt = new ShowSchema(tableName);
+    Any result = opt;
+    return result;
+}
+    
+Any AstBuilder::visitShowTable(SimpleSqlParser::ShowTableContext *ctx) {
+    std::vector<ExpressionBase*> projectList;
+    projectList.push_back(new AttributeReference("TableName"));
+    projectList.push_back(new AttributeReference("TableID"));
+    OperatorBase* opt = 
+        new Project(projectList, 
+            new SeqScan(
+                new RelationReference(SCHEMA_TABLE_NAME)));
+    Any result = opt;
+    return result;
+}
+    
 Any AstBuilder::visitInsertStatement(SimpleSqlParser::InsertStatementContext *ctx) {
     auto rowsCtx = ctx->expressionStruct();
     std::vector<std::vector<ExpressionBase*>> rows;

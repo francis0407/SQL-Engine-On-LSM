@@ -20,7 +20,7 @@ enum DataType : unsigned char { // ensure the enum variable only use ONE BYTE
 DataType toDataType(const std::string& type);
 bool isNumber(DataType type);
 size_t valueSize(DataType type);
-
+std::string dataTypeToString(DataType type);
 class AnyValue {
 public:   
     virtual ~AnyValue();

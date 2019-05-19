@@ -68,7 +68,7 @@ public:
             resultFlag = false;
             StringValue* result = StringValue::create(
                 string("INSERT ") + std::to_string(updatedCount) + string(" ROWS!"), mp);
-            Row* row = Row::create((AnyValue**)&result, 1, mp);
+            Row* row = Row::copyFrom((AnyValue**)&result, 1, mp);
             return NextResult(row, mp);
         } else {
             return NextResult(nullptr);

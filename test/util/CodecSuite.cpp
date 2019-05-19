@@ -76,7 +76,7 @@ TEST_F(CodecSuite, RowEncodeDecode) {
     values[1] = StringValue::create(string("abcdefg"), &mp);
     values[2] = StringValue::create(string("qq11231421421"), &mp);
     values[3] = FloatValue::create(-100.0f, &mp);
-    Row* row = Row::create(values, 4, &mp);
+    Row* row = Row::copyFrom(values, 4, &mp);
     string s;
     encodeRowValue(row, s);
     Row* r2;

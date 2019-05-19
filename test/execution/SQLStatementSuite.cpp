@@ -38,16 +38,16 @@ public:
         qe = new QueryExecutor(new LevelDBCatalog("TestDB"));
     }
     ~SQLStatementSuite() {
-        delete qe;
+        // delete qe;
     }
 
     virtual void TearDown() override {
-        DIR* dirp = opendir("TestDB");
-        struct dirent *dir;
-        while ((dir = readdir(dirp)) != NULL)
-            unlink(dir->d_name);
-        closedir(dirp);
-        rmdir("TestDB");
+        // DIR* dirp = opendir("TestDB");
+        // struct dirent *dir;
+        // while ((dir = readdir(dirp)) != NULL)
+        //     unlink(dir->d_name);
+        // closedir(dirp);
+        // rmdir("TestDB");
     }
     QueryExecutor* qe;
 
@@ -55,7 +55,7 @@ public:
         static bool isCreated = false;
         if (isCreated) return;
         Relation result;
-        qe->executeSQL("CREATE TABLE TEST (A INTEGER, B STRING, C FLOAT) INDEX ON (B)", result);
+        qe->executeSQL("CREATE TABLE TEMP (A INTEGER, B STRING, C FLOAT) INDEX ON (B);", result);
     }
 
     template<size_t rows, size_t columns>
@@ -72,7 +72,7 @@ public:
 
 TEST_F(SQLStatementSuite, CreateTable) {
     Relation result;
-    qe->executeSQL("CREATE TABLE TEMP (A INTEGER, B STRING, C FLOAT) INDEX ON (B)", result);
+    qe->executeSQL("CREATE TABLE TEMP (A INTEGER, B STRING, C FLOAT) INDEX ON (B);", result);
     RelationReference relation("TEMP");
     ASSERT_TRUE(qe->catalog->findRelation(relation));
     ASSERT_TRUE(relation.attributes.attributes[0].equalTo(Attribute(Integer, "A")));
@@ -81,19 +81,30 @@ TEST_F(SQLStatementSuite, CreateTable) {
     ASSERT_TRUE(relation.attributes.attributes[1].hasIndex);
     ASSERT_TRUE(relation.attributes.attributes[2].equalTo(Attribute(Integer, "C")));
     ASSERT_FALSE(relation.attributes.attributes[2].hasIndex);
-}
 
-TEST_F(SQLStatementSuite, Insert) {
-    withTableTest();
-    Relation result;
-    qe->executeSQL("INSERT INTO TEST VALUES (1, 'aaa', 1.0), (2, 'bbb', 2.0), (3, 'ccc', 3.0)", result);
-    qe->executeSQL("SELECT A, B, C FROM TEST", result);
+    qe->executeSQL("INSERT INTO TEMP VALUES (1, 'aaa', 1.0), (2, 'bbb', 2.0), (3, 'ccc', 3.0);", result);
+    Relation result2;
+    qe->executeSQL("SELECT A, B, C FROM TEMP;", result2);
     AnyValue* answer[3][3] = {
         {IntegerValue::create(1), StringValue::create(string("aaa")), FloatValue::create(1.0f)},
         {IntegerValue::create(2), StringValue::create(string("bbb")), FloatValue::create(2.0f)},
         {IntegerValue::create(3), StringValue::create(string("ccc")), FloatValue::create(3.0f)},
     };
-    assertResult<3, 3>(result, answer);
+    assertResult<3, 3>(result2, answer);
+}
+
+TEST_F(SQLStatementSuite, Insert) {
+    // withTableTest();
+    // Relation result;
+    // qe->executeSQL("INSERT INTO TEMP VALUES (1, 'aaa', 1.0), (2, 'bbb', 2.0), (3, 'ccc', 3.0);", result);
+    // Relation result2;
+    // qe->executeSQL("SELECT A, B, C FROM TEMP;", result2);
+    // AnyValue* answer[3][3] = {
+    //     {IntegerValue::create(1), StringValue::create(string("aaa")), FloatValue::create(1.0f)},
+    //     {IntegerValue::create(2), StringValue::create(string("bbb")), FloatValue::create(2.0f)},
+    //     {IntegerValue::create(3), StringValue::create(string("ccc")), FloatValue::create(3.0f)},
+    // };
+    // assertResult<3, 3>(result2, answer);
 }
 
 

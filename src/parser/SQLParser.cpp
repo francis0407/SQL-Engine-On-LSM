@@ -20,52 +20,43 @@ SQLParser::SQLParser() {
 }
 
 ExpressionBase* SQLParser::parseExpression(const string& expression) {
-    try {
-        ANTLRInputStream instream(expression);
-        SimpleSqlLexer lexer(&instream);
-        CommonTokenStream tokens(&lexer);
-        SimpleSqlParser parser(&tokens);
+    ANTLRInputStream instream(expression);
+    SimpleSqlLexer lexer(&instream);
+    CommonTokenStream tokens(&lexer);
+    SimpleSqlParser parser(&tokens);
 
-        auto ctx = parser.expression();
-        
-        ExpressionBase* expr = visitor.visitExpression(ctx).as<ExpressionBase*>();
-        return expr;
-    } catch (std::exception& e) {
-        std::cout << e.what() << std::endl;
-        throw ParseException();
-    }
+    parser.removeErrorListeners();
+    parser.addErrorListener(new ParseErrorListener());
+    auto ctx = parser.expression();
+    
+    ExpressionBase* expr = visitor.visitExpression(ctx).as<ExpressionBase*>();
+    return expr;
 }
 
 OperatorBase* SQLParser::parseSelectQuery(const string& sql) {
-    try {
-        ANTLRInputStream instream(sql);
-        SimpleSqlLexer lexer(&instream);
-        CommonTokenStream tokens(&lexer);
-        SimpleSqlParser parser(&tokens);
+    ANTLRInputStream instream(sql);
+    SimpleSqlLexer lexer(&instream);
+    CommonTokenStream tokens(&lexer);
+    SimpleSqlParser parser(&tokens);
 
-        auto ctx = parser.selectStatement();
-        
-        OperatorBase* opt = (visitor.visitSelectStatement(ctx)).as<OperatorBase*>();
-        return opt;
-    } catch (std::exception& e) {
-        std::cout << e.what() << std::endl;
-        throw ParseException();
-    }
+    parser.removeErrorListeners();
+    parser.addErrorListener(new ParseErrorListener());
+    auto ctx = parser.selectStatement();
+    
+    OperatorBase* opt = (visitor.visitSelectStatement(ctx)).as<OperatorBase*>();
+    return opt;
 }
 
 OperatorBase* SQLParser::parseStatement(const string& sql) {
-    try {
-        ANTLRInputStream instream(sql);
-        SimpleSqlLexer lexer(&instream);
-        CommonTokenStream tokens(&lexer);
-        SimpleSqlParser parser(&tokens);
+    ANTLRInputStream instream(sql);
+    SimpleSqlLexer lexer(&instream);
+    CommonTokenStream tokens(&lexer);
+    SimpleSqlParser parser(&tokens);
+    
+    parser.removeErrorListeners();
+    parser.addErrorListener(new ParseErrorListener());
+    auto ctx = parser.singleStatement();
 
-        auto ctx = parser.singleStatement();
-        
-        OperatorBase* opt = (visitor.visitSingleStatement(ctx)).as<OperatorBase*>();
-        return opt;
-    } catch (std::exception& e) {
-        std::cout << e.what() << std::endl;
-        throw ParseException();
-    }
+    OperatorBase* opt = (visitor.visitSingleStatement(ctx)).as<OperatorBase*>();
+    return opt;
 }

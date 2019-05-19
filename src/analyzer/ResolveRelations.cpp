@@ -5,6 +5,7 @@
 #include "operators/CreateTable.h"
 #include "operators/CopyFile.h"
 #include "operators/Insert.h"
+#include "operators/ShowSchema.h"
 
 using namespace simplesql::analyzer;
 
@@ -34,6 +35,12 @@ OperatorBase* ResolveRelations::apply(OperatorBase* opt) {
             Insert* ins = (Insert*) opt;
             if (!catalog->findRelation(ins->ref))
                 throw AnalysisException(string("Cannot resolve relation: ") + ins->ref.referenceName);
+            break;
+        }
+        case _ShowSchema: {
+            ShowSchema* ss = (ShowSchema*) opt;
+            if (!catalog->findRelation(ss->ref))
+                throw AnalysisException(string("Cannot resolve relation: ") + ss->ref.referenceName);
             break;
         }
         default: {

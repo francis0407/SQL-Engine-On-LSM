@@ -24,7 +24,8 @@ enum OperatorType {
     _Scan,
     _CreateTable,
     _CopyFile,
-    _Insert
+    _Insert,
+    _ShowSchema
 };
 
 // Relational Operator Base Class

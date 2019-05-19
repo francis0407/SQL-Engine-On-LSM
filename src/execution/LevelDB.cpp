@@ -39,7 +39,7 @@ leveldb::DB* LevelDB::initDB(leveldb::DB* &db) {
         AnyValue* values[2];
         values[0] = IntegerValue::create(GlobalSettingID::TableCount, &mp);
         values[1] = StringValue::create(string("2"), &mp);
-        Row* row = Row::create(values, 2, &mp);
+        Row* row = Row::copyFrom(values, 2, &mp);
         putRow(0, values[0], row);
     }
     // Init Table 1
@@ -53,7 +53,7 @@ leveldb::DB* LevelDB::initDB(leveldb::DB* &db) {
         values[0] = StringValue::create(string(GLOBAL_SETTING_TABLE_NAME), &mp);
         values[1] = IntegerValue::create(0, &mp);
         values[2] = StringValue::create(ref.attributes.encode(), &mp);
-        Row* row = Row::create(values, 3, &mp);
+        Row* row = Row::copyFrom(values, 3, &mp);
         putRow(1, values[0], row);
     }
     {
@@ -65,7 +65,7 @@ leveldb::DB* LevelDB::initDB(leveldb::DB* &db) {
         values[0] = StringValue::create(string(SCHEMA_TABLE_NAME), &mp);
         values[1] = IntegerValue::create(1, &mp);
         values[2] = StringValue::create(ref.attributes.encode(), &mp);
-        Row* row = Row::create(values, 3, &mp);
+        Row* row = Row::copyFrom(values, 3, &mp);
         putRow(1, values[0], row);
     }
     return db;
@@ -125,7 +125,7 @@ bool LevelDB::updateIndex(int tableID, int indexID, AnyValue* indexValue, AnyVal
         return s2.ok();
     } else if (s.IsNotFound()) {
         // add new index
-        Row* newRow = Row::create(&pk, 1, &mp);
+        Row* newRow = Row::copyFrom(&pk, 1, &mp);
         indexPk.clear();
         encodeRowValue(newRow, indexPk);
         auto s2 = db->Put(leveldb::WriteOptions(), indexKey, indexPk);

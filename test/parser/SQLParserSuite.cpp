@@ -63,7 +63,7 @@ public:
 TEST_F(SQLParserSuite, BasicQuery) {
     // only P
     assertQuery(
-        "SELECT A FROM B",
+        "SELECT A FROM B;",
         new Project(
             buildExprList(1, new AttributeReference("A")),
             new Scan(new RelationReference("B"))   
@@ -71,7 +71,7 @@ TEST_F(SQLParserSuite, BasicQuery) {
     );
     // S-P
     assertQuery(
-        "SELECT A FROM B WHERE C > D", 
+        "SELECT A FROM B WHERE C > D;", 
         new Project(
             buildExprList(1, new AttributeReference("A")),
             new Filter(
@@ -81,7 +81,7 @@ TEST_F(SQLParserSuite, BasicQuery) {
     ));
     // S-P-J
     assertQuery(
-        "SELECT A FROM B, C WHERE E = F",
+        "SELECT A FROM B, C WHERE E = F;",
         new Project(
             buildExprList(1, new AttributeReference("A")),
             new Filter(
@@ -98,7 +98,7 @@ TEST_F(SQLParserSuite, BasicQuery) {
 
 TEST_F(SQLParserSuite, MultiAttributeProject) {
     assertQuery(
-        "SELECT A, B, C FROM D",
+        "SELECT A, B, C FROM D;",
         new Project(
             buildExprList(
                 3,
@@ -110,7 +110,7 @@ TEST_F(SQLParserSuite, MultiAttributeProject) {
     );
 
     assertQuery(
-        "SELECT A + 1, B - C, E.D FROM E AS P",
+        "SELECT A + 1, B - C, E.D FROM E AS P;",
         new Project(
             buildExprList(
                 3,
@@ -132,7 +132,7 @@ TEST_F(SQLParserSuite, CreateTable) {
         attrs.push_back(new Attribute(Float, string("T1C")));
         attrs.push_back(new Attribute(Boolean, string("T1D")));
         assertQuery(
-            "CREATE TABLE T1(T1A INTEGER, T1B STRING, T1C FLOAT, T1D BOOLEAN)",
+            "CREATE TABLE T1(T1A INTEGER, T1B STRING, T1C FLOAT, T1D BOOLEAN);",
             new CreateTable(string("T1"), attrs, index)
         );
     }
@@ -146,7 +146,7 @@ TEST_F(SQLParserSuite, CreateTable) {
         index.push_back("T1B");
         index.push_back("T1C");
         assertQuery(
-            "CREATE TABLE T1(T1A INTEGER, T1B STRING, T1C FLOAT, T1D BOOLEAN) INDEX ON (T1B, T1C)",
+            "CREATE TABLE T1(T1A INTEGER, T1B STRING, T1C FLOAT, T1D BOOLEAN) INDEX ON (T1B, T1C);",
             new CreateTable(string("T1"), attrs, index)
         );
     }
@@ -168,7 +168,7 @@ TEST_F(SQLParserSuite, Insert) {
     v3.push_back(Literal::create(3.0f));
     values.push_back(v3);
     assertQuery(
-        "INSERT INTO T1 VALUES (1, 'aaa', 1.0), (2, 'bbb', 2.0), (3, 'ccc', 3.0)",
+        "INSERT INTO T1 VALUES (1, 'aaa', 1.0), (2, 'bbb', 2.0), (3, 'ccc', 3.0);",
         new Insert(string("T1"), values)
     );
 }

@@ -1,16 +1,16 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8) # cmake最低版本要�?
 
-PROJECT(SQL-ON-LSM)    # 工程�? CppTemplate
+PROJECT(SQL-ON-LSM)    
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11") # 添加c++11标准支持
 
-SET(CMAKE_C_COMPILER "/usr/bin/gcc") # 默认c编译�?
-SET(CMAKE_CXX_COMPILER "/usr/bin/g++") # 默认c++编译�?
+SET(CMAKE_C_COMPILER "/usr/bin/gcc") 
+SET(CMAKE_CXX_COMPILER "/usr/bin/g++") 
 
 SET(CMAKE_BUILD_TYPE "Debug")  # Debug模式 选项: Release Debug MinSizeRel RelWithDebInfo
 
 SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")  # debug模式�? gdb相关选项
-SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall") # release模式�? gdb相关选项
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O0 -Wall") # release模式�? gdb相关选项
 
 # set(CMAKE_VERBOSE_MAKEFILE ON) # 开启调�? 出现问题时开�?
 

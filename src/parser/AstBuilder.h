@@ -16,8 +16,22 @@ using namespace simplesql::operators;
 
 class AstBuilder : public SimpleSqlBaseVisitor {
 public: 
+
+
     virtual antlrcpp::Any visitSingleStatement(SimpleSqlParser::SingleStatementContext *ctx) override {
         OperatorBase* opt = ctx->statement()->accept(this);
+        antlrcpp::Any result = opt;
+        return result;
+    }
+
+    virtual antlrcpp::Any visitShowTableStatement(SimpleSqlParser::ShowTableStatementContext *ctx) override {
+        OperatorBase* opt = ctx->showTable()->accept(this);
+        antlrcpp::Any result = opt;
+        return result;
+    }
+
+    virtual antlrcpp::Any visitShowSchemaStatement(SimpleSqlParser::ShowSchemaStatementContext *ctx) override {
+        OperatorBase* opt = ctx->showSchema()->accept(this);
         antlrcpp::Any result = opt;
         return result;
     }
@@ -51,6 +65,10 @@ public:
         antlrcpp::Any result = opt;
         return result;
     }
+    virtual antlrcpp::Any visitShowSchema(SimpleSqlParser::ShowSchemaContext *ctx) override;
+    
+    virtual antlrcpp::Any visitShowTable(SimpleSqlParser::ShowTableContext *ctx) override;
+    
     virtual antlrcpp::Any visitInsertStatement(SimpleSqlParser::InsertStatementContext *ctx) override;
     
     virtual antlrcpp::Any visitCopyStatement(SimpleSqlParser::CopyStatementContext *ctx) override;

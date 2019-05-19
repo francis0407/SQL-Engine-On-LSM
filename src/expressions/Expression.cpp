@@ -49,7 +49,7 @@ UnaryExpression::~UnaryExpression() {
 bool UnaryExpression::isUnaryExpression() const { return true; }
 
 ExpressionBase* UnaryExpression::transform(const std::function<ExpressionBase*(ExpressionBase*)>& func) {
-    child = func(child);
+    child = child->transform(func);
     return func(this);
 }
 
@@ -71,8 +71,8 @@ bool BinaryExpression::isBinaryExpression() const {
 }
 
 ExpressionBase* BinaryExpression::transform(const std::function<ExpressionBase*(ExpressionBase*)>& func) {
-    left = func(left);
-    right = func(right);
+    left = left->transform(func);
+    right = right->transform(func);
     return func(this);
 }
 

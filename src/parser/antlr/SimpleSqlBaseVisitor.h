@@ -21,6 +21,14 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitShowSchemaStatement(SimpleSqlParser::ShowSchemaStatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitShowTableStatement(SimpleSqlParser::ShowTableStatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitCreateTableStatement(SimpleSqlParser::CreateTableStatementContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -38,6 +46,14 @@ public:
   }
 
   virtual antlrcpp::Any visitCopyFileStatement(SimpleSqlParser::CopyFileStatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitShowSchema(SimpleSqlParser::ShowSchemaContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitShowTable(SimpleSqlParser::ShowTableContext *ctx) override {
     return visitChildren(ctx);
   }
 

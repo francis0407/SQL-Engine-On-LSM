@@ -10,6 +10,28 @@ BooleanValue BooleanValue::prototype;
 FloatValue FloatValue::prototype;
 StringValue StringValue::prototype;
 
+std::string simplesql::datatypes::dataTypeToString(DataType type) {
+    std::string result;
+    switch (type) {
+        case Integer:
+            result.assign("INTEGER");
+            break;
+        case Float:
+            result.assign("FLOAT");
+            break;
+        case Boolean: 
+            result.assign("BOOLEAN");
+            break;
+        case String:
+            result.assign("STRING");
+            break;
+        case Unresolved:
+            result.assign("UNRESOLVED");
+            break;
+    }
+    return result;
+}
+
 DataType simplesql::datatypes::toDataType(const std::string& type) {
     if (type == "INTEGER") return Integer;
     if (type == "FLOAT") return Float;

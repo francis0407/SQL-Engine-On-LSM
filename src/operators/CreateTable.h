@@ -41,7 +41,7 @@ public:
         values[0] = StringValue::create(tableName, mp);
         values[1] = IntegerValue::create(tabelID, mp);
         values[2] = StringValue::create(attrSeq.encode(), mp);
-        Row* row = Row::create(values, 3, mp);
+        Row* row = Row::copyFrom(values, 3, mp);
         LevelDB::putRow(SCHEMA_TABLE_ID, values[0], row);
         resultFlag = true;
         return true;
@@ -51,7 +51,7 @@ public:
         if (resultFlag) {
             resultFlag = false;
             StringValue* result = StringValue::create(string("SUCCESS!"), mp);
-            Row* row = Row::create((AnyValue**)&result, 1, mp);
+            Row* row = Row::copyFrom((AnyValue**)&result, 1, mp);
             return NextResult(row, mp);
         } else {
             return NextResult(nullptr);
