@@ -79,7 +79,7 @@ OperatorBase* ResolveAttributes::apply(OperatorBase* opt) {
                     AttributeReference* ref = (AttributeReference*) iter;
                     project->outputs.append(ref->reference);
                 } else {
-                    project->outputs.append(Attribute(iter->dataType, 0, iter->toString()));
+                    project->outputs.append(Attribute(iter->dataType, iter->toString()));
                 }
             break; 
         }
