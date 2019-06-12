@@ -146,7 +146,24 @@ struct AnyValueCmp {
 
 struct AnyValueHash {
     size_t operator()(const AnyValue* &value) const {
-        return 0;
+        switch (value->valueType) {
+            case Integer:
+                int v = ((IntegerValue*)value)->value;
+                std::hash<int> hash_int;
+                return hash_int(v);
+                break;
+            case String:
+                // size_t len = ((StringValue*)value)->size();
+                const char* str = ((StringValue*)value)->data();
+                std::string tmp(str);
+                std::hash<string> str_hash;
+                return str_hash(tmp);
+                break;
+            case Float:
+                float v = ((FloatValue*)value)->value;
+                std::hash<float> hash_float;
+                return hash_float(v);
+        }
     }
 };
 
