@@ -32,11 +32,13 @@ void decodeAnyValue(const string& input, DataType type, AnyValue* &result, Memor
 
 void encodeTableKey(int tableID, string& result);
 void encodeRowKey(int tableID, AnyValue* pk, string& result);
+void encodeIndexKey(int tableID, int indexID, string& result);
 void encodeIndexKey(int tableID, int indexID, AnyValue* index, string& result);
 
 void encodeRowValue(Row* row, string& result);
 
 bool decodeRowKey(const string& input, DataType pkType, int& tableID, AnyValue* &pk, MemoryPool* mp);
+bool decodeIndexKey(const string& input, DataType dataType, int& tableID, int& indexID, AnyValue* &indevValue, MemoryPool* mp);
 void decodeRowValue(const string& input, const AttributeSeq& schema, Row* &result, MemoryPool* mp);
 void decodeIndexValue(const string& input, DataType type, Row* &result, MemoryPool* mp);
 

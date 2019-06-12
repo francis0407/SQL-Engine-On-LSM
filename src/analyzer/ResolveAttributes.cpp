@@ -47,6 +47,8 @@ OperatorBase* ResolveAttributes::apply(OperatorBase* opt) {
     switch (opt->type) {
         case _Scan: {
             opt->outputs = ((Scan*)opt)->reference->attributes;
+            for (auto iter = opt->outputs.attributes.begin(); iter != opt->outputs.attributes.end(); iter++)
+                iter->tableReference = ((Scan*)opt)->reference->referenceName;
             opt->resolved = true;     
             break;
         }
@@ -55,7 +57,7 @@ OperatorBase* ResolveAttributes::apply(OperatorBase* opt) {
             filter->condition->transform(resolveAttributes(&filter->child->outputs));
             if (!filter->condition->resolved) {
                 throw AnalysisException(
-                    std::string("Can't resolve the condition ") + filter->condition->toString());
+                    std::string("Cannot resolve the condition ") + filter->condition->toString());
             }
             filter->resolved =  true;
             filter->outputs = filter->child->outputs;

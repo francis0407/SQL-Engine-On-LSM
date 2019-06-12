@@ -75,6 +75,13 @@ bool InnerJoin::nestedLoopOpen() {
         streamNext = right->next();
     else
         streamNext = left->next();
+    if (side == BuildLeft) {
+        build = left;
+        stream = right;
+    } else {
+        build = right;
+        stream = left;
+    }
     return true;
 }
 
@@ -83,14 +90,6 @@ bool InnerJoin::nestedLoopClose() {
 }
 
 NextResult InnerJoin::nestedLoopNext() {
-    OperatorBase *stream, *build;
-    if (side == BuildLeft) {
-        build = left;
-        stream = right;
-    } else {
-        build = right;
-        stream = left;
-    }
     while (streamNext.row != nullptr) {            
         while (true) {
             NextResult buildNext = build->next();
@@ -105,6 +104,75 @@ NextResult InnerJoin::nestedLoopNext() {
         build->close();
         build->open();
         streamNext = stream->next();
+    }
+    return NextResult(nullptr);
+}
+
+/************ Hash Inner Join ****************/
+bool InnerJoin::hashOpen() {
+    if (!(left->open() && right->open())) return false;
+    if (side == BuildLeft) {
+        build = left;
+        stream = right;
+        buildKeyOffset = leftKeyOffset;
+        streamKeyOffset = rightKeyOffset;
+    } else {
+        build = right;
+        stream = left;
+        buildKeyOffset = rightKeyOffset;
+        streamKeyOffset = leftKeyOffset;
+    }
+    // build hash map
+    auto iter = multiHashMap.find(nullptr);
+    
+}
+
+/************ Sort Merge Inner Join ************/
+bool InnerJoin::mergeOpen() {
+    if (!(left->open() && right->open())) return false;
+    if (side == BuildLeft) {
+        build = left;
+        stream = right;
+        buildKeyOffset = leftKeyOffset;
+        streamKeyOffset = rightKeyOffset;
+    } else {
+        build = right;
+        stream = left;
+        buildKeyOffset = rightKeyOffset;
+        streamKeyOffset = leftKeyOffset;
+    }
+    if (mergeMP != nullptr) {
+        delete mergeMP;
+        mergeMP = nullptr;
+    }
+    mergeMP = new MemoryPool();
+    NextResult result = build->next();
+    if (result.row != nullptr) {
+        buildBuffer.push_back(result.row->makeCopy(mergeMP));
+        while (true) {
+            NextResult temp = build->next();
+            if (temp.row == nullptr) break;
+            if (temp.row->values[streamKeyOffset]->equalToSemantically(buildBuffer[0]->values[buildKeyOffset])) {
+                buildBuffer.push_back(temp.row->makeCopy(mergeMP));
+            } else {
+                buildRowBuffer = temp.row->makeCopy(mergeMP);
+                break;
+            }
+        }
+    }
+    return true;
+}
+
+NextResult InnerJoin::mergeNext() {
+    // Step 1: check result buffer
+    if (resultBuffer.empty()) {
+        // fill the result buffer
+        NextResult streamResult = stream->next();
+        if (streamResult.row == nullptr) return NextResult(nullptr);
+        
+    }
+    if (!resultBuffer.empty()) {
+
     }
     return NextResult(nullptr);
 }

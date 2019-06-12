@@ -17,6 +17,8 @@ enum DataType : unsigned char { // ensure the enum variable only use ONE BYTE
     String
 };
 
+
+
 DataType toDataType(const std::string& type);
 bool isNumber(DataType type);
 size_t valueSize(DataType type);
@@ -32,9 +34,10 @@ public:
 
     virtual std::string toString() const = 0;
 
-    virtual bool equalToSemantically(AnyValue* that) const = 0;
+    virtual bool equalToSemantically(const AnyValue* that) const = 0;
     // Comparison
     // virtual bool equalTo(AnyValue* that) const = 0;
+    bool lessThanOrEqual(AnyValue* that) const;
     // virtual bool greaterThan(AnyValue* that) = 0;
     // virtual bool greaterThanOrEqual(AnyValue * that) = 0;
     
@@ -65,7 +68,7 @@ public:
     virtual AnyValue* makeCopy() override;
     virtual AnyValue* makeCopy(MemoryPool* _mp) override;
     virtual std::string toString() const override;
-    virtual bool equalToSemantically(AnyValue* that) const override;
+    virtual bool equalToSemantically(const AnyValue* that) const override;
     // virtual bool equalTo(AnyValue* that) const override;
     // virtual bool greaterThan(AnyValue* that) override;
     // virtual bool greaterThanOrEqual(AnyValue * that) override;
@@ -84,7 +87,7 @@ public:
     virtual AnyValue* makeCopy() override;
     virtual AnyValue* makeCopy(MemoryPool* _mp) override;
     virtual std::string toString() const override;
-    virtual bool equalToSemantically(AnyValue* that) const override;
+    virtual bool equalToSemantically(const AnyValue* that) const override;
     virtual bool asBoolean() const override;
     // virtual bool equalTo(AnyValue* that) const override;
 private:
@@ -102,7 +105,7 @@ public:
     virtual AnyValue* makeCopy() override;
     virtual AnyValue* makeCopy(MemoryPool* _mp) override;
     virtual std::string toString() const override;
-    virtual bool equalToSemantically(AnyValue* that) const override;
+    virtual bool equalToSemantically(const AnyValue* that) const override;
     // virtual bool equalTo(AnyValue* that) const override;
 private:
     static FloatValue prototype;
@@ -126,13 +129,25 @@ public:
     virtual AnyValue* makeCopy() override;
     virtual AnyValue* makeCopy(MemoryPool* _mp) override;
     virtual std::string toString() const override;
-    virtual bool equalToSemantically(AnyValue* that) const override;
+    virtual bool equalToSemantically(const AnyValue* that) const override;
     // virtual bool equalTo(AnyValue* that) const override;
 private:
     static StringValue prototype;
     StringValue(char* _value);
     static void init(const char* _value, size_t _len, StringValue* target);
     bool needRelease = false;
+};
+
+struct AnyValueCmp {
+    bool operator()(const AnyValue* &left, const AnyValue* &right) const {
+        return left->equalToSemantically(right);
+    }
+};
+
+struct AnyValueHash {
+    size_t operator()(const AnyValue* &value) const {
+        return 0;
+    }
 };
 
 }} // namespace simplesql::datatypes

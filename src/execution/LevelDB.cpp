@@ -102,6 +102,33 @@ leveldb::Iterator* LevelDB::scanRow(int tableID) {
     return iter;
 }
 
+leveldb::Iterator* LevelDB::scanRow(int tableID, AnyValue* start) {
+    leveldb::DB* db = getDB();
+    auto iter = db->NewIterator(leveldb::ReadOptions());
+    string tableKey;
+    encodeRowKey(tableID, start, tableKey);
+    iter->Seek(tableKey);
+    return iter;
+}
+
+leveldb::Iterator* LevelDB::scanIndex(int tableID, int indexID) {
+    leveldb::DB* db = getDB();
+    auto iter = db->NewIterator(leveldb::ReadOptions());
+    string indexKey;
+    encodeIndexKey(tableID, indexID, indexKey);
+    iter->Seek(indexKey);
+    return iter;
+}
+
+leveldb::Iterator* LevelDB::scanIndex(int tableID, int indexID, AnyValue* indexValue) {
+    leveldb::DB* db = getDB();
+    auto iter = db->NewIterator(leveldb::ReadOptions());
+    string indexKey;
+    encodeIndexKey(tableID, indexID, indexValue, indexKey);
+    iter->Seek(indexKey);
+    return iter;
+}
+
 bool LevelDB::updateIndex(int tableID, int indexID, AnyValue* indexValue, AnyValue* pk) {
     leveldb::DB* db = getDB();
     string indexKey, indexPk;

@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <queue>
+#include <unordered_map>
 #include "Operator.h"
 
 namespace simplesql{
@@ -33,11 +35,33 @@ public:
     ExpressionBase* condition = nullptr;
     JoinSide side;
     JoinMethod method;
+
+    int leftKeyOffset, rightKeyOffset;
 private:
+    //  NestedLoopJoin
     bool nestedLoopOpen();
     NextResult nestedLoopNext();
     bool nestedLoopClose();
     NextResult streamNext;
+
+    //  MergeJoin
+    bool mergeOpen();
+    NextResult mergeNext();
+    bool mergeClose();
+    std::vector<Row*> buildBuffer;
+    Row* buildRowBuffer;
+    std::queue<Row*> resultBuffer;
+    int buildKeyOffset, streamKeyOffset;
+    OperatorBase *stream, *build;
+    MemoryPool* mergeMP;
+
+    //  HashJoin
+    bool hashOpen();
+    NextResult hashNext();
+    bool hashClose();
+    std::unordered_multimap<AnyValue*, Row*, AnyValueHash, AnyValueCmp> multiHashMap;
+    
 };
+
 
 }} // namespace simplesql::operators

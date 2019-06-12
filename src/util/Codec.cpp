@@ -135,6 +135,15 @@ void simplesql::util::encodeIndexKey(int tableID, int indexID, AnyValue* index, 
     result = tablePrefix + tID + indexPrefix + iID + iValue;
 }
 
+// Key: TablePrefix_TableID_IndexPrefix_IndexID
+void simplesql::util::encodeIndexKey(int tableID, int indexID, string& result) {
+    string tID;
+    encodeInt(tableID, tID);
+    string iID;
+    encodeInt(indexID, iID);
+    result = tablePrefix + tID + indexPrefix + iID;
+}
+
 // Key: TablePrefix_TableID_IndexPrefix_IndexID_IndexValue
 // void simplesql::util::encodeIndexKeyWithPK(int tableID, int indexID, AnyValue* index, AnyValue* pk, string& result) {
     
@@ -181,6 +190,20 @@ bool simplesql::util::decodeRowKey(const string& input, DataType pkType, int& ta
     if (*(data + offset) != rowPrefix) return false;
     offset += sizeof(char);
     decodeAnyValue(string(data + offset, input.size() - offset), pkType, pk, mp);
+    return true;
+}
+
+// Key: TablePrefix_TableID_IndexPrefix_IndexKey  [1 + 4 + 1 + x bytes]
+bool simplesql::util::decodeIndexKey(const string& input, DataType dataType, int& tableID, int& indexID, AnyValue* &indexValue, MemoryPool* mp) {
+    size_t offset = 0;
+    const char* data = input.data();
+    if (*data != tablePrefix) return false;
+    offset += sizeof(char);
+    tableID = decodeInt(string(data + offset, sizeof(int)));
+    offset += sizeof(int);
+    if (*(data + offset) != rowPrefix) return false;
+    offset += sizeof(char);
+    decodeAnyValue(string(data + offset, input.size() - offset), dataType, indexValue, mp);
     return true;
 }
 

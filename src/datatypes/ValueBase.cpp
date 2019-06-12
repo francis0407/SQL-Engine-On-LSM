@@ -84,6 +84,41 @@ bool AnyValue::asBoolean() const {
     return true;
 }
 
+bool AnyValue::lessThanOrEqual(AnyValue* that) const {
+    const AnyValue* leftValue = this;
+    const AnyValue* rightValue = that;
+    switch (leftValue->valueType) {
+        case Integer: {
+            if (rightValue->valueType == Integer)
+                return ((IntegerValue*)leftValue)->value <= ((IntegerValue*)rightValue)->value;
+            else if (rightValue->valueType == Float)
+                return ((IntegerValue*)leftValue)->value <= ((FloatValue*)rightValue)->value;
+            break;
+        }
+        case Float: {
+            if (rightValue->valueType == Integer)
+                return ((FloatValue*)leftValue)->value <= ((IntegerValue*)rightValue)->value;
+            else if (rightValue->valueType == Float)
+                return ((FloatValue*)leftValue)->value <= ((FloatValue*)rightValue)->value;
+            break;
+        }
+        case Boolean: {
+            if (rightValue->valueType == Boolean)
+                return ((BooleanValue*)leftValue)->value <= ((BooleanValue*)rightValue)->value;
+            break;
+        }
+        case String: {
+            StringValue* sl = (StringValue*)leftValue;
+            StringValue* sr = (StringValue*)rightValue;
+            if (rightValue->valueType == String)
+                return StringValue::compare(sl->data(), sl->size(), sr->data(), sr->size()) <= 0;
+            break;
+        }
+        default: break;
+    }
+    return false;
+}
+
 IntegerValue::~IntegerValue() {}
 
 IntegerValue::IntegerValue() : value(0) {
@@ -119,7 +154,7 @@ std::string IntegerValue::toString() const {
     return std::to_string(value);
 }
 
-bool IntegerValue::equalToSemantically(AnyValue* that) const {
+bool IntegerValue::equalToSemantically(const AnyValue* that) const {
     if (that->valueType != Integer)
         return false;
     return ((IntegerValue*)that)->value == value;
@@ -159,7 +194,7 @@ std::string FloatValue::toString() const {
     return std::to_string(value);
 }
 
-bool FloatValue::equalToSemantically(AnyValue* that) const {
+bool FloatValue::equalToSemantically(const AnyValue* that) const {
     if (that->valueType != Float)
         return false;
     return ((FloatValue*)that)->value == value;
@@ -199,7 +234,7 @@ std::string BooleanValue::toString() const {
     return std::to_string(value);
 }
 
-bool BooleanValue::equalToSemantically(AnyValue* that) const {
+bool BooleanValue::equalToSemantically(const AnyValue* that) const {
     if (that->valueType != Boolean)
         return false;
     return ((BooleanValue*)that)->value == value;
@@ -296,7 +331,7 @@ std::string StringValue::toString() const {
     return "'" + std::string(data(), size()) + "'";
 }
 
-bool StringValue::equalToSemantically(AnyValue* that) const {
+bool StringValue::equalToSemantically(const AnyValue* that) const {
     if (that->valueType != String)
         return false;
     if (((StringValue*)that)->size() != size())
