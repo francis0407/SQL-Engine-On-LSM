@@ -82,15 +82,41 @@ TEST_F(SQLStatementSuite, CreateTable) {
     ASSERT_TRUE(relation.attributes.attributes[2].equalTo(Attribute(Integer, "C")));
     ASSERT_FALSE(relation.attributes.attributes[2].hasIndex);
 
-    qe->executeSQL("INSERT INTO TEMP VALUES (1, 'aaa', 1.0), (2, 'bbb', 2.0), (3, 'ccc', 3.0);", result);
+    qe->executeSQL("INSERT INTO TEMP VALUES (1, 'ddd', 1.0), (2, 'ddd', 2.0), (3, 'ccc', 3.0);", result);
     Relation result2;
     qe->executeSQL("SELECT A, B, C FROM TEMP;", result2);
     AnyValue* answer[3][3] = {
-        {IntegerValue::create(1), StringValue::create(string("aaa")), FloatValue::create(1.0f)},
-        {IntegerValue::create(2), StringValue::create(string("bbb")), FloatValue::create(2.0f)},
+        {IntegerValue::create(1), StringValue::create(string("ddd")), FloatValue::create(1.0f)},
+        {IntegerValue::create(2), StringValue::create(string("ddd")), FloatValue::create(2.0f)},
         {IntegerValue::create(3), StringValue::create(string("ccc")), FloatValue::create(3.0f)},
     };
     assertResult<3, 3>(result2, answer);
+
+    // Secondary Index Scan
+    OperatorBase* opt = new SecondIndexScan(new RelationReference("TEMP"), 1, Literal::create(string("ccc")), nullptr);
+    Relation result3;
+    qe->executeTree(opt, result3);
+    AnyValue* answer3[3][3] = {
+        {IntegerValue::create(3), StringValue::create(string("ccc")), FloatValue::create(3.0f)},
+        {IntegerValue::create(1), StringValue::create(string("ddd")), FloatValue::create(1.0f)},
+        {IntegerValue::create(2), StringValue::create(string("ddd")), FloatValue::create(2.0f)}
+    };
+    assertResult<3, 3>(result3, answer3);
+
+    // HashJoin
+    OperatorBase* opt2 = new InnerJoin(
+        new SecondIndexScan(new RelationReference("TEMP", "T1"), 1, nullptr, nullptr),
+        new SeqScan(new RelationReference("TEMP", "T2")),
+        BuildLeft,
+        new EqualTo(new AttributeReference("T1", "B"), new AttributeReference("T2", "B")),
+        HashJoin
+    );
+    ((InnerJoin*)opt2)->leftKeyOffset = 1;
+    ((InnerJoin*)opt2)->rightKeyOffset = 1;
+    Relation result4;
+    qe->executeTree(opt2, result4);
+    ASSERT_EQ(result4.rows.size(), 5);
+    result4.show();
 }
 
 TEST_F(SQLStatementSuite, Insert) {

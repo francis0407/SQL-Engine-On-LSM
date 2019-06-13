@@ -2,7 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8) # cmake最低版本要�?
 
 PROJECT(SQL-ON-LSM)    
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11") # 添加c++11标准支持
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14") # 添加c++11标准支持
 
 SET(CMAKE_C_COMPILER "/usr/bin/gcc") 
 SET(CMAKE_CXX_COMPILER "/usr/bin/g++") 

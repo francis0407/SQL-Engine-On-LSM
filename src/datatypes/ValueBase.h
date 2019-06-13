@@ -138,31 +138,38 @@ private:
     bool needRelease = false;
 };
 
+typedef AnyValue* AnyValuePointer;
+
 struct AnyValueCmp {
-    bool operator()(const AnyValue* &left, const AnyValue* &right) const {
+    bool operator()(const AnyValuePointer &left, const AnyValuePointer &right) const {
         return left->equalToSemantically(right);
     }
 };
 
 struct AnyValueHash {
-    size_t operator()(const AnyValue* &value) const {
+    size_t operator()(const AnyValuePointer &value) const {
+        static std::hash<std::string> strHash;
+        static std::hash<float> floatHash;
+        static std::hash<int> intHash;
         switch (value->valueType) {
-            case Integer:
+            case Integer: {
                 int v = ((IntegerValue*)value)->value;
-                std::hash<int> hash_int;
-                return hash_int(v);
-                break;
-            case String:
-                // size_t len = ((StringValue*)value)->size();
+                return intHash(v);
+            }
+            case String: {
+                size_t len = ((StringValue*)value)->size();
                 const char* str = ((StringValue*)value)->data();
-                std::string tmp(str);
-                std::hash<string> str_hash;
-                return str_hash(tmp);
-                break;
-            case Float:
+                std::string tmp(str, len);
+                return strHash(tmp);
+            }
+            case Float: {
                 float v = ((FloatValue*)value)->value;
-                std::hash<float> hash_float;
-                return hash_float(v);
+                return floatHash(v);
+            }
+            case Boolean:
+                return ((BooleanValue*)value)->value;
+            default:
+                return 0;
         }
     }
 };

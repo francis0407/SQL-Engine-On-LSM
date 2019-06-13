@@ -12,6 +12,7 @@ using namespace simplesql::util;
 
 #define SafeRelease(x) do{if (x != nullptr) {delete x; x = nullptr;}} while(false);
 SecondIndexScan::SecondIndexScan(RelationReference* _relation, int _indexId, Literal* _start, Literal* _end) : Scan(_relation) {
+    method = _IndexScan;
     mp = nullptr;
     indexValueMp = nullptr;
     iter = nullptr;
@@ -26,10 +27,11 @@ SecondIndexScan::~SecondIndexScan() {
 }
 
 bool SecondIndexScan::open() {
-    if (start != nullptr)
+    if (start == nullptr)
         iter = LevelDB::scanIndex(reference->tableID, indexId);
     else 
         iter = LevelDB::scanIndex(reference->tableID, indexId, start->value);
+    return true;
 }
 
 NextResult SecondIndexScan::next() {
@@ -76,10 +78,11 @@ bool SecondIndexScan::close() {
     SafeRelease(mp);
     SafeRelease(indexValueMp);
     SafeRelease(iter);
+    return true;
 }
 
 Row* SecondIndexScan::getRowFromPK(AnyValue* pk) {
-    Row* row;
+    Row* row = nullptr;
     LevelDB::getRow(reference->tableID, pk, outputs, row, mp);
     return row;
 }

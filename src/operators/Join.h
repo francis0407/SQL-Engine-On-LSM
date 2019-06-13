@@ -59,8 +59,10 @@ private:
     bool hashOpen();
     NextResult hashNext();
     bool hashClose();
-    std::unordered_multimap<AnyValue*, Row*, AnyValueHash, AnyValueCmp> multiHashMap;
-    
+    std::unordered_multimap<AnyValuePointer, Row*, AnyValueHash, AnyValueCmp> multiHashMap;
+    MemoryPool* hashMP;
+    std::queue<NextResult> hashResultBuffer;
+
 };
 
 

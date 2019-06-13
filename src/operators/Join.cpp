@@ -45,6 +45,8 @@ bool InnerJoin::open() {
     switch (method) {
         case NestedLoopJoin:
             return nestedLoopOpen();
+        case HashJoin:
+            return hashOpen();
         default:
             return false;
     }
@@ -54,6 +56,8 @@ bool InnerJoin::close() {
     switch (method) {
         case NestedLoopJoin:
             return nestedLoopClose();
+        case HashJoin:
+            return hashClose();
         default:
             return false;
     }
@@ -63,6 +67,8 @@ NextResult InnerJoin::next() {
     switch (method) {
         case NestedLoopJoin:
             return nestedLoopNext();
+        case HashJoin:
+            return hashNext();
         default:
             return NextResult(nullptr);
     }
@@ -122,9 +128,55 @@ bool InnerJoin::hashOpen() {
         buildKeyOffset = rightKeyOffset;
         streamKeyOffset = leftKeyOffset;
     }
+    // if (hashMP != nullptr)
+    //     delete hashMP;
+    hashMP = new MemoryPool();
     // build hash map
-    auto iter = multiHashMap.find(nullptr);
-    
+    multiHashMap.clear();
+    while (true) {
+        NextResult result = build->next();
+        if (result.row == nullptr) break;
+        Row* row = result.row->makeCopy(hashMP);
+        AnyValue* joinKey = row->values[buildKeyOffset];
+        multiHashMap.insert({joinKey, row});
+    }
+    return true;
+}
+
+NextResult InnerJoin::hashNext() {
+    while (hashResultBuffer.empty()) {
+        NextResult next = stream->next();
+        if (next.row == nullptr) return NextResult(nullptr);
+        Row* streamRow = next.row;
+        AnyValue* joinKey = streamRow->values[streamKeyOffset];
+        for (auto iter = multiHashMap.find(joinKey); iter != multiHashMap.end(); iter++) {
+            if (iter->first->equalToSemantically(joinKey)) {
+                // key match
+                // test condition
+                Row* concatRow;
+                if (side == BuildLeft) concatRow = Row::concat(iter->second, streamRow, next.mp);
+                else concatRow = Row::concat(streamRow, iter->second, next.mp);
+                bool valid = condition->eval(concatRow, next.mp)->asBoolean();
+                if (valid) hashResultBuffer.push(NextResult(concatRow, next.mp));
+            } else 
+                break;
+        }
+    }
+    if (hashResultBuffer.empty())
+        return NextResult(nullptr);
+    else {
+        NextResult next = hashResultBuffer.front();
+        hashResultBuffer.pop();
+        return next;
+    }
+}
+
+bool InnerJoin::hashClose() {
+    if (hashMP != nullptr) {
+        delete hashMP;
+        hashMP = nullptr;
+    }
+    return left->close() && right->close();
 }
 
 /************ Sort Merge Inner Join ************/

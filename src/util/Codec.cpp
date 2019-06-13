@@ -193,7 +193,7 @@ bool simplesql::util::decodeRowKey(const string& input, DataType pkType, int& ta
     return true;
 }
 
-// Key: TablePrefix_TableID_IndexPrefix_IndexKey  [1 + 4 + 1 + x bytes]
+// Key: TablePrefix_TableID_IndexPrefix_IndexID_IndexKey  [1 + 4 + 1 + 4 + x bytes]
 bool simplesql::util::decodeIndexKey(const string& input, DataType dataType, int& tableID, int& indexID, AnyValue* &indexValue, MemoryPool* mp) {
     size_t offset = 0;
     const char* data = input.data();
@@ -201,8 +201,10 @@ bool simplesql::util::decodeIndexKey(const string& input, DataType dataType, int
     offset += sizeof(char);
     tableID = decodeInt(string(data + offset, sizeof(int)));
     offset += sizeof(int);
-    if (*(data + offset) != rowPrefix) return false;
+    if (*(data + offset) != indexPrefix) return false;
     offset += sizeof(char);
+    indexID = decodeInt(string(data + offset, sizeof(int)));
+    offset += sizeof(int);
     decodeAnyValue(string(data + offset, input.size() - offset), dataType, indexValue, mp);
     return true;
 }
@@ -242,7 +244,7 @@ void simplesql::util::decodeIndexValue(const string& input, DataType type, Row* 
     size_t offset = 0;
     const char* data = input.data();
     std::vector<AnyValue*> values;
-    for (size_t i = 0; offset <= input.size(); i++) {
+    for (size_t i = 0; offset < input.size(); i++) {
         switch (type) {
             case Integer: {
                 values.push_back(IntegerValue::create(*(int*)(data + offset), mp));
