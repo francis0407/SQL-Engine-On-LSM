@@ -84,3 +84,16 @@ add_executable(shell
    ${simplesql_util}
    "${PROJECT_SOURCE_DIR}/src/Shell.cpp"
 )
+
+add_executable(homework
+   ${simplesql}
+   ${simplesql_expressions}
+   ${simplesql_datatypes}
+   ${simplesql_operators}
+   ${simplesql_parser}
+   ${simplesql_parser_antlr}
+   ${simplesql_analyzer}
+   ${simplesql_execution}
+   ${simplesql_util}
+   "${PROJECT_SOURCE_DIR}/homework/main.cpp"
+)

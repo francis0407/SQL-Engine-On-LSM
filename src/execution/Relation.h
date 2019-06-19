@@ -15,6 +15,7 @@ public:
     Relation();
     ~Relation();
     void show();
+    void show(size_t maxRows);
     void append(Row* row);
     std::vector<Row*> rows;
     AttributeSeq schema;

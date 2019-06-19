@@ -59,6 +59,9 @@ NextResult SecondIndexScan::next() {
             return NextResult(nullptr);
         if (tableID != reference->tableID) return NextResult(nullptr);
         if (indexId != decodeIndexID) return NextResult(nullptr);
+        if (end != nullptr) {
+            if (!indexValue->lessThanOrEqual(end->value)) return NextResult(nullptr);
+        }
         // the index key is valid, get index values and push into the queue
         Row* indexValueRow;
         decodeIndexValue(iter->value().ToString(), reference->attributes.attributes[0].dataType, indexValueRow, indexValueMp);
